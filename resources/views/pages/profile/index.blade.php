@@ -19,8 +19,8 @@
                             <div class="col-4 d-flex align-items-center">
                                 <div class="position-relative d-inline-block">
                                     <img id="current-profile-image" class="img-fluid img-thumbnail rounded-5"
-                                    src="{{$user->prodi->gambar ? asset($user->prodi->gambar) : asset('assets/images/profile/user-1.jpg') }}"
-                                    alt="Profile Image">
+                                        src="{{ $user->prodi->gambar ? asset($user->prodi->gambar) : asset('assets/images/profile/user-1.jpg') }}"
+                                        alt="Profile Image">
                                     <span class="position-absolute top-0 end-0 p-4">
                                         <div id="profile-image" class="bg-white p-2 rounded-2 cursor-pointer">
                                             <i class="fas fa-camera fs-5"></i>
@@ -131,7 +131,7 @@
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
-                @endif
+                    @endif
                     <form action="{{ route('dosen.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -275,7 +275,8 @@
                             <div class="col-4 d-flex align-items-center">
                                 <div class="position-relative d-inline-block">
                                     <img id="current-profile-image" class="img-fluid img-thumbnail rounded-5"
-                                        src="{{$user->mahasiswa->gambar ? asset($user->mahasiswa->gambar) : asset('assets/images/profile/user-1.jpg') }}" alt="Profile Image">
+                                        src="{{ $user->mahasiswa->gambar ? asset($user->mahasiswa->gambar) : asset('assets/images/profile/user-1.jpg') }}"
+                                        alt="Profile Image">
                                     <span class="position-absolute top-0 end-0 p-4">
                                         <div id="profile-image" class="bg-white p-2 rounded-2 cursor-pointer">
                                             <i class="fas fa-camera fs-5"></i>

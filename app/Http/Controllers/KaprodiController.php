@@ -100,5 +100,7 @@ class KaprodiController extends Controller
 
     public function tugasAkhir()
     {
+        // cari pembimbing
+        return view('pages.kaprodi.tugasAkhir.index');
     }
 }

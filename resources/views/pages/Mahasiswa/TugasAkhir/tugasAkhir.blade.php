@@ -60,7 +60,15 @@
                                 <td>{{ $ta->judul }}</td>
                                 <td>{{ $ta->konsentrasi }}</td>
                                 <td><a href="{{ url('uploads/tugas-akhir/' . $ta->file) }}" target="_blank">Lihat File</a></td>
-                                <td>{{ $ta->status }}</td>
+                                <td>
+                                    @if($ta->status == 'ditolak')
+                                        <span class="text-danger">{{ $ta->status }}</span>
+                                    @elseif($ta->status == 'diproses')
+                                        <span class="text-secondary">{{ $ta->status }}</span>
+                                    @elseif($ta->status == 'diterima')
+                                        <span class="text-success">{{ $ta->status }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ $ta->created_at->format('d M Y') }}</td>
                             </tr>
                         @endforeach

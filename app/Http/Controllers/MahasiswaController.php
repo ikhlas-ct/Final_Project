@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Judul;
 use App\Models\Mahasiswa;
+use App\Models\Pengajuan;
 use App\Helpers\AlertHelper;
 use Illuminate\Http\Request;
-use App\Models\JudulTugasAkhir;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,12 +25,15 @@ class MahasiswaController extends Controller
 
     public function tugasAkhir()
     {
-        $tugasAkhir = JudulTugasAkhir::all();
+        $tugasAkhir = Judul::all();
         return view('pages.Mahasiswa.TugasAkhir.tugasAkhir', compact('tugasAkhir'));
     }
 
     public function StoreTugasAkhir(Request $request)
     {
+        $user = Auth::user();
+        $mahasiswa = $user->mahasiswa->id;
+
         $request->validate([
             'judul' => 'required|string|max:255',
             'konsentrasi' => 'required|string',
@@ -43,12 +47,17 @@ class MahasiswaController extends Controller
             $file->move(public_path('uploads/tugas-akhir'), $filename);
         }
 
-        // Save data to the database
-        JudulTugasAkhir::create([
-            'judul' => $request->input('judul'),
-            'konsentrasi' => $request->input('konsentrasi'),
+        // Buat pengajuan baru
+        $pengajuan = Pengajuan::create([
+            'mahasiswa_id' => $mahasiswa,
+        ]);
+
+        // Buat judul baru terkait dengan pengajuan yang baru saja dibuat
+        $judul = $pengajuan->Judul()->create([
+            'judul' => $request->judul,
+            'konsentrasi' => $request->konsentrasi,
             'file' => $filename,
-            'mahasiswa_bimbingan_id' => $request->input('mahasiswa_bimbingan_id'), // Pastikan ini diambil dari request atau session
+            'status' => 'diproses',
         ]);
 
         return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');

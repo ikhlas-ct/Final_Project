@@ -32,7 +32,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
 });
 
 // // Admin routes
@@ -59,6 +58,10 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
 // // Mahasiswa routes
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
+    Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
+    Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');
+    Route::post('/tugas-akhir', [MahasiswaController::class, 'StoreTugasAkhir'])->name('StoreTugasAkhir');
+    Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
     Route::put('/passwordProdi/update', [MahasiswaController::class, 'updatePassword'])->name('passwordUpdateMahasiswa');
     Route::get('/konsultasi', [MahasiswaController::class, 'konsul'])->name('halamanKonsultasi');
     Route::get('/tgl_penting', [MahasiswaController::class, 'tgl_penting'])->name('halamanTanggal');

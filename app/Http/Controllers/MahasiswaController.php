@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Helpers\AlertHelper;
+use Illuminate\Http\Request;
+use App\Models\JudulTugasAkhir;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class MahasiswaController extends Controller
 {
@@ -15,9 +16,42 @@ class MahasiswaController extends Controller
     {
         $this->middleware('role:mahasiswa');
     }
-    public function index()
+
+    public function pilihPembimbing()
     {
-        return view('Mahasiswa.Dashboard.dashboard');
+        return view('pages.Mahasiswa.Pembimbing.pilihPembimbing');
+    }
+
+    public function tugasAkhir()
+    {
+        $tugasAkhir = JudulTugasAkhir::all();
+        return view('pages.Mahasiswa.TugasAkhir.tugasAkhir', compact('tugasAkhir'));
+    }
+
+    public function StoreTugasAkhir(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'konsentrasi' => 'required|string',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/tugas-akhir'), $filename);
+        }
+
+        // Save data to the database
+        JudulTugasAkhir::create([
+            'judul' => $request->input('judul'),
+            'konsentrasi' => $request->input('konsentrasi'),
+            'file' => $filename,
+            'mahasiswa_bimbingan_id' => $request->input('mahasiswa_bimbingan_id'), // Pastikan ini diambil dari request atau session
+        ]);
+
+        return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');
     }
 
     public function konsul()
@@ -32,8 +66,6 @@ class MahasiswaController extends Controller
 
     public function update(Request $request)
     {
-
-
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [

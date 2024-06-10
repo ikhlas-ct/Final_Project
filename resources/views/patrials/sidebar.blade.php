@@ -26,6 +26,24 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}" href="{{ url('pilih-pembimbing') }}"
+                    aria-expanded="false">
+                    <span>
+                        <i class="ti ti-layout-dashboard"></i>
+                    </span>
+                    <span class="hide-menu">Pembimbing</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link {{ Request::is('tugas-akhir') ? 'active' : '' }}" href="{{ url('tugas-akhir') }}"
+                    aria-expanded="false">
+                    <span>
+                        <i class="ti ti-layout-dashboard"></i>
+                    </span>
+                    <span class="hide-menu">Tugas Akhir</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                     aria-expanded="false">
                     <span>

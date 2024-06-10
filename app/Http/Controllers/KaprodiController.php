@@ -97,4 +97,8 @@ class KaprodiController extends Controller
         AlertHelper::alertSuccess('Anda telah berhasil mengupdate password', 'Selamat!', 2000);
         return redirect()->back();
     }
+
+    public function tugasAkhir()
+    {
+    }
 }

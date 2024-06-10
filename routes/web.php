@@ -43,8 +43,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // // Kaprodi routes
 Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard');
-    Route::put('/profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
-    Route::put('/password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
+    Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
+    Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
+    Route::get('tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodi.tugasAkhir');
 });
 
 // // Dosen routes

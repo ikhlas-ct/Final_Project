@@ -35,12 +35,12 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link {{ Request::is('konsultasi') ? 'active' : '' }}" href="{{ url('konsultasi') }}"
-                    aria-expanded="false">
+                <a class="sidebar-link {{ Request::is('tugas-akhir') ? 'active' : '' }}"
+                    href="{{ url('kaprodi.tugasAkhir') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-layout-dashboard"></i>
                     </span>
-                    <span class="hide-menu">Konsultasi</span>
+                    <span class="hide-menu">Tugas Akhir</span>
                 </a>
             </li>
             <li class="sidebar-item">

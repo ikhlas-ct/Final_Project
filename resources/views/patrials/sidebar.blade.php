@@ -210,7 +210,7 @@
     </nav>
     <!-- End Sidebar navigation -->
 </div>
-@endif
+
 
 
 
@@ -395,7 +395,6 @@
         </nav>
         <!-- End Sidebar navigation -->
     </div>
-
 @endif
 
 @if (FiturHelper::showDosen())

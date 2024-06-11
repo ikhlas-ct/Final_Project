@@ -24,4 +24,18 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function dosenPembimbing()
+    {
+        return $this->hasManyThrough(dosen_pembimbing::class, MahasiswaBimbingan::class, 'mahasiswa_id', 'id', 'id', 'bimbingan_id');
+    }
+
+    public function mahasiswaBimbingan()
+    {
+        return $this->hasMany(MahasiswaBimbingan::class, 'mahasiswa_id');
+    }
+
+
+
+
 }

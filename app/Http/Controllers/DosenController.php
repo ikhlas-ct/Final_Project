@@ -113,20 +113,8 @@ public function updatePassword(Request $request)
     $user->password = Hash::make($request->password);
     $user->save();
 
-    // Hapus gambar lama jika ada
-    if ($user->profile_image) {
-        $gambarProfilPath = 'dosen_images/' . $user->profile_image;
-
-        // Hapus gambar dari storage
-        if (Storage::disk('public')->exists($gambarProfilPath)) {
-            Storage::disk('public')->delete($gambarProfilPath);
-            // Set kolom gambar_profil ke null (jika ada)
-            $user->profile_image = null;
-            $user->save();
-        }
-    }
     AlertHelper::alertSuccess('Anda telah berhasil mengupdate username dan passowrd', 'Selamat!', 2000);
-    return redirect()->back();
+    return redirect()->route('profile');
 }
         
     

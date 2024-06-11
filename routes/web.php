@@ -37,6 +37,10 @@ Route::middleware(['auth'])->group(function () {
 // // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::put('/admin/profile/update', [AdminController::class, 'update'])->name('admin.profile.update');
+    Route::put('/admin/update/password', [AdminController::class, 'updatepassword'])->name('admin.update.password');
+
+
 });
 
 // // Kaprodi routes

@@ -28,6 +28,11 @@ class MahasiswaController extends Controller
         $tugasAkhir = Judul::all();
         return view('pages.Mahasiswa.TugasAkhir.tugasAkhir', compact('tugasAkhir'));
     }
+    public function tugasAkhirCreate()
+    {
+
+        return view('pages.Mahasiswa.TugasAkhir.tugasAkhirCreate');
+    }
 
     public function StoreTugasAkhir(Request $request)
     {
@@ -47,12 +52,16 @@ class MahasiswaController extends Controller
             $file->move(public_path('uploads/tugas-akhir'), $filename);
         }
 
-        // Buat pengajuan baru
-        $pengajuan = Pengajuan::create([
-            'mahasiswa_id' => $mahasiswa,
-        ]);
+        $pengajuan = Pengajuan::where('mahasiswa_id', $mahasiswa)->first();
 
-        // Buat judul baru terkait dengan pengajuan yang baru saja dibuat
+        if (!$pengajuan) {
+            // Jika pengajuan belum ada, buat pengajuan baru
+            $pengajuan = Pengajuan::create([
+                'mahasiswa_id' => $mahasiswa,
+            ]);
+        }
+
+        // Tambahkan judul baru terkait dengan pengajuan (baik yang baru dibuat atau yang sudah ada)
         $judul = $pengajuan->Judul()->create([
             'judul' => $request->judul,
             'konsentrasi' => $request->konsentrasi,

@@ -1,6 +1,7 @@
 @extends('layout.master')
 @section('title', 'Tugas-Akhir')
 @section('content')
+
     <h4 class="card-title fw-semibold mb-4">Cari Pembimbing</h4>
     <div class="card">
         <div class="card-body">
@@ -15,17 +16,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Udin</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, tenetur.</td>
-                        <td>
-                            cari
-                        </td>
-                        <td>
-                            cari
-                        </td>
-                    </tr>
+                    @foreach ($mahasiswas as $index => $mahasiswa)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $mahasiswa->nama }}</td>
+                            <td>
+                                @if ($mahasiswa->pengajuan && $mahasiswa->pengajuan->judul)
+                                    <ul>
+                                        @foreach ($mahasiswa->pengajuan->judul as $judul)
+                                            <li class="text-capitalize">{{ $judul->judul }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    Tidak ada judul
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn btn-primary mt-3">Cari</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary mt-3">Cari</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

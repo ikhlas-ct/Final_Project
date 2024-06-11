@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prodi;
+use App\Models\Mahasiswa;
 use App\Helpers\AlertHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,8 @@ class KaprodiController extends Controller
     public function tugasAkhir()
     {
         // cari pembimbing
-        return view('pages.kaprodi.tugasAkhir.index');
+        // $mahasiswas = Mahasiswa::with(['pengajuan.judul'])->get();
+        $mahasiswas = Mahasiswa::whereHas('pengajuan.judul')->with(['pengajuan.judul'])->get();
+        return view('pages.kaprodi.tugasAkhir.index', compact('mahasiswas'));
     }
 }

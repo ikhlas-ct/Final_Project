@@ -40,39 +40,38 @@ class FiturHelper
      * @return string
      */
     public static function getProfileImage(): string
-{
-    $user = auth()->user();
-    
-    if (self::showDosen()) {
-        if ($user->dosen->gambar) {
-            return asset($user->dosen->gambar);
+    {
+        $user = auth()->user();
+
+        if (self::showDosen()) {
+            if ($user->dosen->gambar) {
+                return asset($user->dosen->gambar);
+            } else {
+                return asset('assets/images/profile/user-1.jpg');
+            }
+        }
+
+        if (self::showKaprodi()) {
+            if ($user->prodi->gambar) {
+                return asset($user->prodi->gambar);
+            } else {
+                return asset('assets/images/profile/user-1.jpg');
+            }
+        }
+
+        if (self::showMahasiswa()) {
+            if ($user->mahasiswa->gambar) {
+                return asset($user->mahasiswa->gambar);
+            } else {
+                return asset('assets/images/profile/user-1.jpg');
+            }
+        }
+
+        // Default image for other roles or if user doesn't have specific profile images
+        if ($user->gambar) {
+            return asset($user->gambar);
         } else {
             return asset('assets/images/profile/user-1.jpg');
         }
     }
-
-    if (self::showKaprodi()) {
-        if ($user->prodi->gambar) {
-            return asset($user->prodi->gambar);
-        } else {
-            return asset('assets/images/profile/user-1.jpg');
-        }
-    }
-
-    if (self::showMahasiswa()) {
-        if ($user->mahasiswa->gambar) {
-            return asset($user->mahasiswa->gambar);
-        } else {
-            return asset('assets/images/profile/user-1.jpg');
-        }
-    }
-
-    // Default image for other roles or if user doesn't have specific profile images
-    if ($user->gambar) {
-        return asset($user->gambar);
-    } else {
-        return asset('assets/images/profile/user-1.jpg');
-    }
-}
-
 }

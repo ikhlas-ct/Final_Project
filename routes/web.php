@@ -44,7 +44,7 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard');
     Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
-    Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodi.tugasAkhir');
+    Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
 });
 
 // // Dosen routes
@@ -61,6 +61,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
     Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
     Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');
+    Route::get('/tugas-akhir-create', [MahasiswaController::class, 'tugasAkhirCreate'])->name('tugasAkhirCreate');
     Route::post('/tugas-akhir', [MahasiswaController::class, 'StoreTugasAkhir'])->name('StoreTugasAkhir');
     Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
     Route::put('/passwordProdi/update', [MahasiswaController::class, 'updatePassword'])->name('passwordUpdateMahasiswa');

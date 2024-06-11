@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
-        Schema::create('dosen', function (Blueprint $table) {
+        Schema::create('tb_dosen', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('nidn')->unique()->nullable();  
-            $table->string('gambar')->nullable();
+            $table->unsignedBigInteger('fakultas_id'); // Menambah kolom fakultas_id
+            $table->string('nidn')->unique()->nullable();
             $table->string('nama')->nullable();
-            $table->string('department')->nullable();
             $table->string('no_hp', 20)->nullable();
-            $table->text('alamat')->nullable();
-            $table->longText('deskripsi')->nullable();
+            $table->string('poto')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('fakultas_id')->references('id')->on('tb_fakultas')->onDelete('cascade'); // Menambah foreign key ke tb_fakultas
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dosen');
+        Schema::dropIfExists('tb_dosen');
     }
 };

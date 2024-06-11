@@ -14,11 +14,16 @@
         <div class="card">
             <div class="card-body">
                 @if ($tugasAkhir->isEmpty())
+
                     <p>Belum ada data tugas akhir.</p>
                 @else
+                    @php
+                        $no = 1;
+                    @endphp
                     <table id="example" class="cell-border" style="width:100%">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Judul</th>
                                 <th>Konsentrasi</th>
                                 <th>File</th>
@@ -29,8 +34,9 @@
                         <tbody>
                             @foreach ($tugasAkhir as $ta)
                                 <tr>
+                                    <td>{{ $no++ }}</td>
                                     <td>{{ $ta->judul }}</td>
-                                    <td>{{ $ta->konsentrasi }}</td>
+                                    <td>{{ $ta->tema->nama }}</td>
                                     <td><a href="{{ url('uploads/tugas-akhir/' . $ta->file) }}" target="_blank">Lihat
                                             File</a>
                                     </td>

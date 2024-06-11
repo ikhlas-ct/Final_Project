@@ -52,7 +52,7 @@ class FiturHelper
         }
 
         if (self::showKaprodi()) {
-            if ($user->prodi->gambar) {
+            if ($user->kaprodi->gambar) {
                 return asset($user->prodi->gambar);
             } else {
                 return asset('assets/images/profile/user-1.jpg');

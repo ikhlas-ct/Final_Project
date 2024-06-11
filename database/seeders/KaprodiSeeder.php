@@ -2,25 +2,22 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kaprodi;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Mahasiswa;
 
-
-class MahasiswaSeeder extends Seeder
+class KaprodiSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
-        Mahasiswa::insert([
+        Kaprodi::insert([
             [
-                'user_id' => 3,
+                'user_id' => 1,
                 'fakultas_id' => 1,
-                'nama' => 'Jane Doe',
-                'nim' => '2020123456',
-                'no_hp' => '081234567891',
+                'nama' => 'Dr. John Doe',
+                'nidn' => '1234567890',
+                'no_hp' => '081234567890',
                 'poto' => 'path/to/photo.jpg',
             ],
         ]);

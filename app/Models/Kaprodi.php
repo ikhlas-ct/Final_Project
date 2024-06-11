@@ -5,24 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Prodi extends Model
+class Kaprodi extends Model
 {
     use HasFactory;
 
-    protected $table = 'prodi';
-
+    protected $table = 'tb_kaprodi';
     protected $fillable = [
         'user_id',
-        'gambar',
+        'fakultas_id',
         'nama',
         'nidn',
-        'departemen',
         'no_hp',
-        'alamat',
+        'poto',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class);
     }
 }

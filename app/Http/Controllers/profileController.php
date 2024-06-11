@@ -14,8 +14,8 @@ class profileController extends Controller
         $userId = Auth::user()->id;
         // 
         $user = FiturHelper::showKaprodi()
-            ? User::with('prodi')->find($userId)
-            : User::with('mahasiswa')->find($userId);
+            ? User::with('kaprodi.fakultas')->find($userId)
+            : User::with('mahasiswa.fakultas')->find($userId);
         // 
         return view('pages.profile.index', compact('user'));
     }

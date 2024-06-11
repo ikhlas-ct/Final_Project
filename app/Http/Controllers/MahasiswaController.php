@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Judul;
 use App\Models\Mahasiswa;
 use App\Models\Pengajuan;
+use App\Models\Tema;
 use App\Helpers\AlertHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,31 +18,36 @@ class MahasiswaController extends Controller
     {
         $this->middleware('role:mahasiswa');
     }
-
+    // 
     public function pilihPembimbing()
     {
         return view('pages.Mahasiswa.Pembimbing.pilihPembimbing');
     }
-
+    // 
     public function tugasAkhir()
     {
-        $tugasAkhir = Judul::all();
+        $tugasAkhir = Judul::with('tema')->get();
         return view('pages.Mahasiswa.TugasAkhir.tugasAkhir', compact('tugasAkhir'));
     }
+    // 
     public function tugasAkhirCreate()
     {
+        $user = Auth::user();
 
-        return view('pages.Mahasiswa.TugasAkhir.tugasAkhirCreate');
+        $userFakultasId = $user->mahasiswa->fakultas_id;
+        $tema = Tema::where('fakultas_id', $userFakultasId)->get();
+
+        return view('pages.Mahasiswa.TugasAkhir.tugasAkhirCreate', compact('tema'));
     }
-
+    // 
     public function StoreTugasAkhir(Request $request)
     {
         $user = Auth::user();
         $mahasiswa = $user->mahasiswa->id;
 
         $request->validate([
+            'tema' => 'required',
             'judul' => 'required|string|max:255',
-            'konsentrasi' => 'required|string',
             'file' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
@@ -63,15 +69,15 @@ class MahasiswaController extends Controller
 
         // Tambahkan judul baru terkait dengan pengajuan (baik yang baru dibuat atau yang sudah ada)
         $judul = $pengajuan->Judul()->create([
+            'tema_id' => $request->tema,
             'judul' => $request->judul,
-            'konsentrasi' => $request->konsentrasi,
             'file' => $filename,
             'status' => 'diproses',
         ]);
 
         return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');
     }
-
+    // 
     public function konsul()
     {
         return view('pages.Mahasiswa.Konsultasi.konsultasi');

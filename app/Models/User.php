@@ -38,8 +38,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Mahasiswa::class, 'user_id'); // Sesuaikan dengan foreign key yang digunakan di tabel Mahasiswa
     }
-    public function prodi()
+    public function kaprodi()
     {
-        return $this->hasOne(Prodi::class, 'user_id'); // Sesuaikan dengan foreign key yang digunakan di tabel Prodi
+        return $this->hasOne(Kaprodi::class, 'user_id'); // Sesuaikan dengan foreign key yang digunakan di tabel Prodi
     }
 }

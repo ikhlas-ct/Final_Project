@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prodi', function (Blueprint $table) {
+        Schema::create('tb_kaprodi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('nidn')->unique()->nullable();  
-            $table->string('gambar')->nullable();
+            $table->unsignedBigInteger('fakultas_id');
+            $table->string('nidn')->unique()->nullable();
             $table->string('nama')->nullable();
-            $table->string('departemen')->nullable();
             $table->string('no_hp', 20)->nullable();
-            $table->text('alamat')->nullable();
+            $table->string('poto')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('fakultas_id')->references('id')->on('tb_fakultas')->onDelete('cascade');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prodi');
+        Schema::dropIfExists('tb_kaprodi');
     }
 };

@@ -8,21 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class Mahasiswa extends Model
 {
     use HasFactory;
-    protected $table = 'mahasiswa';
 
+    protected $table = 'tb_mahasiswa';
     protected $fillable = [
         'user_id',
-        'gambar',
+        'fakultas_id', // Sesuaikan dengan nama kolom yang digunakan dalam migrasi
         'nama',
         'nim',
-        'fakultas',
         'no_hp',
-        'alamat',
+        'poto',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class, 'fakultas_id');
     }
 
     public function pengajuan()

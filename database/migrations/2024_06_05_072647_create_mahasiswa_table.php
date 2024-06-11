@@ -11,18 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
+        Schema::create('tb_mahasiswa', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('fakultas_id'); // Menambah kolom fakultas_id
             $table->string('nama');
             $table->string('nim')->unique()->nullable();
-            $table->string('fakultas')->nullable();
-            $table->string('gambar')->nullable();
             $table->string('no_hp', 20)->nullable();
-            $table->text('alamat')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->string('poto')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('fakultas_id')->references('id')->on('tb_fakultas')->onDelete('cascade'); // Menambah foreign key ke tb_fakultas
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mahasiswa');
+        Schema::dropIfExists('tb_mahasiswa');
     }
 };

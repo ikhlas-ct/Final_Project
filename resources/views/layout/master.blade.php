@@ -17,6 +17,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
     {{-- font awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {{-- select2 --}}
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     {{-- Data tables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
     <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
@@ -36,7 +39,20 @@
         .icon-overlay {
             position: absolute;
             top: 5px;
+        }
 
+        .select2-search__field {
+            text-align: center;
+        }
+
+        .disabled-input {
+            color: #6c757d;
+            background-color: #f8f9fa;
+        }
+
+        .disabled-input:focus {
+            color: #6c757d;
+            background-color: #f8f9fa;
         }
     </style>
 </head>

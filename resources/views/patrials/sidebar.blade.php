@@ -50,15 +50,24 @@
             @endif
             @if (FiturHelper::showKaprodi())
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
+                    <a class="sidebar-link {{ Request::is('persetujuan') ? 'active' : '' }}"
+                        href="{{ url('persetujuan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Pembimbing</span>
+                        <span class="hide-menu">Persetujuan</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('persetujuan') ? 'active' : '' }}"
+                        href="{{ url('persetujuan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Fakultas</span>
+                    </a>
+                </li> --}}
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('kaprodi-tugas-akhir') || Request::is('tugas-akhir-create') ? 'active' : '' }}"
                         href="{{ url('kaprodi-tugas-akhir') }}" aria-expanded="false">
                         <span>
@@ -66,9 +75,8 @@
                         </span>
                         <span class="hide-menu">Tugas Akhir</span>
                     </a>
-                </li>
+                </li> --}}
             @endif
-
             <li class="sidebar-item">
                 <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                     aria-expanded="false">
@@ -78,7 +86,7 @@
                     <span class="hide-menu">Profile</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            {{-- <li class="sidebar-item">
                 <a class="sidebar-link {{ Request::is('konsultasi') ? 'active' : '' }}" href="{{ url('konsultasi') }}"
                     aria-expanded="false">
                     <span>
@@ -95,7 +103,7 @@
                     </span>
                     <span class="hide-menu">Tanggal Penting</span>
                 </a>
-            </li>
+            </li> --}}
             {{-- <li class="sidebar-item">
                 <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                     aria-expanded="false">

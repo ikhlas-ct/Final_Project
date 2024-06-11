@@ -6,6 +6,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
@@ -42,9 +43,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // // Kaprodi routes
 Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard');
+    Route::get('persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan');
+    Route::post('persetujuan/simpan', [PersetujuanController::class, 'store'])->name('simpan.persetujuan');
+    Route::get('persetujuan/getData', [PersetujuanController::class, 'getData'])->name('get.dataPersetujuan');;
     Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
-    Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
+    // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
 });
 
 // // Dosen routes

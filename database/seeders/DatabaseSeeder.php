@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Dosen;
 
 
@@ -13,12 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         // Panggil seeder yang telah dibuat
         $this->call([
-            DosenSeeder::class,
             UserSeeder::class,
+            FakultasSeeder::class,
+            KaprodiSeeder::class,
+            DosenSeeder::class,
             MahasiswaSeeder::class,
-            ProdiSeeder::class,
-
-
+            TemaSeeder::class
         ]);
     }
 }

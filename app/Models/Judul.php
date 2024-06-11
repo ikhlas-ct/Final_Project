@@ -9,10 +9,11 @@ class Judul extends Model
 {
     use HasFactory;
 
+    protected $table = 'tb_judul';
     protected $fillable = [
         'pengajuan_id',
+        'tema_id',
         'judul',
-        'konsentrasi',
         'file',
         'status'
     ];
@@ -20,5 +21,10 @@ class Judul extends Model
     public function Pengajuan()
     {
         return $this->belongsTo(Pengajuan::class);
+    }
+
+    public function Tema()
+    {
+        return $this->belongsTo(Tema::class);
     }
 }

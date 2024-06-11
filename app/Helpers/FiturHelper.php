@@ -33,6 +33,10 @@ class FiturHelper
     {
         return auth()->user()->role == 'mahasiswa';
     }
+    public static function showAdmin(): bool
+    {
+        return auth()->user()->role == 'admin';
+    }
 
     /**
      * Get the profile image URL based on the user's role.
@@ -53,7 +57,7 @@ class FiturHelper
 
         if (self::showKaprodi()) {
             if ($user->kaprodi->gambar) {
-                return asset($user->prodi->gambar);
+                return asset($user->kaprodi->gambar);
             } else {
                 return asset('assets/images/profile/user-1.jpg');
             }
@@ -66,7 +70,13 @@ class FiturHelper
                 return asset('assets/images/profile/user-1.jpg');
             }
         }
-
+        if (self::ShowAdmin()) {
+            if ($user->admin->gambar) {
+                return asset($user->admin->gambar);
+            } else {
+                return asset('assets/images/profile/user-1.jpg');
+            }
+        }
         // Default image for other roles or if user doesn't have specific profile images
         if ($user->gambar) {
             return asset($user->gambar);

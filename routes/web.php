@@ -37,11 +37,27 @@ Route::middleware(['auth'])->group(function () {
 
 // // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::put('/admin/profile/update', [AdminController::class, 'update'])->name('admin.profile.update');
-    Route::put('/admin/update/password', [AdminController::class, 'updatepassword'])->name('admin.update.password');
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        // admin
+        Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::put('/admin/profile/update', [AdminController::class, 'update'])->name('admin.profile.update');
+        Route::put('/admin/update/password', [AdminController::class, 'updatepassword'])->name('admin.update.password');
+        // pengguna
+        Route::get('/admin/users', [AdminController::class, 'pengguna'])->name('admin.users');
+        Route::get('/admin/users/{role}', [AdminController::class, 'filterByRole'])->name('admin.users.filter');
+        Route::put('/admin/users/{id}', [AdminController::class, 'update_user'])->name('admin.users.update');
+        Route::delete('admin/users/delete/{id}', [AdminController::class, 'destroy'])->name('admin.users.delete');
+        Route::post('/admin/users/tambah', [AdminController::class, 'tambah'])->name('admin.users.tambah');
+        //fakultas
+        Route::get('/admin/fakultas', [AdminController::class, 'index_fakultas'])->name('fakultas.index');
+        Route::post('/fakultas/store', [AdminController::class, 'store_fakultas'])->name('fakultas.store');
+        Route::get('/admin/fakultas', [AdminController::class, 'index_fakultas'])->name('fakultas.index');
+        Route::get('/admin/fakultas/{id}/edit', [AdminController::class, 'edit_fakultas'])->name('fakultas.edit');
+        Route::put('/fakultas/update/{id}', [AdminController::class, 'update_fakultas'])->name('fakultas.update');
+        Route::delete('/fakultas/delete/{id}', [AdminController::class, 'destroy_fakultas'])->name('fakultas.destroy');
+                        
 
-
+    });
 });
 
 // // Kaprodi routes

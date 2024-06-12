@@ -26,13 +26,9 @@ class DosenFactory extends Factory
         $user = User::factory()->create(['role' => 'dosen']);
         return [
             'user_id' => $user->id,
-            'nidn' => $this->faker->unique()->numerify('##########'),
             'nama' => $this->faker->name,
-            'department' => $this->faker->randomElement(['Teknik Informatika', 'Sistem Informasi', 'Teknik Elektro']),
-            'gambar' => $this->faker->imageUrl(200, 200, 'people'),
-            'deskripsi'=> $this->faker->paragraph,
-            'no_hp' => $this->faker->phoneNumber,
-            'alamat' => $this->faker->address,
+            'poto' => $this->faker->imageUrl(200, 200, 'people'),
+            'no_hp' => $this->faker->numerify('##########'),
             'created_at' => now(),
             'updated_at' => now(),
         ];

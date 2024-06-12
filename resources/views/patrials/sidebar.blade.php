@@ -84,7 +84,7 @@
                     <a class="sidebar-link {{ Request::is('dashboard') ? 'active' : '' }}"
                         href="{{ url('dashboard') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-tachometer-alt"></i>
                         </span>
                         <span class="hide-menu">Dashboard</span>
                     </a>
@@ -93,34 +93,34 @@
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-user"></i>
                         </span>
                         <span class="hide-menu">Profile</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
+                    <a class="sidebar-link"
+                        href="{{route('admin.users')}}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-users"></i>
                         </span>
                         <span class="hide-menu">Pengguna</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tugas-akhir') ? 'active' : '' }}"
-                        href="{{ url('tugas-akhir') }}" aria-expanded="false">
+                    <a class="sidebar-link"
+                        href="{{route('fakultas.index')}}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-building"></i>
                         </span>
-                        <span class="hide-menu">Kaprodi</span>
+                        <span class="hide-menu">Fakultas</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('konsultasi') ? 'active' : '' }}"
                         href="{{ url('konsultasi') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-chalkboard-teacher"></i>
                         </span>
                         <span class="hide-menu">Dosen</span>
                     </a>
@@ -129,14 +129,14 @@
                     <a class="sidebar-link {{ Request::is('tgl_penting') ? 'active' : '' }}"
                         href="{{ url('tgl_penting') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="fas fa-calendar-alt"></i>
                         </span>
                         <span class="hide-menu">Mahasiswa</span>
                     </a>
                 </li>
 
                 <hr>
-                <li class="sidebar-item  bg-danger rounded-1">
+                <li class="sidebar-item bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"
                         aria-expanded="false">
                         <span>Logout</span>
@@ -147,6 +147,7 @@
         <!-- End Sidebar navigation -->
     </div>
 @endif
+
 @if (FiturHelper::showMahasiswa())
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">

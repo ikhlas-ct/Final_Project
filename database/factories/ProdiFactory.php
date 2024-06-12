@@ -2,17 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Kaprodi;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Prodi;
 use App\Models\User;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Prodi>
- */
 class ProdiFactory extends Factory
 {
-    protected $model = Prodi::class;
+    protected $model = Kaprodi::class;
 
     public function definition()
     {

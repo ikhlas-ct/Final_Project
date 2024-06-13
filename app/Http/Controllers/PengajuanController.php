@@ -27,6 +27,52 @@ class PengajuanController extends Controller
         return view('pages.dosen.pengajuan.index', compact('mahasiswa'));
     }
 
+    public function getData()
+    {
+        $user = Auth::user();
+        $dosenId = $user->dosen->id;
+
+        $mahasiswa = Mahasiswa::whereHas('pengajuan.statusPengajuan', function ($query) use ($dosenId) {
+            $query->where('dosen_id', $dosenId)
+                ->where('status', 'diproses');
+        })->with(['pengajuan' => function ($query) {
+            $query->with(['statusPengajuan', 'Tema']);
+        }])->get();
+
+        echo '<table id="example" class="cell-border" style="width:100%">
+        <thead>
+            <tr>
+                <th style="width: 3%">No</th>
+                <th style="width: 17%">Tema</th>
+                <th style="width: 40%">Judul</th>
+                <th class="text-center" style="width: 20%">Proposal</th>
+                <th class="text-center" style="width: 20%">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>';
+
+        foreach ($mahasiswa as $key => $value) {
+            foreach ($value->pengajuan as $pengajuan) {
+                echo '<tr id="row-' . $pengajuan->id . '">
+                <td>' . ($key + 1) . '</td>
+                <td>' . $pengajuan->Tema->nama . '</td>
+                <td class="text-justify">' . $pengajuan->judul . '</td>
+                <td class="text-center">
+                    <a href="" class="btn btn-sm btn-info">Lihat</a>
+                </td>
+                <td class="text-center">
+                    <form class="terima-form" data-id="' . $pengajuan->id . '">
+                        <button type="submit" class="btn btn-success btn-sm">Terima</button>
+                    </form>
+                </td>
+            </tr>';
+            }
+        }
+
+        echo '</tbody>
+    </table>';
+    }
+
 
     public function updateStatus(Request $request, $id)
     {

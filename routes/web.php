@@ -60,6 +60,7 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
 // // Dosen routes
 Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
+    Route::get('pengajuan/getData', [PengajuanController::class, 'getData'])->name('get.dataPengajuan');
     Route::put('/pengajuan/update-status/{id}', [PengajuanController::class, 'updateStatus'])->name('pengajuan.update-status');
 
 

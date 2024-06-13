@@ -58,23 +58,24 @@ class PersetujuanController extends Controller
         $html = '<table id="example" class="cell-border" style="width:100%">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Judul</th>
-                        <th>Tema</th>
-                        <th>Aksi</th>
+                        <th style="width:5%;">No</th>
+                        <th style="width:20%;">Nama</th>
+                        <th style="width:15%;">Tema</th>
+                        <th style="width:30%;">Judul</th>
+                        <th class="text-center" style="width:20%;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>';
         foreach ($mahasiswa as $index => $mhs) {
             foreach ($mhs->pengajuan as $pengajuan) {
                 $html .= '<tr>
-                        <td>' . ($index + 1) . '</td>
-                        <td>' . $mhs->nama . '</td>
-                        <td>' . $pengajuan->judul . '</td>
-                        <td>' . $pengajuan->tema->nama . '</td>';
+                        <td class="text-start">' . ($index + 1) . '</td>
+                        <td class="text-start">' . $mhs->nama . '</td>
+                         <td class="text-start">' . $pengajuan->tema->nama . '</td>
+                        <td class="text-start">' . $pengajuan->judul . '</td>
+                       ';
                 $html .= '
-                      <td>
+                      <td class="text-center">
                           <button id="cari-pembimbing" class=" btn btn-primary btn-sm"
                               data-bs-toggle="modal" data-bs-target="#exampleModal"
                               value="' . $pengajuan->id . '">
@@ -85,7 +86,6 @@ class PersetujuanController extends Controller
                     </tr>';
             }
         }
-
         $html .= '</tbody>
             </table>';
 

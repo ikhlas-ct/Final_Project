@@ -63,8 +63,8 @@ class TugasAkhirController extends Controller
             'proposal' => $proposalName,
 
         ]);
-
-        return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');
+        AlertHelper::alertSuccess('Anda telah berhasil mengajukan tugas akhir', 'Selamat!', 2000);
+        return redirect()->route('tugasAkhir');
     }
 
     /**
@@ -237,7 +237,8 @@ class TugasAkhirController extends Controller
                 'keterangan' => null,
             ]);
         }
-        return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');
+        AlertHelper::alertSuccess('Anda teah berhasil memilih dosen pembimbing', 'Selamat!', 2000);
+        return redirect()->route('tugasAkhir');
         // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
         // return redirect()->route('nama.rute.yang.akan.dituju')->with('success', 'Data pembimbing berhasil disimpan.');
     }

@@ -44,7 +44,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-
+            // toastr.success("Pesan sukses Anda di sini!", "Judul Sukses");
             // 
             $('.js-example-basic-multiple').select2({
                 width: '100%',
@@ -91,10 +91,11 @@
                         Swal.fire({
                             icon: "success",
                             title: "Selamat!",
-                            message: 'Anda telah berhasil memilih pembimbing',
+                            text: 'Anda telah berhasil memilihkan pembimbing.',
                             showConfirmButton: false,
                             timer: 1500
                         });
+
                         $('#hide-modal').trigger('click');
                         loadData();
                     },

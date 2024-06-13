@@ -54,6 +54,11 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
                     },
                     success: function(response) {
+                        Swal.fire({
+                            title: "Selamat!",
+                            text: "Anda telah berhasil memilih pembimbing utama, selanjutnya silahkan pilih pembimbing kedua.",
+                            icon: "info"
+                        });
                         loadData();
                     },
                     error: function(xhr, status, error) {

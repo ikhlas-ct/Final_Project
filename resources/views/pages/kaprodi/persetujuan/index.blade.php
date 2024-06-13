@@ -66,7 +66,8 @@
                     success: function(response) {
                         $('#table-container').html(response);
                         new DataTable('#example');
-                        $('#pengajuan_id_modal').val($('#pengajuan_id').val());
+
+                        $('#pengajuan_id_modal').val($('#cari-pembimbing').val());
                     },
                     error: function(xhr, status, error) {
                         console.error("Error: " + error);

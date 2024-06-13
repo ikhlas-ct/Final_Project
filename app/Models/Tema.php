@@ -16,7 +16,7 @@ class Tema extends Model
     ];
 
 
-    public function judul()
+    public function pengajuan()
     {
         return $this->hashMany(Judul::class);
     }

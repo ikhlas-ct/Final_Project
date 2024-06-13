@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('tb_pengajuan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('mahasiswa_id');
+            $table->unsignedBigInteger('tema_id');
+            $table->string('judul');
+            $table->string('proposal');
+            $table->foreign('tema_id')->references('id')->on('tb_tema')->onDelete('cascade');
             $table->foreign('mahasiswa_id')->references('id')->on('tb_mahasiswa')->onDelete('cascade');
             $table->timestamps();
         });

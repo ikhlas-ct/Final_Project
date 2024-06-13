@@ -14,6 +14,11 @@ class PersetujuanController extends Controller
     //
     public function index()
     {
+        $mahasiswa = Mahasiswa::whereHas('pengajuan', function ($query) {
+            $query->whereDoesntHave('listPembimbing');
+        })->with(['pengajuan'])->get();
+
+
         $user = Auth::user();
 
         $userFakultasId = $user->kaprodi->fakultas_id;
@@ -40,54 +45,49 @@ class PersetujuanController extends Controller
         }
     }
 
+
     public function getData()
     {
-
         $mahasiswa = Mahasiswa::whereHas('pengajuan', function ($query) {
             $query->whereDoesntHave('listPembimbing');
-        })->with(['pengajuan.judul'])->get();
-
+        })->with(['pengajuan' => function ($query) {
+            $query->whereDoesntHave('listPembimbing')->with('tema');
+        }])->get();
 
         // Bangun HTML table
         $html = '<table id="example" class="cell-border" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Judul</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Judul</th>
+                        <th>Tema</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>';
         foreach ($mahasiswa as $index => $mhs) {
-            $html .= '<tr>
-                        <td>' . ($index + 1) . '
-                            <input id="pengajuan_id" type="hidden" value="' . $mhs->pengajuan->id . '">
-                        </td>
+            foreach ($mhs->pengajuan as $pengajuan) {
+                $html .= '<tr>
+                        <td>' . ($index + 1) . '</td>
                         <td>' . $mhs->nama . '</td>
-                        <td>';
-
-            if ($mhs->pengajuan && $mhs->pengajuan->judul) {
-                foreach ($mhs->pengajuan->judul as $judul) {
-                    $html .= $judul->judul . '<br>';
-                }
-            } else {
-                $html .= 'Tidak ada judul';
-            }
-
-            $html .= '</td>
+                        <td>' . $pengajuan->judul . '</td>
+                        <td>' . $pengajuan->tema->nama . '</td>';
+                $html .= '
                       <td>
-                          <button id="cari-pembimbing" type="button" class="btn btn-primary btn-sm"
-                              data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          <button id="cari-pembimbing" class=" btn btn-primary btn-sm"
+                              data-bs-toggle="modal" data-bs-target="#exampleModal"
+                              value="' . $pengajuan->id . '">
                               <span><i class="fa-solid fa-magnifying-glass me-1"></i></span>
                               <span>Pembimbing</span>
                           </button>
                       </td>
                     </tr>';
+            }
         }
 
         $html .= '</tbody>
-                </table>';
+            </table>';
 
         echo $html;
     }

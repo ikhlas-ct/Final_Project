@@ -29,4 +29,9 @@ class Dosen extends Model
     {
         return $this->belongsTo(Fakultas::class, 'fakultas_id');
     }
+
+    public function statusPengajuan()
+    {
+        return $this->hasMany(StatusPengajuan::class);
+    }
 }

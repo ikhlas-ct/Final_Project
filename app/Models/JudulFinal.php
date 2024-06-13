@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Judul extends Model
+class JudulFinal extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_judul';
+    protected $table = 'tb_judul_final';
     protected $fillable = [
         'pengajuan_id',
-        'tema_id',
-        'judul',
-        'file',
-        'status'
     ];
 
     public function Pengajuan()
@@ -23,8 +19,13 @@ class Judul extends Model
         return $this->belongsTo(Pengajuan::class);
     }
 
-    public function Tema()
+    public function pembimbing1()
     {
-        return $this->belongsTo(Tema::class);
+        return $this->hasOne(Pembimbing1::class);
+    }
+
+    public function pembimbing2()
+    {
+        return $this->hasOne(Pembimbing2::class);
     }
 }

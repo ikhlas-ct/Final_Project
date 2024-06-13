@@ -31,6 +31,6 @@ class Mahasiswa extends Model
 
     public function pengajuan()
     {
-        return $this->hasOne(Pengajuan::class);
+        return $this->hasMany(Pengajuan::class, 'mahasiswa_id');
     }
 }

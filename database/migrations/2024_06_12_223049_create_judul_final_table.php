@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_judul', function (Blueprint $table) {
+        Schema::create('tb_judul_final', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pengajuan_id');
-            $table->unsignedBigInteger('tema_id');
-            $table->string('judul');
-            $table->string('file');
-            $table->enum('status', ['diterima', 'ditolak', 'diproses'])->default('diproses');
-            $table->timestamps();
-            $table->foreign('tema_id')->references('id')->on('tb_tema')->onDelete('cascade');
             $table->foreign('pengajuan_id')->references('id')->on('tb_pengajuan')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_judul');
+        Schema::dropIfExists('tb_judul_final');
     }
 };

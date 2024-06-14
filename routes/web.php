@@ -68,6 +68,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
     Route::put('/dosen/profile/update', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
+    Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
 });

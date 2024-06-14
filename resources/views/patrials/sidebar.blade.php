@@ -243,12 +243,30 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+<<<<<<< HEAD
                     <a class="sidebar-link {{ Request::is('tgl_penting') ? 'active' : '' }}"
                         href="{{ url('pengajuan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Pengajuan</span>
+=======
+                    <a class="sidebar-link {{ Request::is('mhs-bimbingan') ? 'active' : '' }}"
+                        href="{{ url('mhs-bimbingan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Mhs Bimbingan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('tugas-akhir') ? 'active' : '' }}"
+                        href="{{ url('tugas-akhir') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Tugas Akhir</span>
+>>>>>>> pilih-dosen
                     </a>
                 </li>
                 <li class="sidebar-item">

@@ -176,21 +176,21 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-                        <span class="hide-menu">Pembimbing</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('tugas-akhir') || Request::is('create-tugas-akhir') || Request::is('pilih-pembimbing-tugas-akhir/*') ? 'active' : '' }}"
                         href="{{ url('tugas-akhir') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Tugas Akhir</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
+                        href="{{ url('bimbingan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Bimbingan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

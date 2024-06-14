@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_pembimbing2', function (Blueprint $table) {
+        Schema::create('tb_bimbingan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('judul_final_id');
             $table->unsignedBigInteger('dosen_id');
-            $table->foreign('judul_final_id')->references('id')->on('tb_judul_final')->onDelete('cascade');
+            $table->date('tanggal');
+            $table->enum('status', ['diterima', 'diproses'])->default('diproses');
             $table->foreign('dosen_id')->references('id')->on('tb_dosen')->onDelete('cascade');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_pembimbing2');
+        Schema::dropIfExists('bimbingan');
     }
 };

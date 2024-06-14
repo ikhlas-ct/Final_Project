@@ -14,6 +14,12 @@ class Pembimbing2 extends Model
         'dosen_id',
     ];
 
+
+    public function bimbinganp2()
+    {
+        return $this->hasMany(bimbinganP2::class);
+    }
+
     public function judulFInal()
     {
         return $this->belongsTo(JudulFinal::class);

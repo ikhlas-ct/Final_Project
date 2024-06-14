@@ -10,7 +10,7 @@ use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TugasAkhirController;
 use App\Http\Controllers\PengajuanController;
-
+use App\Http\Controllers\BimbinganController;
 
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
@@ -81,7 +81,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/pilih-pembimbing-tugas-akhir/{id}', [TugasAkhirController::class, 'pilihPembimbing'])->name('pilih.pembimbingTugasAkhir');
     Route::post('/store-pilih-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storePilihPembimbing'])->name('store.pilihPembimbingTugasAkhir');
     Route::post('/store-ambil-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storeAmbilPembimbing'])->name('store.ambilPembimbingTugasAkhir');
-
+    Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
+    Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
     // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
     // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
     // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');

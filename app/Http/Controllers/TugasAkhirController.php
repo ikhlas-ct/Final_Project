@@ -10,6 +10,7 @@ use App\Models\ListPembimbing;
 use App\Models\StatusPengajuan;
 use App\Models\JudulFinal;
 use App\Models\Pembimbing2;
+use App\Helpers\AlertHelper;
 
 use function Laravel\Prompts\alert;
 
@@ -104,7 +105,7 @@ class TugasAkhirController extends Controller
 
         $pengajuan = Pengajuan::with(['tema', 'listPembimbing', 'statusPengajuan.dosen', 'judulFinal', 'judulFinal.pembimbing1.dosen', 'judulFinal.pembimbing2.dosen'])->get();
 
-        echo '<table id="example" class="cell-border" style="width:100%">
+        echo '<table id="example" class="table" style="width:100%">
     <thead>
         <tr>
             <th class="text-center" style="width: 3%">No</th>
@@ -115,11 +116,25 @@ class TugasAkhirController extends Controller
     </thead>
     <tbody>';
         foreach ($pengajuan as $key => $value) {
-            echo '<tr>
-        <td>' . ($key + 1) . '</td>
-        <td>' . $value->tema->nama . '</td>
-        <td class="text-justify">' . $value->judul . '</td>
-        <td style="text-align: justify" class="text-justify">';
+            $backgroundStyle = (
+                !empty($value->listPembimbing) &&
+                !empty($value->statusPengajuan) &&
+                !empty($value->judulFinal) &&
+                !empty($value->judulFinal->pembimbing1->dosen) &&
+                !empty($value->judulFinal->pembimbing2->dosen)
+            ) ? 'background-color: #13deb9;' : '';
+            $collorStyle = (
+                !empty($value->listPembimbing) &&
+                !empty($value->statusPengajuan) &&
+                !empty($value->judulFinal) &&
+                !empty($value->judulFinal->pembimbing1->dosen) &&
+                !empty($value->judulFinal->pembimbing2->dosen)
+            ) ? 'color: white;' : '';
+            echo '<tr style="' .   $backgroundStyle . '">
+        <td style="' .   $collorStyle . 'vertical-align: middle;">' . ($key + 1) . '</td>
+        <td style="' .   $collorStyle . 'vertical-align: middle;">' . $value->tema->nama . '</td>
+        <td  style="' .   $collorStyle . 'vertical-align: middle;" class="text-justify">' . $value->judul . '</td>
+        <td style="text-align: justify; ' .   $collorStyle . '" class="text-justify">';
             if ($value->listPembimbing->isEmpty()) {
                 echo '<div class="d-flex justify-content-center">
             <div class="spinner-border text-primary" role="status">
@@ -175,13 +190,11 @@ class TugasAkhirController extends Controller
                 !empty($value->judulFinal->pembimbing1->dosen) &&
                 empty($value->judulFinal->pembimbing2->dosen)
             ) {
-                foreach ($value->statusPengajuan as $status) {
-                    if ($status->status == 'diterima') {
-                        echo '<div class="my-2">
+                echo '<div class="my-2">
                     Anda telah memilih <b>' . $value->judulFinal->pembimbing1->dosen->nama . '</b> sebagai pembimbing utama
                     selanjutnya silahkan pilih dosen yang ingin Anda jadikan sebagai pembimbing kedua:
                 </div>';
-                    }
+                foreach ($value->statusPengajuan as $status) {
                     if ($status->status == 'diproses') {
                         echo '<form class="ambil-pembimbing-form">
                     <input type="hidden" name="type" value="2">
@@ -247,17 +260,21 @@ class TugasAkhirController extends Controller
     {
 
         if ($request->type == 1) {
-            $judulFinal =  JudulFinal::create([
+            $judulFinal = JudulFinal::firstOrCreate([
                 'pengajuan_id' => $request->pengajuan_id,
             ]);
-            $judulFinal->Pembimbing1()->create([
-                'dosen_id' => $request->dosen_id,
-            ]);
+            if (!$judulFinal->pembimbing1()->where('dosen_id', $request->dosen_id)->exists()) {
+                $judulFinal->pembimbing1()->create([
+                    'dosen_id' => $request->dosen_id,
+                ]);
+            }
+            echo 'utama';
         } else {
-            Pembimbing2::create([
+            Pembimbing2::firstOrCreate([
                 'judul_final_id' => $request->judul_final_id,
                 'dosen_id' => $request->dosen_id
             ]);
+            echo 'kedua';
         }
         // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
         // return redirect()->route('nama.rute.yang.akan.dituju')->with('success', 'Data pembimbing berhasil disimpan.');

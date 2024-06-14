@@ -45,7 +45,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-2 d-flex justify-content-end gap-1">
+                    <div class="mt-3 d-flex justify-content-end gap-1">
                         <input type="hidden" name="pengajuan_id" value="{{ $pengajuanId }}">
                         <button class="btn btn-outline-primary" type="reset">Reset</button>
                         <button class="btn btn-primary" type="submit">Kirim</button>

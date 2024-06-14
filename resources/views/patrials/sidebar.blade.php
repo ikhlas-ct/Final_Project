@@ -47,6 +47,26 @@
                         <span class="hide-menu">Tugas Akhir</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('logbook-mhs') ? 'active' : '' }}"
+                        href="{{ url('logbook-mhs') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Logbook</span>
+                    </a>
+                </li>
+            @endif
+            @if (FiturHelper::showDosen())
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('mhs-bimbingan') ? 'active' : '' }}"
+                        href="{{ url('mhs-bimbingan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Mhs Bimbingan</span>
+                    </a>
+                </li>
             @endif
             @if (FiturHelper::showKaprodi())
                 <li class="sidebar-item">
@@ -426,12 +446,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
+                    <a class="sidebar-link {{ Request::is('mhs-bimbingan') ? 'active' : '' }}"
+                        href="{{ url('mhs-bimbingan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Pembimbing</span>
+                        <span class="hide-menu">Mhs Bimbingan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

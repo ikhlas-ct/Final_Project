@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tema;
 use App\Models\Judul;
+use App\Models\Logbook;
 use App\Models\Mahasiswa;
 use App\Models\Pengajuan;
-use App\Models\Tema;
 use App\Helpers\AlertHelper;
 use Illuminate\Http\Request;
+use App\Models\ListPembimbing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,9 +23,39 @@ class MahasiswaController extends Controller
     // 
     public function pilihPembimbing()
     {
-        return view('pages.Mahasiswa.Pembimbing.pilihPembimbing');
+        $user = Auth::user();
+        $mahasiswaId = $user->mahasiswa->id;
+
+        // Get the list of assigned pembimbing for the logged-in mahasiswa
+        $pembimbingList = ListPembimbing::whereHas('pengajuan', function ($query) use ($mahasiswaId) {
+            $query->where('mahasiswa_id', $mahasiswaId);
+        })->with('dosen')->get();
+
+        // Get the list of selected pembimbing by the mahasiswa
+        $selectedPembimbing = $user->mahasiswa->pembimbing()->pluck('dosen_id')->toArray();
+        
+        return view('pages.Mahasiswa.Pembimbing.pilihPembimbing', compact('pembimbingList', 'selectedPembimbing'));
     }
     // 
+
+    public function storePembimbing(Request $request)
+    {
+        $user = Auth::user();
+        $mahasiswaId = $user->mahasiswa->id;
+
+        $request->validate([
+            'selectedPembimbing' => 'required|array|max:2',
+            'selectedPembimbing.*' => 'exists:dosen,id'
+        ]);
+
+        $selectedPembimbing = $request->input('selectedPembimbing');
+
+        // Save the selected pembimbing
+        $user->mahasiswa->pembimbing()->sync($selectedPembimbing);
+
+        return redirect()->route('pilihPembimbing')->with('success', 'Pembimbing berhasil dipilih');
+    }
+
     public function tugasAkhir()
     {
         $tugasAkhir = Judul::with('tema')->get();
@@ -78,6 +110,81 @@ class MahasiswaController extends Controller
         return redirect()->route('tugasAkhir')->with('success', 'Tugas Akhir berhasil didaftarkan.');
     }
     // 
+
+    public function logbook()
+    {
+        $mahasiswa = Mahasiswa::where('user_id', auth()->user()->id)->firstOrFail();
+        $logbooks = $mahasiswa->logbooks;
+
+        return view('pages.Mahasiswa.Logbook.logbook', compact('logbooks'));
+    }
+
+    public function addLogbook()
+    {
+        return view('pages.Mahasiswa.Logbook.addLogbook');
+    }
+
+    public function storeLogbook(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'tanggal' => 'required|date',
+            'kegiatan' => 'required|string|max:255',
+            'detail' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('tambahLogbook')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $mahasiswaId = auth()->user()->mahasiswa->id;
+
+        // Buat logbook baru
+        Logbook::create([
+            'mahasiswa_id' => $mahasiswaId,
+            'tanggal' => $request->tanggal,
+            'kegiatan' => $request->kegiatan,
+            'detail' => $request->detail,
+            'keterangan' => 'DIPROSES',
+        ]);
+
+        return redirect()->route('halamanLogbook')->with('success', 'Logbook berhasil disimpan.');
+    }
+
+    public function editLogbook($id)
+    {
+        $logbook = Logbook::findOrFail($id);
+
+        return view('pages.Mahasiswa.Logbook.editLogbook', compact('logbook'));
+    }
+
+    public function updateLogbook(Request $request, $id)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'tanggal' => 'required|date',
+            'kegiatan' => 'required|string|max:255',
+            'detail' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('halamanEdit', $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $logbook = Logbook::findOrFail($id);
+        $logbook->update([
+            'tanggal' => $request->tanggal,
+            'kegiatan' => $request->kegiatan,
+            'detail' => $request->detail,
+        ]);
+
+        return redirect()->route('halamanLogbook')->with('success', 'Logbook berhasil diperbarui.');
+    }
+
     public function konsul()
     {
         return view('pages.Mahasiswa.Konsultasi.konsultasi');

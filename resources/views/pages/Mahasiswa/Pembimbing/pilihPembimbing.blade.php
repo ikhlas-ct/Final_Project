@@ -1,31 +1,42 @@
 @extends('layout.master')
 @section('title', 'Pilih Pembimbing')
 @section('content')
-<div class="container mt-5">
-    <h3>Pilih Pembimbing</h3>
-    <div class="row">
-        {{-- @foreach ($dosens as $dosen) --}}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="{{ asset('assets/images/profile/user-1.jpg')}}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Yoga Adi Pratama</h5>
-                        <p class="card-text">
-                            <strong>Bidang Minat:</strong>
-                            <ul>
-                                {{-- @foreach (explode(',', $dosen->bidang_minat) as $minat) --}}
-                                    {{-- <li>{{ $minat }}</li> --}}
-                                    <li>Teknik Informatika</li>
-                                {{-- @endforeach --}}
-                            </ul>
-                        </p>
-                        <div class="d-flex justify-content-center">
-                            <button class="btn btn-success">Pilih Menjadi Pembimbing Satu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {{-- @endforeach --}}
+
+<div class="container mt-3">
+    <h4>Pilih Pembimbing</h4>
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
+    @endif
+
+    <form method="POST" action="{{ route('storePembimbing') }}">
+        @csrf
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pembimbing</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pembimbingList as $index => $pembimbing)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $pembimbing->dosen->nama }}</td>
+                    <td>
+                        <input type="checkbox" name="selectedPembimbing[]" value="{{ $pembimbing->dosen->id }}"
+                            {{ in_array($pembimbing->dosen->id, $selectedPembimbing) ? 'checked' : '' }}
+                            {{ count($selectedPembimbing) >= 2 && !in_array($pembimbing->dosen->id, $selectedPembimbing) ? 'disabled' : '' }}>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Simpan Pembimbing</button>
+    </form>
 </div>
+
 @endsection

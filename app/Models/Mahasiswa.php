@@ -33,4 +33,14 @@ class Mahasiswa extends Model
     {
         return $this->hasOne(Pengajuan::class);
     }
+
+    public function pembimbing()
+    {
+        return $this->belongsToMany(Dosen::class, 'mahasiswa_bimbingan', 'mahasiswa_id', 'dosen_id');
+    }
+
+    public function logbooks()
+    {
+        return $this->hasMany(Logbook::class);
+    }
 }

@@ -84,6 +84,13 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::post('/store-ambil-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storeAmbilPembimbing'])->name('store.ambilPembimbingTugasAkhir');
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
     Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
+    Route::get('/logbook-mhs', [MahasiswaController::class, 'logbook'])->name('halamanLogbook');
+    Route::get('/add-logbook', [MahasiswaController::class, 'addLogbook'])->name('tambahLogbook');
+    Route::post('/add-logbook', [MahasiswaController::class, 'storeLogbook'])->name('storeLogbook');
+    Route::get('/edit-logbook/{id}', [MahasiswaController::class, 'editLogbook'])->name('halamanEdit');
+    Route::put('/update-logbook/{id}', [MahasiswaController::class, 'updateLogbook'])->name('updateLogbook');
+
+
     // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
     // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
     // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');

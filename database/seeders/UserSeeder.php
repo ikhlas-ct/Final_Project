@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ],
             [
-                'username' => 'mahasiswa',
+                'username' => 'mahasiswa1',
                 'password' => Hash::make('password'),
                 'role' => 'mahasiswa',
                 'remember_token' => Str::random(10),
@@ -62,6 +62,12 @@ class UserSeeder extends Seeder
                 'username' => 'dosen5',
                 'password' => Hash::make('password'),
                 'role' => 'dosen',
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'username' => 'mahasiswa2',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
                 'remember_token' => Str::random(10),
             ]
         ]);

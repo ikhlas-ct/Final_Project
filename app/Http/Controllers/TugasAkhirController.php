@@ -102,8 +102,16 @@ class TugasAkhirController extends Controller
 
     public function getData()
     {
-
-        $pengajuan = Pengajuan::with(['tema', 'listPembimbing', 'statusPengajuan.dosen', 'judulFinal', 'judulFinal.pembimbing1.dosen', 'judulFinal.pembimbing2.dosen'])->get();
+        $user = Auth::user();
+        $mahasiswaId = $user->mahasiswa->id;
+        $pengajuan = Pengajuan::with([
+            'tema',
+            'listPembimbing',
+            'statusPengajuan.dosen',
+            'judulFinal',
+            'judulFinal.pembimbing1.dosen',
+            'judulFinal.pembimbing2.dosen'
+        ])->where('mahasiswa_id', $mahasiswaId)->get();
 
         echo '<table id="example" class="table" style="width:100%">
     <thead>

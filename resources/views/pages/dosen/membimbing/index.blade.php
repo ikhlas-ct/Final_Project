@@ -29,77 +29,102 @@
                                 <td style="vertical-align: middle;">{{ $item->mahasiswa->nama }}</td>
                                 <td style="vertical-align: middle;">{{ $item->judul }}</td>
                                 <td style="align-items: center;vertical-align: middle;">
+                                    <br>
+                                    @if (!$item->judulFinal->pembimbing1->dosen->bimbingan->isEmpty())
+                                        @foreach ($item->judulFinal->pembimbing1->dosen->bimbingan as $bimbingan)
+                                            @if ($bimbingan->status == 'diproses')
+                                                <div style="text-align: justify" class="d-inline"> {!! 'Mengajukan Bimbingan pada tanggal <b>' . $bimbingan->tanggal . '</b>' !!}
+                                                    <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
+                                                        data-pengajuan-id="{{ $bimbingan->id }}" data-action="updateStatus"
+                                                        data-status="Diterima">{{ $bimbingan->status }}</button>
+                                                </div>
+                                            @endif
+                                            {{-- @if ($bimbingan->status == 'diterima' && empty($bimbingan->tanggal_reschedule))
+                                                <div style="text-align: justify" class="d-inline"> {!! 'Bimbingan yang akan datang pada tanggal <b>' . $bimbingan->tanggal . '</b>' !!}
+                                                    <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
+                                                        data-pengajuan-id="{{ $bimbingan->id }}" data-action="reschedule"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Reschedule</button>
+                                                </div>
+                                            @endif --}}
+                                        @endforeach
+                                    @else
+                                        {{ 'jadi P2' }}
+                                    @endif
                                     @php
-                                        $bimbinganId = null;
-                                        $tanggalBimbingan = null;
-                                        $tanggalReschedule = null;
-                                        $status = '';
-                                        if ($item->judulFinal->pembimbing1 && $item->judulFinal->pembimbing1->dosen) {
-                                            $bimbinganPembimbing1 = $item->judulFinal->pembimbing1->dosen
-                                                ->bimbingan()
-                                                ->where('status', 'diproses')
-                                                ->orderBy('tanggal', 'desc')
-                                                ->first();
-                                            if ($bimbinganPembimbing1) {
-                                                $bimbinganId = $bimbinganPembimbing1->id;
-                                                $tanggalBimbingan = $bimbinganPembimbing1->tanggal;
-                                                $status = 'diproses';
-                                            }
-                                        }
-                                        if ($item->judulFinal->pembimbing1 && $item->judulFinal->pembimbing1->dosen) {
-                                            $bimbinganPembimbing1 = $item->judulFinal->pembimbing1->dosen
-                                                ->bimbingan()
-                                                ->where('status', 'diterima')
-                                                ->orderBy('tanggal', 'desc')
-                                                ->first();
-                                            if ($bimbinganPembimbing1) {
-                                                $bimbinganId = $bimbinganPembimbing1->id;
-                                                $tanggalBimbingan = $bimbinganPembimbing1->tanggal;
-                                                $status = 'diterima';
-                                            }
-                                        }
-                                        if ($item->judulFinal->pembimbing1 && $item->judulFinal->pembimbing1->dosen) {
-                                            $bimbinganPembimbing1 = $item->judulFinal->pembimbing1->dosen
-                                                ->bimbingan()
-                                                ->where('status', 'diterima')
-                                                ->with('reschedule')
-                                                ->orderBy('tanggal', 'desc') // Urutkan berdasarkan tanggal terbaru
-                                                ->first();
-                                            if (!empty($bimbinganPembimbing1->reschedule)) {
-                                                $bimbinganId = $bimbinganPembimbing1->id;
-                                                $tanggalReschedule = $bimbinganPembimbing1->reschedule->tanggal;
-                                                $status = 'diterima';
-                                            }
-                                        }
+                                        // $bimbinganId = null;
+                                        // $tanggalBimbingan = null;
+                                        // $tanggalReschedule = null;
+                                        // $status = null;
+                                        // if ($item->judulFinal->pembimbing1 && $item->judulFinal->pembimbing1->dosen) {
+                                        //     $diProses = $item->judulFinal->pembimbing1->dosen
+                                        //         ->bimbingan()
+                                        //         ->where('status', 'diproses')
+                                        //         ->orderBy('tanggal', 'desc')
+                                        //         ->first();
+
+                                        //     $diTerima = $item->judulFinal->pembimbing1->dosen
+                                        //         ->bimbingan()
+                                        //         ->where('status', 'diterima')
+                                        //         ->orderBy('tanggal', 'desc')
+                                        //         ->first();
+                                        //     if ($diProses) {
+                                        //         $bimbinganId = $diProses->id;
+                                        //         $tanggalBimbingan = $diProses->tanggal;
+                                        //         $status = 'diproses';
+                                        //     } else {
+                                        //         $bimbinganId = $diTerima->id;
+                                        //         $tanggalBimbingan = $diTerima->tanggal;
+                                        //         $status = 'diterima';
+                                        //     }
+                                        // }
+                                        // if ($item->judulFinal->pembimbing1 && $item->judulFinal->pembimbing1->dosen) {
+                                        //     $bimbinganPembimbing1 = $item->judulFinal->pembimbing1->dosen
+                                        //         ->bimbingan()
+                                        //         ->where('status', 'diterima')
+                                        //         ->orderBy('tanggal', 'desc')
+                                        //         ->first();
+                                        //     if ($bimbinganPembimbing1) {
+                                        //         $bimbinganId = $bimbinganPembimbing1->id;
+                                        //         $tanggalBimbingan = $bimbinganPembimbing1->tanggal;
+                                        //         $tanggalReschedule = $bimbinganPembimbing1->tanggal_reschedule;
+                                        //         $status = 'diterima';
+                                        //         $diterima = 1;
+                                        //     } else {
+                                        //         $diterima = null;
+                                        //     }
+                                        // }
+
                                         // ---------------------------------------------------------------------------
-                                        if (
-                                            !$tanggalBimbingan &&
-                                            $item->judulFinal->pembimbing2 &&
-                                            $item->judulFinal->pembimbing2->dosen
-                                        ) {
-                                            $bimbinganPembimbing2 = $item->judulFinal->pembimbing2->dosen->bimbingan
-                                                ->where('status', 'diproses')
-                                                ->first();
-                                            if ($bimbinganPembimbing2) {
-                                                $tanggalBimbingan = $bimbinganPembimbing2->tanggal;
-                                                $status = 'diproses';
-                                            }
-                                        }
-                                        if (
-                                            !$tanggalBimbingan &&
-                                            $item->judulFinal->pembimbing2 &&
-                                            $item->judulFinal->pembimbing2->dosen
-                                        ) {
-                                            $bimbinganPembimbing2 = $item->judulFinal->pembimbing2->dosen->bimbingan
-                                                ->where('status', 'diterima')
-                                                ->first();
-                                            if ($bimbinganPembimbing2) {
-                                                $tanggalBimbingan = $bimbinganPembimbing2->tanggal;
-                                                $status = 'diterima';
-                                            }
-                                        }
+                                        // if (
+                                        //     !$tanggalBimbingan &&
+                                        //     $item->judulFinal->pembimbing2 &&
+                                        //     $item->judulFinal->pembimbing2->dosen
+                                        // ) {
+                                        //     $bimbinganPembimbing2 = $item->judulFinal->pembimbing2->dosen->bimbingan
+                                        //         ->where('status', 'diproses')
+                                        //         ->first();
+                                        //     if ($bimbinganPembimbing2) {
+                                        //         $tanggalBimbingan = $bimbinganPembimbing2->tanggal;
+                                        //         $status = 'diproses';
+                                        //     }
+                                        // }
+                                        // if (
+                                        //     !$tanggalBimbingan &&
+                                        //     $item->judulFinal->pembimbing2 &&
+                                        //     $item->judulFinal->pembimbing2->dosen
+                                        // ) {
+                                        //     $bimbinganPembimbing2 = $item->judulFinal->pembimbing2->dosen->bimbingan
+                                        //         ->where('status', 'diterima')
+                                        //         ->first();
+                                        //     if ($bimbinganPembimbing2) {
+                                        //         $tanggalBimbingan = $bimbinganPembimbing2->tanggal;
+                                        //         $status = 'diterima';
+                                        //     }
+                                        // }
                                     @endphp
-                                    @if ($tanggalBimbingan)
+                                    {{-- @if ($tanggalBimbingan)
+                                        {{ $status }}
                                         @if ($status == 'diproses')
                                             <div style="text-align: justify" class="d-inline"> {!! 'Mengajukan Bimbingan pada tanggal <b>' . $tanggalBimbingan . '</b>' !!}
                                                 <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
@@ -112,7 +137,7 @@
                                                 <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
                                                     data-pengajuan-id="{{ $bimbinganId }}" data-action="reschedule"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Reschedule</button>
+                                                    data-bs-target="#exampleModal">{{ $status }}</button>
                                             </div>
                                         @endif
                                         @if ($status == 'diterima' && !empty($tanggalReschedule))
@@ -122,15 +147,10 @@
                                                     '</b>' .
                                                     ' Anda <b>reschedule</b> menjadi tanggal <b>' .
                                                     $tanggalReschedule !!}</p>
-                                                {{-- <button type="button"
-                                                    class="btn btn-link m-0 p-0 btn-ajax"
-                                                    data-pengajuan-id="{{ $item->id }}" data-action="reschedule"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Reschedule</button></div> --}}
                                         @endif
                                     @else
                                         <!-- Tampilkan keterangan atau pesan alternatif jika tidak ada bimbingan yang diproses -->
-                                    @endif
+                                    @endif --}}
                                 </td>
                                 <td style="vertical-align: middle;" class="text-center">
                                     <button class="btn btn-sm btn-info mb-0">Lihat</button>
@@ -197,15 +217,16 @@
             });
 
             function handleAjax(pengajuanId, action, data) {
-                var url;
-                var method;
-                if (action === 'updateStatus') {
-                    url = '/bimbingan/update/' + pengajuanId;
-                    method = 'PUT';
-                } else if (action === 'reschedule') {
-                    url = '/bimbingan/reschedule/' + pengajuanId;
-                    method = 'POST';
-                }
+
+                let url = '/bimbingan/update/' + pengajuanId;
+                let method = 'PUT';
+                // if (action === 'updateStatus') {
+                //     url = '/bimbingan/update/' + pengajuanId;
+                //     method = 'PUT';
+                // } else if (action === 'reschedule') {
+                //     url = '/bimbingan/reschedule/' + pengajuanId;
+                //     method = 'POST';
+                // // }
                 // alert(url);
                 data._token = '{{ csrf_token() }}';
                 $.ajax({
@@ -215,7 +236,6 @@
                     success: function(response) {
                         // alert(response);
                         if (action === 'reschedule') {
-                            $('#exampleModal').modal('hide');
                             $('#hide-modal').trigger('click');
                         }
 

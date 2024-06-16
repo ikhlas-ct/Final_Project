@@ -10,19 +10,21 @@ class Bimbingan extends Model
     use HasFactory;
 
     protected $table = 'tb_bimbingan';
+
     protected $fillable = [
         'dosen_id',
+        'mahasiswa_id',
         'tanggal',
+        'tanggal_reschedule',
         'status',
     ];
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_id');
+        return $this->belongsTo(Dosen::class);
     }
-
-    public function reschedule()
+    public function mahasiswa()
     {
-        return $this->hasOne(Reschedule::class);
+        return $this->belongsTo(Mahasiswa::class);
     }
 }

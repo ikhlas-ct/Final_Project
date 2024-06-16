@@ -18,21 +18,25 @@ class BimbinganController extends Controller
     {
         $user = Auth::user();
         $mahasiswaId = $user->mahasiswa->id;
+
         $pengajuan = Pengajuan::with([
-            'judulFinal.pembimbing1.dosen.bimbingan' => function ($query) {
-                $query
+            'judulFinal.pembimbing1.dosen.bimbingan' => function ($query) use ($mahasiswaId) {
+                $query->where('mahasiswa_id', $mahasiswaId)
                     ->orderBy('tanggal', 'desc')
                     ->first(); // Ambil hanya satu data terakhir
             },
-            'judulFinal.pembimbing2.dosen.bimbingan' => function ($query) {
-                $query
+            'judulFinal.pembimbing2.dosen.bimbingan' => function ($query) use ($mahasiswaId) {
+                $query->where('mahasiswa_id', $mahasiswaId)
                     ->orderBy('tanggal', 'desc')
                     ->first(); // Ambil hanya satu data terakhir
             }
         ])
             ->where('mahasiswa_id', $mahasiswaId)
             ->get();
-
+        // echo '<pre>';
+        // print_r($pengajuan);
+        // echo '</pre>';
+        // die;
         return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
     }
 
@@ -50,11 +54,13 @@ class BimbinganController extends Controller
     public function store(Request $request)
     {
         Bimbingan::create([
-            'dosen_id' => $request->id,
+            'dosen_id' => $request->dosen,
+            'mahasiswa_id' => $request->mhs,
             'tanggal' => $request->tanggal,
+            'tanggal_reschedule' => NULL,
             'status' => 'diproses',
         ]);
-        echo 'berhasil';
+        // echo 'berhasil';
     }
 
     /**
@@ -77,10 +83,17 @@ class BimbinganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id = "")
     {
         $bimbingan = Bimbingan::findOrFail($id);
-        $bimbingan->status = $request->status;
+
+        if (isset($request->status)) {
+            $bimbingan->status = $request->status;
+        } elseif (isset($request->date)) {
+            $bimbingan->tanggal_reschedule = $request->date;
+        } else {
+        }
+
         $bimbingan->save();
     }
 

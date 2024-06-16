@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TugasAkhirController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\BimbinganController;
+use App\Http\Controllers\TemaController;
 
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,14 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan');
     Route::post('persetujuan/simpan', [PersetujuanController::class, 'store'])->name('simpan.persetujuan');
     Route::get('persetujuan/getData', [PersetujuanController::class, 'getData'])->name('get.dataPersetujuan');
+    Route::get('/tema-pengajuan', [TemaController::class, 'index'])->name('temaIndex');
+    Route::get('/addTema', [TemaController::class, 'addTema'])->name('halamanTambahTema');
+    Route::post('/addTema', [TemaController::class, 'storeTema'])->name('SimpanTema');
+    Route::get('/editTema/{id}', [TemaController::class, 'editTema'])->name('halamanEditTema');
+    Route::put('/updateTema/{id}', [TemaController::class, 'updateTema'])->name('updateTema');
+    Route::get('/detailTema/{id}', [TemaController::class, 'showTema'])->name('DetailTema');
+    Route::delete('/deleteTema/{id}', [TemaController::class, 'hapusTema'])->name('DeleteTema');
+
     Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
     // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');

@@ -2,63 +2,86 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tema;
+use App\Models\Fakultas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TemaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $temas = Tema::with('fakultas')->get();
+        return view('pages.kaprodi.tema.index', compact('temas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function addTema()
     {
-        //
+        $fakultas = Fakultas::all();
+        return view('pages.kaprodi.tema.add', compact('fakultas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function storeTema(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'fakultas_id' => 'required|exists:tb_fakultas,id',
+            'nama' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('halamanTambahTema')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        Tema::create([
+            'fakultas_id' => $request->fakultas_id,
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Ditambah');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function editTema($id)
     {
-        //
+        $tema = Tema::findOrFail($id);
+        $fakultas = Fakultas::all();
+        return view('pages.kaprodi.tema.edit', compact('tema', 'fakultas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function updateTema(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'fakultas_id' => 'required|exists:tb_fakultas,id',
+            'nama' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('halamanEditTema', $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $tema = Tema::findOrFail($id);
+        $tema->update([
+            'nama' => $request->nama,
+            'fakultas_id' => $request->fakultas_id,
+        ]);
+
+        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Diupdate');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function showTema($id)
     {
-        //
+        $tema = Tema::findOrFail($id);
+        return view('pages.kaprodi.tema.index', compact('tema'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function hapusTema($id)
     {
-        //
+        $tema = Tema::findOrFail($id);
+        $tema->delete();
+
+        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Dihapus');
     }
 }

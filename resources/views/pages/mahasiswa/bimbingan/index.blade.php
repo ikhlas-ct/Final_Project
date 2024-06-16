@@ -16,23 +16,98 @@
                                         alt="">
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    <div>
+                                    @if (empty($item->judulFinal->pembimbing1->dosen->bimbingan))
+                                        <div>
+                                            <div class="h5 fw-bolder">
+                                                {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                            </div>
+                                            <div class="h6 fw-bolder text-muted">Pembimbing Kedua</div>
+                                            <hr>
+                                            <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
+                                                    id="btn-bimbingan-1" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal" data-type="1"
+                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
+                                                    data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Ajukan</button>
+                                            </p>
+                                            <div
+                                                class="d-flex
+                                                    gap-1 mt-1">
+                                                <div class="fs-7 text-muted">Reschedule:</div>
+                                                <div>-</div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        @foreach ($item->judulFinal->pembimbing1->dosen->bimbingan as $bimbingan)
+                                            @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
+                                                <div>
+                                                    <div class="h5 fw-bolder">
+                                                        {{ $item->judulFinal->pembimbing1->dosen->nama }}
+                                                    </div>
+                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
+                                                    <hr>
+                                                    <p class="d-inline fs-7">Bimbingan yang akan datang <br>
+                                                        {!! '<b>' . $bimbingan->tanggal . '</b>' !!} <span
+                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
+                                                                class="text-capitalize">{{ $bimbingan->status }}</span></span>
+                                                    </p>
+                                                    <div
+                                                        class="d-flex
+                                                    gap-1 mt-1">
+                                                        <div class="fs-7 text-muted">Reschedule:
+                                                        </div>
+                                                        <div>
+                                                            @if (!empty($bimbingan->reschedule->tanggal))
+                                                                {!! '<b>' . $bimbingan->reschedule->tanggal . '</b>' !!}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div>
+                                                    <div class="h5 fw-bolder">
+                                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                                    </div>
+                                                    <div class="h6 fw-bolder text-muted">Pembimbing Kedua</div>
+                                                    <hr>
+                                                    <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan
+                                                        <button id="btn-bimbingan-1" class="btn btn-link m-0 p-0"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                            data-type="1"
+                                                            data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
+                                                            data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Ajukan</button>
+                                                    </p>
+                                                    <div
+                                                        class="d-flex
+                                                    gap-1 mt-1">
+                                                        <div class="fs-7 text-muted">Reschedule:</div>
+                                                        <div>-</div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+
+                                    {{-- <div>
                                         <div class="h5">
                                             {{ $item->judulFinal->pembimbing1->dosen->nama }}
                                         </div>
                                         <div class="h6">Pembimbing Utama</div>
                                         <hr>
-                                        <p>Bimbingan yang akan datang <br> 20 juni 2024(dalam proses)</p>
-                                    </div>
+                                        <p>Bimbingan yang akan datang <br> 20 juni 2024 <span
+                                                class="badge bg-warning text-dark">Diproses</span></p>
+                                        <p>Reschedule: -</p>
+                                    </div> --}}
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-outline-primary">Hubungi</button>
-                                <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
+                                <button class="btn btn-primary">Hubungi</button>
+                                {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" data-type="1"
                                     data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
-                                    data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Bimbingan</button>
+                                    data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Bimbingan</button> --}}
                             </div>
                         </div>
                     </div>
@@ -54,7 +129,7 @@
                                         </div>
                                         <div class="h6">Pembimbing Kedua</div>
                                         <hr>
-                                        <p>Bimbingan yang akan datang <br> silahkan ajukan</p>
+                                        <p>Bimbingan yang akan datang <br> silahkan </p>
                                     </div>
                                 </div>
                             </div>
@@ -120,8 +195,6 @@
                 let modal = $(this);
                 modal.find('.modal-body input#id').val(id);
                 modal.find('.modal-body input#type').val(type);
-                // 
-
                 modal.find('.modal-body input#nama-pembimbing').val(nama);
 
             });
@@ -137,8 +210,8 @@
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
-
                         $('#hide-modal').trigger('click');
+
                         Swal.fire({
                             title: "Selamat!",
                             text: `
@@ -146,7 +219,7 @@ Permintaan bimbingan Anda sudah kami teruskan ke dosen yang bersangkutan. Mohon 
 `,
                             icon: "info"
                         });
-                        $('#btn-bimbingan-1').remove();
+
 
                         // Swal.fire({
                         //     icon: "success",

@@ -20,4 +20,9 @@ class Bimbingan extends Model
     {
         return $this->belongsTo(Dosen::class, 'dosen_id');
     }
+
+    public function reschedule()
+    {
+        return $this->hasOne(Reschedule::class);
+    }
 }

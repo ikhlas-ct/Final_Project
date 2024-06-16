@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pengajuan;
 use App\Models\Bimbingan;
-use App\Models\Reschedule;
 
-class BimbinganController extends Controller
+class LogbookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,21 +19,13 @@ class BimbinganController extends Controller
         $user = Auth::user();
         $mahasiswaId = $user->mahasiswa->id;
         $pengajuan = Pengajuan::with([
-            'judulFinal.pembimbing1.dosen.bimbingan' => function ($query) {
-                $query
-                    ->orderBy('tanggal', 'desc')
-                    ->first(); // Ambil hanya satu data terakhir
-            },
-            'judulFinal.pembimbing2.dosen.bimbingan' => function ($query) {
-                $query
-                    ->orderBy('tanggal', 'desc')
-                    ->first(); // Ambil hanya satu data terakhir
-            }
+            'judulFinal.pembimbing1.dosen.bimbingan',
+            'judulFinal.pembimbing2.dosen.bimbingan'
         ])
             ->where('mahasiswa_id', $mahasiswaId)
             ->get();
 
-        return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
+        return view('pages.mahasiswa.logbook.index', compact('pengajuan'));
     }
 
     /**
@@ -49,12 +41,7 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-        Bimbingan::create([
-            'dosen_id' => $request->id,
-            'tanggal' => $request->tanggal,
-            'status' => 'diproses',
-        ]);
-        echo 'berhasil';
+        //
     }
 
     /**
@@ -71,7 +58,6 @@ class BimbinganController extends Controller
     public function edit(string $id)
     {
         //
-        echo $id;
     }
 
     /**
@@ -79,17 +65,7 @@ class BimbinganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $bimbingan = Bimbingan::findOrFail($id);
-        $bimbingan->status = $request->status;
-        $bimbingan->save();
-    }
-
-    public function reschedule(Request $request, string $id)
-    {
-        Reschedule::create([
-            'bimbingan_id' => $id,
-            'tanggal' => $request->date,
-        ]);
+        //
     }
 
     /**

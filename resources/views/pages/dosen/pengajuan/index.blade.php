@@ -22,8 +22,6 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-
-
             function loadData() {
                 $.ajax({
                     type: 'GET',

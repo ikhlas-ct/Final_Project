@@ -11,8 +11,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TugasAkhirController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\BimbinganController;
-
-use App\Models\Mahasiswa;
+use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\MembimbingController;
+use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -56,14 +57,15 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
     // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
 });
-
 // // Dosen routes
 Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
     Route::get('pengajuan/getData', [PengajuanController::class, 'getData'])->name('get.dataPengajuan');
     Route::put('/pengajuan/update-status/{id}', [PengajuanController::class, 'updateStatus'])->name('pengajuan.update-status');
-
-
+    // 
+    Route::get('/membimbing', [MembimbingController::class, 'index'])->name('membimbing');
+    Route::put('/bimbingan/update/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
+    Route::post('/bimbingan/reschedule/{id}', [BimbinganController::class, 'reschedule'])->name('bimbingan.reschedule');
     // 
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
@@ -71,7 +73,6 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
 });
-
 // // Mahasiswa routes
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/tugas-akhir', [TugasAkhirController::class, 'index'])->name('tugasAkhir');
@@ -83,6 +84,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::post('/store-ambil-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storeAmbilPembimbing'])->name('store.ambilPembimbingTugasAkhir');
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
     Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
+    Route::get('/logbook', [LogbookController::class, 'index'])->name('logbook');
     // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
     // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
     // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');

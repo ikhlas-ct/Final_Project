@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_bimbingan', function (Blueprint $table) {
+        Schema::create('tb_reschedule', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dosen_id');
+            $table->unsignedBigInteger('bimbingan_id');
             $table->date('tanggal');
-            $table->enum('status', ['diterima', 'diproses', 'selesai'])->default('diproses');
-            $table->foreign('dosen_id')->references('id')->on('tb_dosen')->onDelete('cascade');
+            $table->foreign('bimbingan_id')->references('id')->on('tb_bimbingan')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bimbingan');
+        Schema::dropIfExists('reschedule');
     }
 };

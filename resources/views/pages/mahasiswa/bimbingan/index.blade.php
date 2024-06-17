@@ -45,7 +45,7 @@
                                                 @if ($bimbingan->status === 'diproses' || $bimbingan->status === 'diterima')
                                                     <p class="d-inline fs-7">Bimbingan yang akan datang <br>
                                                         {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
-                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
+                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
                                                                 class="text-capitalize">{{ $bimbingan->status }}</span></span>
                                                     </p>
                                                     <div
@@ -63,9 +63,12 @@
                                                     </div>
                                                 @else
                                                     <p class="d-inline fs-7">Bimbingan pada tanggal: <br>
-                                                        {!! '<b>' . ($bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal) . '</b>' !!}
-                                                        <span
-                                                            class="badge {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}">
+                                                        {!! '<b>' .
+                                                            \Carbon\Carbon::parse(
+                                                                $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
+                                                            )->translatedFormat('d F Y H:i') .
+                                                            '</b>' !!}
+                                                        <span class="badge bg-success text-white' }}">
                                                             <span class="text-capitalize">{{ $bimbingan->status }}</span>
                                                         </span>
                                                     </p>
@@ -80,7 +83,6 @@
                                                                 data-bs-target="#exampleModal" data-type="1"
                                                                 data-id="{{ $item->judulFinal->pembimbing1->id }}"
                                                                 data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
-                                                            kembali
                                                         @endif
                                                     </div>
                                                 @endif
@@ -137,7 +139,7 @@
                                                 @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
                                                     <p class="d-inline fs-7">Bimbingan yang akan datang <br>
                                                         {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
-                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
+                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
                                                                 class="text-capitalize">{{ $bimbingan->status }}</span></span>
                                                     </p>
                                                     <div
@@ -155,9 +157,12 @@
                                                     </div>
                                                 @else
                                                     <p class="d-inline fs-7">Bimbingan pada tanggal <br>
-                                                        {!! '<b>' . ($bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal) . '</b>' !!}
-                                                        <span
-                                                            class="badge {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}">
+                                                        {!! '<b>' .
+                                                            \Carbon\Carbon::parse(
+                                                                $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
+                                                            )->translatedFormat('d F Y H:i') .
+                                                            '</b>' !!}
+                                                        <span class="badge bg-success text-white">
                                                             <span class="text-capitalize">{{ $bimbingan->status }}</span>
                                                         </span>
                                                     </p>
@@ -172,7 +177,6 @@
                                                                 data-bs-target="#exampleModal" data-type="2"
                                                                 data-id="{{ $item->judulFinal->pembimbing1->id }}"
                                                                 data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
-                                                            kembali
                                                         @endif
                                                     </div>
                                                 @endif

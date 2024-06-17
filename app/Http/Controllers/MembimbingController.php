@@ -16,17 +16,26 @@ class MembimbingController extends Controller
         $user = Auth::user();
         $dosenId = $user->dosen->id; // Pastikan variabel $dosenId sudah didefinisikan dengan benar
 
+        // $dosenMembimbing = Dosen::with([
+        //     'pembimbing1.bimbinganp1' => function ($query) {
+        //         $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
+        //     },
+        //     'pembimbing2.bimbinganp2' => function ($query) {
+        //         $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
+        //     },
+        // ])
+        //     ->where('id', $dosenId) // Filter by Dosen ID
+        //     ->first();
         $dosenMembimbing = Dosen::with([
             'pembimbing1.bimbinganp1' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
+                $query->orderBy('updated_at', 'desc')->first();
             },
             'pembimbing2.bimbinganp2' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
+                $query->orderBy('updated_at', 'desc')->first();
             },
         ])
             ->where('id', $dosenId) // Filter by Dosen ID
             ->first();
-
         $dataPembimbing1 = [];
         foreach ($dosenMembimbing->pembimbing1 as $pembimbing1) {
             foreach ($pembimbing1->bimbinganp1 as $bimbingan) {
@@ -81,6 +90,8 @@ class MembimbingController extends Controller
 
             return $dateA <=> $dateB;
         });
+
+
 
         return view('pages.dosen.membimbing.index', compact('mergeData'));
     }

@@ -102,6 +102,101 @@
                 @endforeach
             </div>
             {{-- END --}}
+            {{-- P1 --}}
+            <div class="col-6">
+                @foreach ($pengajuan as $item)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img class="img-fluid img-thumbnail rounded-2" src="{{ asset('user-1.jpg') }}"
+                                        alt="">
+                                </div>
+                                <div class="col-8 d-flex align-items-center">
+                                    @if ($item->judulFinal->pembimbing2->bimbinganp2->isEmpty())
+                                        <div>
+                                            <div class="h5 fw-bolder">
+                                                {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                            </div>
+                                            <div class="h6 fw-bolder text-muted">Pembimbing Kesatu</div>
+                                            <hr>
+                                            <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
+                                                    id="btn-bimbingan-2" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal" data-type="2"
+                                                    data-id="{{ $item->judulFinal->pembimbing2->id }}"
+                                                    data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Ajukan</button>
+                                            </p>
+                                            <div
+                                                class="d-flex
+                                                    gap-1 mt-1">
+                                                <div class="fs-7 text-muted">Reschedule:</div>
+                                                <div>-</div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        @foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbingan)
+                                            @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
+                                                <div>
+                                                    <div class="h5 fw-bolder">
+                                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                                    </div>
+                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
+                                                    <hr>
+                                                    <p class="d-inline fs-7">Bimbingan yang akan datang <br>
+                                                        {!! '<b>' . $bimbingan->tanggal . '</b>' !!} <span
+                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
+                                                                class="text-capitalize">{{ $bimbingan->status }}</span></span>
+                                                    </p>
+                                                    <div
+                                                        class="d-flex
+                                                    gap-1 mt-1">
+                                                        <div class="fs-7 text-muted">Reschedule:
+                                                        </div>
+                                                        <div>
+                                                            @if (!empty($bimbingan->tanggal_reschedule))
+                                                                {!! '<b>' . $bimbingan->tanggal_reschedule . '</b>' !!}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div>
+                                                    <div class="h5 fw-bolder">
+                                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                                    </div>
+                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
+                                                    <hr>
+                                                    <p class="d-inline fs-7">Bimbingan pada tanggal <br>
+                                                        {!! '<b>' . ($bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal) . '</b>' !!}
+                                                        <span
+                                                            class="badge {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}">
+                                                            <span class="text-capitalize">{{ $bimbingan->status }}</span>
+                                                        </span>
+                                                    </p>
+                                                    <div>
+                                                        <a href="/logbook" class="btn btn-link m-0 p-0 ">Isi
+                                                            Logbook</a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-primary">Hubungi</button>
+                                {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" data-type="1"
+                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
+                                    data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Bimbingan</button> --}}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
             {{-- P2 --}}
 
         </div>
@@ -171,7 +266,6 @@
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
-
                         $('#hide-modal').trigger('click');
                         Swal.fire({
                             title: "Selamat!",

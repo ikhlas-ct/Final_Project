@@ -44,17 +44,14 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-
-        if ($request->type == 1) {
-            BimbinganP1::create([
-                'pembimbing1_id' => $request->id,
-                'tanggal' => $request->tanggal,
-                'tanggal_reschedule' => NULL,
-                'status' => 'diproses',
-            ]);
-        }
-
-        // echo 'berhasil';
+        $modelClass = "App\\Models\\BimbinganP" . $request->type;
+        $pembimbing = "pembimbing$request->type" . "_id";
+        $modelClass::create([
+            $pembimbing => $request->id,
+            'tanggal' => $request->tanggal,
+            'tanggal_reschedule' => NULL,
+            'status' => 'diproses',
+        ]);
     }
 
     /**

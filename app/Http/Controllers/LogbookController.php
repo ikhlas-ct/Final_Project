@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pengajuan;
-use App\Models\Bimbingan;
+use App\Models\Dosen;
+use Carbon\Carbon;
 
 class LogbookController extends Controller
 {
@@ -19,13 +20,72 @@ class LogbookController extends Controller
         $user = Auth::user();
         $mahasiswaId = $user->mahasiswa->id;
         $pengajuan = Pengajuan::with([
-            'judulFinal.pembimbing1.dosen.bimbingan',
-            'judulFinal.pembimbing2.dosen.bimbingan'
-        ])
-            ->where('mahasiswa_id', $mahasiswaId)
-            ->get();
+            'judulFinal.pembimbing1.bimbinganp1' => function ($query) {
+                $query->where('status', 'selesai');
+            },
+            'judulFinal.pembimbing2.bimbinganp2' => function ($query) {
+                $query->where('status', 'selesai');
+            }
+        ])->where('id', $mahasiswaId)->get(); // Menggunakan get() untuk mendapatkan koleksi pengajuan
 
-        return view('pages.mahasiswa.logbook.index', compact('pengajuan'));
+        $dataBimbingan1 = [];
+        foreach ($pengajuan as $item) {
+            // Ambil nama dosen
+            $namaDosen = Dosen::find($item->judulFinal->pembimbing1->dosen_id)->pluck('nama')->first();
+
+            $tanggalBimbingan = "";
+            $update = "";
+
+            foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbinganP1) {
+                // Ambil tanggal bimbingan
+                $tanggalBimbingan = $bimbinganP1->tanggal_reschedule ? $bimbinganP1->tanggal_reschedule : $bimbinganP1->tanggal;
+
+                // Ambil waktu terakhir kali diupdate dan format ke dalam string
+                $update = Carbon::parse($bimbinganP1->updated_at)->toDateTimeString(); // Menggunakan toDateTimeString() untuk mendapatkan format datetime string
+            }
+
+            $dataBimbingan1[] = [
+                "nama_dosen" => $namaDosen,
+                "tanggal_bimbingan" => $tanggalBimbingan,
+                'updated_at' => $update,
+            ];
+        }
+        $dataBimbingan2 = [];
+        foreach ($pengajuan as $item) {
+            // Ambil nama dosen
+            $namaDosen = Dosen::find($item->judulFinal->pembimbing2->dosen_id)->pluck('nama')->first();
+
+            $tanggalBimbingan = "";
+            $update = "";
+
+            foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbinganP2) {
+                // Ambil tanggal bimbingan
+                $tanggalBimbingan = $bimbinganP2->tanggal_reschedule ? $bimbinganP2->tanggal_reschedule : $bimbinganP2->tanggal;
+
+                // Ambil waktu terakhir kali diupdate dan format ke dalam string
+                $update = Carbon::parse($bimbinganP2->updated_at)->toDateTimeString(); // Menggunakan toDateTimeString() untuk mendapatkan format datetime string
+            }
+
+            $dataBimbingan2[] = [
+                "nama_dosen" => $namaDosen,
+                "tanggal_bimbingan" => $tanggalBimbingan,
+                'updated_at' => $update,
+            ];
+        }
+        // usort($array, function ($a, $b) {
+        //     return strtotime($a['tanggal']) <=> strtotime($b['tanggal']);
+        // });
+        // Gabungkan kedua array menjadi satu
+        $mergeData = array_merge($dataBimbingan1, $dataBimbingan2);
+        usort($mergeData, function ($a, $b) {
+            return strtotime($a['tanggal_bimbingan']) <=> strtotime($b['tanggal_bimbingan']);
+        });
+        // Print atau kembalikan array $dataBimbinganp1
+        // echo '<pre>';
+        // print_r($mergeData);
+        // echo '</pre>';
+
+        return view('pages.mahasiswa.logbook.index', compact('mergeData'));
     }
 
     /**

@@ -16,30 +16,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pengajuan as $item)
-                        @php
-                            $no = 1;
-                            $allBimbingan = $item->judulFinal->pembimbing1->dosen->bimbingan
-                                ->merge($item->judulFinal->pembimbing2->dosen->bimbingan)
-                                ->sortBy('tanggal');
-                        @endphp
-                        @foreach ($allBimbingan as $bimbingan)
-                            <tr>
-                                <td>{{ $no++ }}</td>
-                                <td>
-                                    @if ($bimbingan->dosen_id == $item->judulFinal->pembimbing1->dosen->id)
-                                        {{ $item->judulFinal->pembimbing1->dosen->nama }}
-                                    @elseif ($bimbingan->dosen_id == $item->judulFinal->pembimbing2->dosen->id)
-                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
-                                    @endif
-                                </td>
-                                <td>{{ $bimbingan->tanggal }}</td>
-                                <td class="text-center"><span class="badge bg-danger">Belum Mengisi</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-primary btn-sm m-0">Isi Logbook</button>
-                                </td>
-                            </tr>
-                        @endforeach
+                    @foreach ($mergeData as $key => $item)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>
+                                {{ $item['nama_dosen'] }}
+                            </td>
+                            <td> {{ $item['tanggal_bimbingan'] }}</td>
+                            <td class="text-center"><span class="badge bg-danger">Belum Mengisi</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-primary btn-sm m-0">Isi Logbook</button>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

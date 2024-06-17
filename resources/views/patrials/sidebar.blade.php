@@ -41,6 +41,15 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('tema-pengajuan') ? 'active' : '' }}"
+                        href="{{ url('tema-pengajuan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Tema Pengajuan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>

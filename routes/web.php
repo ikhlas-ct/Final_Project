@@ -53,6 +53,14 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan');
     Route::post('persetujuan/simpan', [PersetujuanController::class, 'store'])->name('simpan.persetujuan');
     Route::get('persetujuan/getData', [PersetujuanController::class, 'getData'])->name('get.dataPersetujuan');
+    Route::get('/tema-pengajuan', [TemaController::class, 'index'])->name('temaIndex');
+    Route::get('/addTema', [TemaController::class, 'addTema'])->name('halamanTambahTema');
+    Route::post('/addTema', [TemaController::class, 'storeTema'])->name('SimpanTema');
+    Route::get('/editTema/{id}', [TemaController::class, 'editTema'])->name('halamanEditTema');
+    Route::put('/updateTema/{id}', [TemaController::class, 'updateTema'])->name('updateTema');
+    Route::get('/detailTema/{id}', [TemaController::class, 'showTema'])->name('DetailTema');
+    Route::delete('/deleteTema/{id}', [TemaController::class, 'hapusTema'])->name('DeleteTema');
+
     Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
     // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
@@ -70,6 +78,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
     Route::put('/dosen/profile/update', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
+    Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
 });

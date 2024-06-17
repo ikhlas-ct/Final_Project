@@ -33,8 +33,20 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Pengajuan::class, 'mahasiswa_id');
     }
+<<<<<<< HEAD
     public function bimbingan()
     {
         return $this->hasMany(Bimbingan::class);
+=======
+
+    public function pembimbing()
+    {
+        return $this->belongsToMany(Dosen::class, 'mahasiswa_bimbingan', 'mahasiswa_id', 'dosen_id');
+    }
+
+    public function logbooks()
+    {
+        return $this->hasMany(Logbook::class);
+>>>>>>> 0664a5bd655f13a9a97e5a4e4b00d4800a4467de
     }
 }

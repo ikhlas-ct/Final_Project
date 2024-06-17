@@ -33,10 +33,10 @@ class TugasAkhirController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $userFakultasId = $user->mahasiswa->fakultas_id;
-        $tema = Tema::where('fakultas_id', $userFakultasId)->get();
-        // 
+        // $user = Auth::user();
+        // $userFakultasId = $user->mahasiswa->fakultas_id;
+        // $tema = Tema::where('fakultas_id', $userFakultasId)->get();
+        $tema = Tema::with('fakultas')->get();
         return view('pages.mahasiswa.tugas_akhir.create', compact('tema'));
     }
 

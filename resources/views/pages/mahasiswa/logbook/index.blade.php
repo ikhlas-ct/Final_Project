@@ -121,6 +121,7 @@
                     'X-CSRF-TOKEN': csrfToken
                 },
                 success: function(response) {
+                    // alert(response);
                     $('#hide-modal').trigger('click');
                     window.location.reload();
                 },

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('tb_logbook_b2', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bimbingan_p1_id');
+            $table->unsignedBigInteger('bimbingan_p2_id');
             $table->string('kegiatan');
             $table->text('detail_kegiatan');
-            $table->foreign('bimbingan_p1_id')->references('id')->on('tb_bimbingan_p1')->onDelete('cascade');
+            $table->foreign('bimbingan_p2_id')->references('id')->on('tb_bimbingan_p2')->onDelete('cascade');
             $table->timestamps();
         });
     }

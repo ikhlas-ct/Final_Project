@@ -42,7 +42,7 @@
                                             </div>
                                         @else
                                             @foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbingan)
-                                                @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
+                                                @if ($bimbingan->status === 'diproses' || $bimbingan->status === 'diterima')
                                                     <p class="d-inline fs-7">Bimbingan yang akan datang <br>
                                                         {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
                                                             class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
@@ -70,7 +70,7 @@
                                                         </span>
                                                     </p>
                                                     <div class="d-inline">
-                                                        @if (empty($bimbingan->logbookB1))
+                                                        @if ($bimbingan->logbookB1->isEmpty())
                                                             Silahkan isi
                                                             <a href="/logbook" class="btn btn-link m-0 p-0 ">
                                                                 Logbook</a>
@@ -162,14 +162,14 @@
                                                         </span>
                                                     </p>
                                                     <div class="d-inline">
-                                                        @if (empty($bimbingan->logbookB1))
+                                                        @if ($bimbingan->logbookB2->isEmpty())
                                                             Silahkan isi
                                                             <a href="/logbook" class="btn btn-link m-0 p-0 ">
                                                                 Logbook</a>
                                                         @else
                                                             silahkan ajukan <button id="btn-bimbingan-1"
                                                                 class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModal" data-type="1"
+                                                                data-bs-target="#exampleModal" data-type="2"
                                                                 data-id="{{ $item->judulFinal->pembimbing1->id }}"
                                                                 data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
                                                             kembali

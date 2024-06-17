@@ -109,9 +109,11 @@ class LogbookController extends Controller
      */
     public function store(Request $request)
     {
+
         $modelClass = "App\\Models\\LogbookB" . $request->type;
+        $bimbingan = "bimbingan_p$request->type" . "_id";
         $modelClass::create([
-            'bimbingan_p1_id' => $request->id,
+            $bimbingan => $request->id,
             'kegiatan' => $request->kegiatan,
             'detail_kegiatan' => $request->detail_kegiatan,
         ]);

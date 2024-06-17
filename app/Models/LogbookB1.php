@@ -21,6 +21,6 @@ class LogbookB1 extends Model
 
     public function pembimbingP1()
     {
-        return $this->belongsTo(PembimbingP1::class, 'pembimbing_p1_id');
+        return $this->belongsTo(PembimbingP1::class);
     }
 }

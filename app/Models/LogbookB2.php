@@ -12,13 +12,13 @@ class LogbookB2 extends Model
     protected $table = 'tb_logbook_b2';
 
     protected $fillable = [
-        'bimbingan_p1_id',
+        'bimbingan_p2_id',
         'kegiatan',
         'detail_kegiatan',
     ];
 
     public function pembimbingP2()
     {
-        return $this->belongsTo(PembimbingP2::class, 'pembimbing_p2_id');
+        return $this->belongsTo(PembimbingP2::class);
     }
 }

@@ -1,6 +1,10 @@
 @extends('layout.master')
 @section('title', 'Tugas Akhir')
 @section('content')
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="card-title fw-semibold">Halaman Bimbingan</h4>
@@ -17,13 +21,13 @@
                                         alt="">
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    @if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty())
-                                        <div>
-                                            <div class="h5 fw-bolder">
-                                                {{ $item->judulFinal->pembimbing1->dosen->nama }}
-                                            </div>
-                                            <div class="h6 fw-bolder text-muted">Pembimbing Kesatu</div>
-                                            <hr>
+                                    <div class="w-100">
+                                        <div class="h5 fw-bolder">
+                                            {{ $item->judulFinal->pembimbing1->dosen->nama }}
+                                        </div>
+                                        <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kesatu</div>
+                                        <hr>
+                                        @if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty())
                                             <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
                                                     id="btn-bimbingan-1" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal" data-type="1"
@@ -36,18 +40,11 @@
                                                 <div class="fs-7 text-muted">Reschedule:</div>
                                                 <div>-</div>
                                             </div>
-                                        </div>
-                                    @else
-                                        @foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbingan)
-                                            @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
-                                                <div>
-                                                    <div class="h5 fw-bolder">
-                                                        {{ $item->judulFinal->pembimbing1->dosen->nama }}
-                                                    </div>
-                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
-                                                    <hr>
+                                        @else
+                                            @foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbingan)
+                                                @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
                                                     <p class="d-inline fs-7">Bimbingan yang akan datang <br>
-                                                        {!! '<b>' . $bimbingan->tanggal . '</b>' !!} <span
+                                                        {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
                                                             class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
                                                                 class="text-capitalize">{{ $bimbingan->status }}</span></span>
                                                     </p>
@@ -58,35 +55,38 @@
                                                         </div>
                                                         <div>
                                                             @if (!empty($bimbingan->tanggal_reschedule))
-                                                                {!! '<b>' . $bimbingan->tanggal_reschedule . '</b>' !!}
+                                                                {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
                                                             @else
                                                                 -
                                                             @endif
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @else
-                                                <div>
-                                                    <div class="h5 fw-bolder">
-                                                        {{ $item->judulFinal->pembimbing1->dosen->nama }}
-                                                    </div>
-                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
-                                                    <hr>
-                                                    <p class="d-inline fs-7">Bimbingan pada tanggal <br>
+                                                @else
+                                                    <p class="d-inline fs-7">Bimbingan pada tanggal: <br>
                                                         {!! '<b>' . ($bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal) . '</b>' !!}
                                                         <span
                                                             class="badge {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}">
                                                             <span class="text-capitalize">{{ $bimbingan->status }}</span>
                                                         </span>
                                                     </p>
-                                                    <div>
-                                                        <a href="/logbook" class="btn btn-link m-0 p-0 ">Isi
-                                                            Logbook</a>
+                                                    <div class="d-inline">
+                                                        @if (empty($bimbingan->logbookB1))
+                                                            Silahkan isi
+                                                            <a href="/logbook" class="btn btn-link m-0 p-0 ">
+                                                                Logbook</a>
+                                                        @else
+                                                            silahkan ajukan <button id="btn-bimbingan-1"
+                                                                class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal" data-type="1"
+                                                                data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            kembali
+                                                        @endif
                                                     </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -113,13 +113,13 @@
                                         alt="">
                                 </div>
                                 <div class="col-8 d-flex align-items-center">
-                                    @if ($item->judulFinal->pembimbing2->bimbinganp2->isEmpty())
-                                        <div>
-                                            <div class="h5 fw-bolder">
-                                                {{ $item->judulFinal->pembimbing2->dosen->nama }}
-                                            </div>
-                                            <div class="h6 fw-bolder text-muted">Pembimbing Kesatu</div>
-                                            <hr>
+                                    <div class="w-100">
+                                        <div class="h5 fw-bolder">
+                                            {{ $item->judulFinal->pembimbing2->dosen->nama }}
+                                        </div>
+                                        <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kedua</div>
+                                        <hr>
+                                        @if ($item->judulFinal->pembimbing2->bimbinganp2->isEmpty())
                                             <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
                                                     id="btn-bimbingan-2" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal" data-type="2"
@@ -132,18 +132,11 @@
                                                 <div class="fs-7 text-muted">Reschedule:</div>
                                                 <div>-</div>
                                             </div>
-                                        </div>
-                                    @else
-                                        @foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbingan)
-                                            @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
-                                                <div>
-                                                    <div class="h5 fw-bolder">
-                                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
-                                                    </div>
-                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
-                                                    <hr>
+                                        @else
+                                            @foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbingan)
+                                                @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
                                                     <p class="d-inline fs-7">Bimbingan yang akan datang <br>
-                                                        {!! '<b>' . $bimbingan->tanggal . '</b>' !!} <span
+                                                        {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
                                                             class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-warning text-dark' : 'bg-success text-white' }}"><span
                                                                 class="text-capitalize">{{ $bimbingan->status }}</span></span>
                                                     </p>
@@ -154,20 +147,13 @@
                                                         </div>
                                                         <div>
                                                             @if (!empty($bimbingan->tanggal_reschedule))
-                                                                {!! '<b>' . $bimbingan->tanggal_reschedule . '</b>' !!}
+                                                                {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
                                                             @else
                                                                 -
                                                             @endif
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @else
-                                                <div>
-                                                    <div class="h5 fw-bolder">
-                                                        {{ $item->judulFinal->pembimbing2->dosen->nama }}
-                                                    </div>
-                                                    <div class="h6 fw-bolder text-muted font-italic">Pembimbing Kedua</div>
-                                                    <hr>
+                                                @else
                                                     <p class="d-inline fs-7">Bimbingan pada tanggal <br>
                                                         {!! '<b>' . ($bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal) . '</b>' !!}
                                                         <span
@@ -175,14 +161,24 @@
                                                             <span class="text-capitalize">{{ $bimbingan->status }}</span>
                                                         </span>
                                                     </p>
-                                                    <div>
-                                                        <a href="/logbook" class="btn btn-link m-0 p-0 ">Isi
-                                                            Logbook</a>
+                                                    <div class="d-inline">
+                                                        @if (empty($bimbingan->logbookB1))
+                                                            Silahkan isi
+                                                            <a href="/logbook" class="btn btn-link m-0 p-0 ">
+                                                                Logbook</a>
+                                                        @else
+                                                            silahkan ajukan <button id="btn-bimbingan-1"
+                                                                class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal" data-type="1"
+                                                                data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            kembali
+                                                        @endif
                                                     </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -200,7 +196,6 @@
             {{-- P2 --}}
 
         </div>
-        <hr>
     </div>
 
     <!-- Modal -->
@@ -222,7 +217,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Tanggal</label>
-                                <input name="tanggal" type="date" class="form-control" id="exampleFormControlInput1">
+                                <input name="tanggal" type="datetime-local" class="form-control"
+                                    id="exampleFormControlInput1">
                             </div>
                             <input name="type" type="hidden" class="form-control" id="type">
                             <input name="id" type="hidden" class="form-control" id="id">
@@ -267,21 +263,22 @@
                     },
                     success: function(response) {
                         $('#hide-modal').trigger('click');
-                        Swal.fire({
-                            title: "Selamat!",
-                            text: `
-                    Permintaan bimbingan Anda sudah kami teruskan ke dosen yang bersangkutan. Mohon tunggu respons dari beliau atau jika Anda ingin mempercepat proses ini, Anda bisa langsung menghubunginya dengan mengklik tombol 'Hubungi' yang sudah disediakan.
-                    `,
-                            icon: "info"
-                        });
+                        window.location.reload();
+                        //     Swal.fire({
+                        //         title: "Selamat!",
+                        //         text: `
+                    // Permintaan bimbingan Anda sudah kami teruskan ke dosen yang bersangkutan. Mohon tunggu respons dari beliau atau jika Anda ingin mempercepat proses ini, Anda bisa langsung menghubunginya dengan mengklik tombol 'Hubungi' yang sudah disediakan.
+                    // `,
+                        //         icon: "info"
+                        //     });
 
-                        Swal.fire({
-                            icon: "success",
-                            title: "Selamat!",
-                            text: 'Anda telah berhasil memilihkan pembimbing.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
+                        //     Swal.fire({
+                        //         icon: "success",
+                        //         title: "Selamat!",
+                        //         text: 'Anda telah berhasil memilihkan pembimbing.',
+                        //         showConfirmButton: false,
+                        //         timer: 1500
+                        //     });
 
                         // $('#hide-modal').trigger('click');
                         // loadData();

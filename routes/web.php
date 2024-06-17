@@ -85,6 +85,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
     Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
     Route::get('/logbook', [LogbookController::class, 'index'])->name('logbook');
+    Route::post('/logbook/simpan', [LogbookController::class, 'store'])->name('simpan.logbook');
     // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
     // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
     // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');

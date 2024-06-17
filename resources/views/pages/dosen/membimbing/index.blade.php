@@ -1,6 +1,10 @@
 @extends('layout.master')
 @section('title', 'Tugas Akhir')
 @section('content')
+    @php
+        use Carbon\Carbon;
+        Carbon::setLocale('id');
+    @endphp
     <div class="container">
         @if (session('success'))
             <div class="alert alert-success">
@@ -8,11 +12,11 @@
             </div>
         @endif
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="card-title fw-semibold">Halaman Bimbingan</h4>
+            <h4 class="card-title fw-semibold">Halaman Membimbing</h4>
         </div>
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <table id="example" class="table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -25,23 +29,31 @@
                     <tbody>
                         @foreach ($mergeData as $index => $item)
                             <tr>
-                                <td style="vertical-align: middle;">{{ $index + 1 }}</td>
-                                <td style="vertical-align: middle;">{{ $item['nama'] }}</td>
-                                <td style="vertical-align: middle;">{{ $item['judul'] }}</td>
+                                <td style="vertical-align: middle;" class="text-start">{{ $index + 1 }}</td>
+                                <td style="vertical-align: middle;" class="text-start">{{ $item['nama'] }}</td>
+                                <td style="vertical-align: middle;" class="text-start">{{ $item['judul'] }}</td>
                                 <td style="align-items: center;vertical-align: middle;">
                                     @if ($item['status'] == 'diproses')
-                                        <div style="text-align: justify" class="d-inline"> {!! 'Mengajukan Bimbingan pada tanggal <b>' . $item['tanggal'] . '</b>' !!}
+                                        <div style="text-align: justify" class="d-inline"> {!! 'Mengajukan Bimbingan pada tanggal <b>' . \Carbon\Carbon::parse($item['tanggal']) . '</b>' !!}
                                             <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
                                                 data-pengajuan-id="{{ $item['id'] }}" data-action="updateStatus"
                                                 data-status="diterima" data-type="{{ $item['pembimbing'] }}">Terima</button>
                                         </div>
                                     @endif
                                     @if ($item['status'] == 'diterima' && empty($item['tanggal_reschedule']))
-                                        <div style="text-align: justify" class="d-inline"> {!! 'Bimbingan yang akan datang pada tanggal <b>' . $item['tanggal'] . '</b>' !!}
-                                            <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
-                                                data-pengajuan-id="{{ $item['id'] }}"
-                                                data-type="{{ $item['pembimbing'] }}" data-action="reschedule"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">Reschedule</button>
+                                        <div style="text-align: justify" class="d-inline"> {!! 'Bimbingan yang akan datang pada tanggal <b>' . \Carbon\Carbon::parse($item['tanggal']) . '</b>' !!}
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
+                                                    data-pengajuan-id="{{ $item['id'] }}"
+                                                    data-type="{{ $item['pembimbing'] }}" data-action="reschedule"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal">Reschedule</button>
+                                                <div>|</div>
+                                                <button type="button" class="btn btn-link m-0 p-0 btn-ajax"
+                                                    data-pengajuan-id="{{ $item['id'] }}" data-action="updateStatus"
+                                                    data-status="selesai"
+                                                    data-type="{{ $item['pembimbing'] }}">Selesai</button>
+                                            </div>
                                         </div>
                                     @endif
                                     @if ($item['status'] == 'diterima' && !empty($item['tanggal_reschedule']))
@@ -50,12 +62,17 @@
                                                 $item['tanggal'] .
                                                 '</b>' .
                                                 ' Anda <b>reschedule</b> menjadi tanggal <b>' .
-                                                $item['tanggal_reschedule'] !!}</p>
+                                                \Carbon\Carbon::parse($item['tanggal_reschedule']) !!} <button type="button"
+                                                    class="btn btn-link m-0 p-0 btn-ajax"
+                                                    data-pengajuan-id="{{ $item['id'] }}" data-action="updateStatus"
+                                                    data-status="selesai"
+                                                    data-type="{{ $item['pembimbing'] }}">Selesai</button></p>
+
                                         </div>
                                     @endif
                                     @if ($item['status'] == 'selesai')
                                         <div style="text-align: justify" class="d-inline">
-                                            <p style="text-align: justify">{!! 'Belum mengajukan bimbingan kembali, bimbingan terakhir pada tanggal <b>' .
+                                            <p style="text-align: justify">{!! 'Bimbingan terakhir pada tanggal <b>' .
                                                 ($item['tanggal_reschedule'] ? $item['tanggal_reschedule'] : $item['tanggal']) .
                                                 '</b>' !!}</p>
                                         </div>
@@ -83,7 +100,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="tanggal" class="form-label">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal">
+                        <input type="datetime-local" class="form-control" id="tanggal">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -98,6 +115,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $('#example').DataTable({
+                "ordering": false,
+            });
             let bimbinganId;
             let type;
             $('.btn-ajax').click(function() {

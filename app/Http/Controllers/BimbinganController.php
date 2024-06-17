@@ -21,13 +21,14 @@ class BimbinganController extends Controller
         $pengajuan = Pengajuan::with([
             'judulFinal.pembimbing1.dosen',
             'judulFinal.pembimbing1.bimbinganp1' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
+                $query->orderBy('updated_at', 'desc')->take(1)->with('logbookB1');
             },
             'judulFinal.pembimbing2.dosen',
             'judulFinal.pembimbing2.bimbinganp2' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
+                $query->orderBy('updated_at', 'desc')->take(1)->with('logbookB2');
             }
         ])->where('id', $mahasiswaId)->get();
+        // 
         return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
     }
 

@@ -18,13 +18,13 @@ class MembimbingController extends Controller
 
         $dosenMembimbing = Dosen::with([
             'pembimbing1.bimbinganp1' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
+                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
             },
             'pembimbing2.bimbinganp2' => function ($query) {
-                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
+                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
             },
         ])
-            ->where('id', $dosenId) // Filter berdasarkan ID dosen
+            ->where('id', $dosenId) // Filter by Dosen ID
             ->first();
 
         $dataPembimbing1 = [];

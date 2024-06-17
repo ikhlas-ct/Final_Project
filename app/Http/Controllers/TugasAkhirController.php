@@ -162,7 +162,7 @@ class TugasAkhirController extends Controller
                     <div class="d-inline">
                         <span class="badge bg-secondary text-capitalize" style="width: 100px">' . $status->status . '</span>
                     </div>
-                    <div class="d-inline"> Oleh untuk menjadi pembimbing utama.
+                    <div class="d-inline"> Oleh <b>' . $status->dosen->nama . '</b> untuk menjadi pembimbing utama.
                     </div>
                 </div>';
                     }
@@ -203,17 +203,15 @@ class TugasAkhirController extends Controller
                     selanjutnya silahkan pilih dosen yang ingin Anda jadikan sebagai pembimbing kedua:
                 </div>';
                 foreach ($value->statusPengajuan as $status) {
-                    if ($status->status == 'diproses') {
-                        echo '<form class="ambil-pembimbing-form">
+                    if ($value->judulFinal->pembimbing1->dosen->nama == $status->dosen->nama) {
+                        continue;
+                    }
+                    echo '<form class="ambil-pembimbing-form">
                     <input type="hidden" name="type" value="2">
                     <input type="hidden" name="judul_final_id" value="' . $value->judulFinal->id . '">
                     <input type="hidden" name="dosen_id" value="' . $status->dosen->id . '">
                     <button class="btn btn-link p-0">' . $status->dosen->nama . '</button>
                 </form>';
-                    }
-                    if ($status->status == 'ditolak') {
-                        echo $status->dosen->nama;
-                    }
                 }
             }
             if (

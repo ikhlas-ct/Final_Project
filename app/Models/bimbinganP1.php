@@ -18,6 +18,11 @@ class BimbinganP1 extends Model
         'status',
     ];
 
+    public function logbookB1()
+    {
+        return $this->hasMany(LogbookB1::class);
+    }
+
     public function pembimbing1()
     {
         return $this->belongsTo(Pembimbing1::class);

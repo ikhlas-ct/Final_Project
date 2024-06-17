@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tb_bimbingan_p1', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pembimbing1_id');
-            $table->date('tanggal');
-            $table->date('tanggal_reschedule')->nullable();
+            $table->dateTime('tanggal');
+            $table->dateTime('tanggal_reschedule')->nullable();
             $table->enum('status', ['diterima', 'diproses', 'selesai'])->default('diproses');;
             $table->foreign('pembimbing1_id')->references('id')->on('tb_pembimbing1')->onDelete('cascade');
             $table->timestamps();

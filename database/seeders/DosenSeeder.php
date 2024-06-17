@@ -22,7 +22,7 @@ class DosenSeeder extends Seeder
                 'poto' => 'path/to/photo1.jpg',
             ],
             [
-                'user_id' => 4,
+                'user_id' => 3,
                 'fakultas_id' => 1,
                 'nidn' => '12345678902',
                 'nama' => 'Cahya Wibawa M.kom',
@@ -30,7 +30,7 @@ class DosenSeeder extends Seeder
                 'poto' => 'path/to/photo1.jpg',
             ],
             [
-                'user_id' => 5,
+                'user_id' => 4,
                 'fakultas_id' => 1,
                 'nidn' => '12345678903',
                 'nama' => 'Dewi Anggraeni M.kom',
@@ -38,7 +38,7 @@ class DosenSeeder extends Seeder
                 'poto' => 'path/to/photo1.jpg',
             ],
             [
-                'user_id' => 6,
+                'user_id' => 5,
                 'fakultas_id' => 1,
                 'nidn' => '12345678904',
                 'nama' => 'Eka Putri M.kom',
@@ -46,23 +46,7 @@ class DosenSeeder extends Seeder
                 'poto' => 'path/to/photo1.jpg',
             ],
             [
-                'user_id' => 7,
-                'fakultas_id' => 1,
-                'nidn' => '12345678905',
-                'nama' => 'Ahmad Sudirman M.kom',
-                'no_hp' => '081234567890',
-                'poto' => 'path/to/photo1.jpg',
-            ],
-            [
-                'user_id' => 8,
-                'fakultas_id' => 1,
-                'nidn' => '12345678906',
-                'nama' => 'Fadhil Ramadhan M.kom',
-                'no_hp' => '081234567890',
-                'poto' => 'path/to/photo1.jpg',
-            ],
-            [
-                'user_id' => 2,
+                'user_id' => 11,
                 'fakultas_id' => 2,
                 'nidn' => '12345678907',
                 'nama' => 'Supriyadi SH',

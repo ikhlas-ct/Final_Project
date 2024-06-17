@@ -5,18 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class bimbinganP1 extends Model
+class BimbinganP1 extends Model
 {
     use HasFactory;
-    protected $table = 'bimbingan_p1';
+
+    protected $table = 'tb_bimbingan_p1';
+
     protected $fillable = [
-        'pembimbing_id',
+        'pembimbing1_id',
         'tanggal',
+        'tanggal_reschedule',
         'status',
     ];
 
     public function pembimbing1()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pembimbing1::class);
     }
 }

@@ -17,7 +17,7 @@ class Pembimbing2 extends Model
 
     public function bimbinganp2()
     {
-        return $this->hasMany(bimbinganP2::class);
+        return $this->hasMany(BimbinganP2::class);
     }
 
     public function judulFInal()

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pengajuan;
-use App\Models\Bimbingan;
-use App\Models\Reschedule;
+use App\Models\BimbinganP1;
+use App\Models\BimbinganP2;
 
 class BimbinganController extends Controller
 {
@@ -18,25 +18,16 @@ class BimbinganController extends Controller
     {
         $user = Auth::user();
         $mahasiswaId = $user->mahasiswa->id;
-
         $pengajuan = Pengajuan::with([
-            'judulFinal.pembimbing1.dosen.bimbingan' => function ($query) use ($mahasiswaId) {
-                $query->where('mahasiswa_id', $mahasiswaId)
-                    ->orderBy('tanggal', 'desc')
-                    ->first(); // Ambil hanya satu data terakhir
+            'judulFinal.pembimbing1.dosen',
+            'judulFinal.pembimbing1.bimbinganp1' => function ($query) {
+                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
             },
-            'judulFinal.pembimbing2.dosen.bimbingan' => function ($query) use ($mahasiswaId) {
-                $query->where('mahasiswa_id', $mahasiswaId)
-                    ->orderBy('tanggal', 'desc')
-                    ->first(); // Ambil hanya satu data terakhir
+            'judulFinal.pembimbing2.dosen',
+            'judulFinal.pembimbing2.bimbinganp2' => function ($query) {
+                $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC');
             }
-        ])
-            ->where('mahasiswa_id', $mahasiswaId)
-            ->get();
-        // echo '<pre>';
-        // print_r($pengajuan);
-        // echo '</pre>';
-        // die;
+        ])->where('id', $mahasiswaId)->get();
         return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
     }
 
@@ -53,13 +44,16 @@ class BimbinganController extends Controller
      */
     public function store(Request $request)
     {
-        Bimbingan::create([
-            'dosen_id' => $request->dosen,
-            'mahasiswa_id' => $request->mhs,
-            'tanggal' => $request->tanggal,
-            'tanggal_reschedule' => NULL,
-            'status' => 'diproses',
-        ]);
+
+        if ($request->type == 1) {
+            BimbinganP1::create([
+                'pembimbing1_id' => $request->id,
+                'tanggal' => $request->tanggal,
+                'tanggal_reschedule' => NULL,
+                'status' => 'diproses',
+            ]);
+        }
+
         // echo 'berhasil';
     }
 
@@ -83,17 +77,18 @@ class BimbinganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id = "")
+    public function update(Request $request, string $id)
     {
-        $bimbingan = Bimbingan::findOrFail($id);
+        $modelClass = "App\\Models\\BimbinganP" . $request->type;
+
+        $bimbingan = $modelClass::findOrFail($id);
 
         if (isset($request->status)) {
             $bimbingan->status = $request->status;
-        } elseif (isset($request->date)) {
-            $bimbingan->tanggal_reschedule = $request->date;
+        } elseif (isset($request->tanggal)) {
+            $bimbingan->tanggal_reschedule = $request->tanggal;
         } else {
         }
-
         $bimbingan->save();
     }
 

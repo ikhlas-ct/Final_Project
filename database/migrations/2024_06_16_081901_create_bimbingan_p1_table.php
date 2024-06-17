@@ -13,15 +13,11 @@ return new class extends Migration
     {
         Schema::create('tb_bimbingan_p1', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dosen_id');
-            $table->unsignedBigInteger('mahasiswa_id');
-            // $table->unsignedBigInteger('pembimbing_p1_id');
+            $table->unsignedBigInteger('pembimbing1_id');
             $table->date('tanggal');
             $table->date('tanggal_reschedule')->nullable();
-            $table->enum('status', ['diterima', 'diproses', 'selesai'])->default('diproses');
-            $table->foreign('dosen_id')->references('id')->on('tb_dosen')->onDelete('cascade');
-            $table->foreign('mahasiswa_id')->references('id')->on('tb_mahasiswa')->onDelete('cascade');
-            // $table->foreign('pembimbing_p1_id')->references('id')->on('tb_pembimbing1')->onDelete('cascade');
+            $table->enum('status', ['diterima', 'diproses', 'selesai'])->default('diproses');;
+            $table->foreign('pembimbing1_id')->references('id')->on('tb_pembimbing1')->onDelete('cascade');
             $table->timestamps();
         });
     }

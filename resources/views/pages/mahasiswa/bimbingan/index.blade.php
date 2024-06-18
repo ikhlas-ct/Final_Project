@@ -13,6 +13,7 @@
             {{-- P1 --}}
             <div class="col-6">
                 @foreach ($pengajuan as $item)
+                    {{ $pengajuan }}
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">

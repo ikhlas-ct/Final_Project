@@ -2,18 +2,15 @@
 @section('title', 'Daftar Tema')
 @section('content')
     <div class="container">
-        <h1>Daftar Tema</h1>
-
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
-
-        <div class="d-flex justify-content-end mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="card-title fw-semibold mb-4">Halaman Daftar Tema TA</h4>
             <a href="{{ route('halamanTambahTema') }}" class="btn btn-primary">Tambah Tema</a>
         </div>
-
         <table class="table">
             <thead>
                 <tr>
@@ -24,26 +21,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($temas as $tema)
+                @foreach ($temas as $tema)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $tema->fakultas->nama }}</td>
                         <td>{{ $tema->nama }}</td>
                         <td>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailModal{{ $tema->id }}">
+                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                data-target="#detailModal{{ $tema->id }}">
                                 Detail
                             </button>
                             <a href="{{ route('halamanEditTema', $tema->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('DeleteTema', $tema->id) }}" method="POST" style="display:inline-block;">
+                            <form action="{{ route('DeleteTema', $tema->id) }}" method="POST"
+                                style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin?')">Hapus</button>
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Apakah Anda yakin?')">Hapus</button>
                             </form>
                         </td>
                     </tr>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="detailModal{{ $tema->id }}" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel{{ $tema->id }}" aria-hidden="true">
+                    <div class="modal fade" id="detailModal{{ $tema->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="detailModalLabel{{ $tema->id }}" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -72,7 +73,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Tampilkan modal otomatis saat halaman dimuat
             $('#detailModal').modal('show');
         });

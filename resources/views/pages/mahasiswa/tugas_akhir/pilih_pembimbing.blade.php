@@ -12,7 +12,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('store.pilihPembimbingTugasAkhir') }}" method="POST">
+                <form id="form-pilih-pembimbing" action="{{ route('store.pilihPembimbingTugasAkhir') }}" method="POST">
                     <!-- Ganti route dengan yang sesuai -->
                     @csrf <!-- Tambahkan ini untuk keamanan Laravel -->
                     <table id="example" class="table-bordered" style="width:100%">
@@ -38,8 +38,9 @@
                                             src="{{ asset('assets/images/profile/user-1.jpg') }}" alt="">
                                     </td>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" name="selected_pembimbing[]"
-                                            value="{{ $value->dosen->id }}" id="pembimbing{{ $key }}">
+                                        <input class="form-check-input pembimbing-checkbox" type="checkbox"
+                                            name="selected_pembimbing[]" value="{{ $value->dosen->id }}"
+                                            id="pembimbing{{ $key }}">
                                     </td>
                                 </tr>
                             @endforeach
@@ -65,7 +66,26 @@
                 "ordering": false,
                 "searching": false
             });
+            $('#form-pilih-pembimbing').on('submit', function(event) {
+                // Cegah form untuk submit secara default
+                event.preventDefault();
 
+                // Ambil jumlah pembimbing yang dipilih
+                var selectedCount = $('.pembimbing-checkbox:checked').length;
+
+                // Jika kurang dari 2 pembimbing yang dipilih, tampilkan alert
+                if (selectedCount < 2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error...",
+                        text: "Minimal harus memilih 2 pembimbing!"
+                    });
+                    return;
+                }
+
+                // Lanjutkan submit form jika sudah memilih minimal 2 pembimbing
+                this.submit();
+            });
         });
     </script>
 @endsection

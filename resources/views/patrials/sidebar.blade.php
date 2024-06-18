@@ -46,7 +46,7 @@
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Tema Pengajuan</span>
+                        <span class="hide-menu">Tema</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

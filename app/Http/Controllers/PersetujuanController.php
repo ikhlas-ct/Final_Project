@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
 use App\Models\ListPembimbing;
 use App\Helpers\AlertHelper;
+
 
 class PersetujuanController extends Controller
 {
@@ -32,6 +34,23 @@ class PersetujuanController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'pembimbing' => 'required|array|min:2',
+            'pembimbing.*' => 'exists:tb_dosen,id',
+            'pengajuan_id' => 'required|exists:tb_pengajuan,id',
+        ], [
+            'pembimbing.required' => 'Anda harus memilih minimal dua pembimbing.',
+            'pembimbing.array' => 'Pembimbing harus berupa array.',
+            'pembimbing.min' => 'Anda harus memilih minimal dua pembimbing.',
+            'pembimbing.*.exists' => 'Pembimbing yang dipilih tidak valid.',
+            'pengajuan_id.required' => 'ID Pengajuan diperlukan.',
+            'pengajuan_id.exists' => 'ID Pengajuan tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         try {
             foreach ($request->pembimbing as $pembimbing_id) {
                 ListPembimbing::create([
@@ -39,8 +58,11 @@ class PersetujuanController extends Controller
                     'pengajuan_id' => $request->pengajuan_id,
                 ]);
             }
-            AlertHelper::alertSuccess('Anda telah berhasil mencari bimbingan', 'Selamat!', 2000);
+
+            // Jika berhasil, kembalikan respons success
+            return response()->json(['success' => 'Anda telah berhasil mencari bimbingan'], 200);
         } catch (\Exception $e) {
+            // Jika terjadi kesalahan saat menyimpan data
             return response()->json(['error' => 'Terjadi kesalahan saat menyimpan data'], 500);
         }
     }

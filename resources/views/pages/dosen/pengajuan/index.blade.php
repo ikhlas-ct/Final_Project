@@ -43,25 +43,43 @@
                     e.preventDefault();
 
                     let pengajuanId = $(this).data('id');
-                    $.ajax({
-                        url: '/pengajuan/update-status/' + pengajuanId,
-                        type: 'PUT',
-                        data: {
-                            status: 'Diterima',
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                icon: "success",
-                                title: "Selamat!",
-                                text: 'Anda telah berhasil menerima pengajuan judul TA.',
-                                showConfirmButton: false,
-                                timer: 1500
+
+                    // Tampilkan SweetAlert konfirmasi sebelum mengirimkan permintaan
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Anda akan menerima pengajuan judul TA.",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Terima!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Lanjutkan dengan AJAX request jika pengguna mengonfirmasi
+                            $.ajax({
+                                url: '/pengajuan/update-status/' + pengajuanId,
+                                type: 'PUT',
+                                data: {
+                                    status: 'Diterima',
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Selamat!",
+                                        text: 'Anda telah berhasil menerima pengajuan judul TA',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    loadData(); // Memuat ulang data setelah berhasil
+                                },
+                                error: function(xhr) {
+                                    alert(
+                                        'Gagal memperbarui status'
+                                    ); // Tangani kesalahan jika terjadi
+                                }
                             });
-                            loadData();
-                        },
-                        error: function(xhr) {
-                            alert('Gagal memperbarui status');
                         }
                     });
                 });

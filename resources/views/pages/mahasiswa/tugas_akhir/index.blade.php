@@ -54,57 +54,48 @@
         function attachFormSubmitHandler() {
             $('.ambil-pembimbing-form').on('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
+
                 var form = $(this);
-                var formData = form.serialize(); // Serialize form data
-                $.ajax({
-                    url: '{{ route('store.ambilPembimbingTugasAkhir') }}',
-                    method: 'POST',
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: "Selamat!",
-                            text: `Anda telah memilih pembimbing ${response}. Detailnya, silahkan baca keterangan`,
-                            icon: "info"
+
+                // Tampilkan SweetAlert konfirmasi sebelum mengirimkan form
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan memilih pembimbing ini.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Pilih!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lanjutkan dengan pengiriman form jika pengguna mengonfirmasi
+                        var formData = form.serialize(); // Serialize form data
+                        $.ajax({
+                            url: '{{ route('store.ambilPembimbingTugasAkhir') }}',
+                            method: 'POST',
+                            data: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Selamat!",
+                                    text: `Anda telah memilih pembimbing ${response}. Detailnya, silahkan baca keterangan`,
+                                    icon: "success"
+                                });
+                                loadData(); // Memuat ulang data setelah berhasil
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(error);
+                                alert('Error submitting form');
+                            }
                         });
-                        loadData();
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error here
-                        console.log(error);
-                        alert('Error submitting form');
                     }
                 });
             });
         }
-
-        // Initial data load
         loadData();
-
-        // Use event delegation for form submission
-        $(document).on('submit', '.ambil-pembimbing-form', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            var form = $(this);
-            var formData = form.serialize(); // Serialize form data
-            $.ajax({
-                url: '{{ route('store.ambilPembimbingTugasAkhir') }}',
-                method: 'POST',
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
-                },
-                success: function(response) {
-                    loadData();
-                },
-                error: function(xhr, status, error) {
-                    // Handle error here
-                    console.log(error);
-                    alert('Error submitting form');
-                }
-            });
-        });
     </script>
 
 @endsection

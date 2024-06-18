@@ -78,11 +78,15 @@
                                                             <a href="/logbook" class="btn btn-link m-0 p-0 ">
                                                                 Logbook</a>
                                                         @else
-                                                            silahkan ajukan <button id="btn-bimbingan-1"
-                                                                class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModal" data-type="1"
-                                                                data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                                data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            @if (empty($item->judulFinal->pembimbing1->status))
+                                                                silahkan ajukan <button id="btn-bimbingan-1"
+                                                                    class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal" data-type="1"
+                                                                    data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            @else
+                                                                dan sudah <br> terpenuhi.
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 @endif
@@ -172,11 +176,15 @@
                                                             <a href="/logbook" class="btn btn-link m-0 p-0 ">
                                                                 Logbook</a>
                                                         @else
-                                                            silahkan ajukan <button id="btn-bimbingan-1"
-                                                                class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModal" data-type="2"
-                                                                data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                                data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            @if (empty($item->judulFinal->pembimbing2->status))
+                                                                silahkan ajukan <button id="btn-bimbingan-1"
+                                                                    class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal" data-type="1"
+                                                                    data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                            @else
+                                                                dan sudah <br> terpenuhi.
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 @endif

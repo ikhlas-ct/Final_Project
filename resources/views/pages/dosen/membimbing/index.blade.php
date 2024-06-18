@@ -79,7 +79,8 @@
                                     @endif
                                 </td>
                                 <td style="vertical-align: middle;" class="text-center">
-                                    <button class="btn btn-sm btn-info mb-0">Lihat</button>
+                                    <a href="{{ route('membimbing.show', ['id' => $item['mahasiswa_id'] . '.' . $item['pembimbing']]) }}"
+                                        class="btn btn-sm btn-info mb-0">Lihat</a>
                                 </td>
                             </tr>
                         @endforeach

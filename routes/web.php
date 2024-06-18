@@ -82,6 +82,9 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
+    // 
+    Route::get('/dosen/membimbing/{id}', [MembimbingController::class, 'show'])->name('membimbing.show');
+    Route::put('/dosen/selesai/membimbing/{id}', [MembimbingController::class, 'update'])->name('selesai.membimbing');
 });
 // // Mahasiswa routes
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {

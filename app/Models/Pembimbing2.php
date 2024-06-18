@@ -12,6 +12,7 @@ class Pembimbing2 extends Model
     protected $fillable = [
         'judul_final_id',
         'dosen_id',
+        'status',
     ];
 
 

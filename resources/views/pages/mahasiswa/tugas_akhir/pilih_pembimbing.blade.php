@@ -15,7 +15,7 @@
                 <form action="{{ route('store.pilihPembimbingTugasAkhir') }}" method="POST">
                     <!-- Ganti route dengan yang sesuai -->
                     @csrf <!-- Tambahkan ini untuk keamanan Laravel -->
-                    <table id="example" class="cell-border" style="width:100%">
+                    <table id="example" class="table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 2%">No</th>
@@ -61,8 +61,11 @@
             $('#example').DataTable({
                 "bInfo": false,
                 "paging": false,
-                "lengthChange": false
+                "lengthChange": false,
+                "ordering": false,
+                "searching": false
             });
+
         });
     </script>
 @endsection

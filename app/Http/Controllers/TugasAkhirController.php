@@ -21,10 +21,16 @@ class TugasAkhirController extends Controller
      */
     public function index()
     {
-
-        $pengajuan = Pengajuan::with(['tema', 'listPembimbing', 'statusPengajuan.dosen', 'judulFinal', 'judulFinal.pembimbing1.dosen', 'judulFinal.pembimbing2.dosen'])->get();
-
-
+        $user = Auth::user();
+        $mahasiswaId = $user->mahasiswa->id;
+        $pengajuan = Pengajuan::with([
+            'tema',
+            'listPembimbing',
+            'statusPengajuan.dosen',
+            'judulFinal',
+            'judulFinal.pembimbing1.dosen',
+            'judulFinal.pembimbing2.dosen'
+        ])->where('mahasiswa_id', $mahasiswaId)->get();
         return view('pages.mahasiswa.tugas_akhir.index', compact('pengajuan'));
     }
 

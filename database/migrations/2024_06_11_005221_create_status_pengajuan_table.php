@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pengajuan_id');
             $table->unsignedBigInteger('dosen_id');
-            $table->enum('status', ['diterima', 'ditolak', 'diproses'])->default('diproses');
+            $table->enum('status', ['diterima', 'selesai', 'diproses'])->default('diproses');
             $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->foreign('pengajuan_id')->references('id')->on('tb_pengajuan')->onDelete('cascade');

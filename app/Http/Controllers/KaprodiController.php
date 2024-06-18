@@ -64,7 +64,7 @@ class KaprodiController extends Controller
 
         // Display success message
         AlertHelper::alertSuccess('Anda telah berhasil mengupdate profile', 'Selamat!', 2000);
-        return redirect()->back();;
+        return redirect()->back();
     }
     public function updatePassword(Request $request)
     {

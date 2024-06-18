@@ -36,28 +36,41 @@
                             <td class="text-center">
                                 @if (empty($item['logbook']))
                                     <button class="btn btn-primary btn-sm m-0" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" data-id="{{ $item['id'] }}"
+                                        data-bs-target="#modalCreate" data-id="{{ $item['id'] }}"
                                         data-type="{{ $item['type'] }}">Isi Logbook</button>
                                 @else
                                     <button class="btn btn-primary btn-sm m-0" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" data-id="{{ $item['id'] }}"
-                                        data-type="{{ $item['type'] }}">Lihat Logbook</button>
+                                        data-bs-target="#modalCreate" data-keterangan="TEST" data-detail="TEST"
+                                        data-type="lihat">Lihat
+                                        Logbook</button>
                                 @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="fst-italic fs-7 text-muted">*Fitur download akan aktif setelah proses bimbingan dinyatakan
+                    terpenuhi
+                    oleh
+                    kedua
+                    pembimbing
+                </div>
+                @php
+                    $isDisabled = empty($status_p1) || empty($status_p2);
+                @endphp
+                <button {{ $isDisabled ? 'disabled' : '' }} class="btn btn-primary">Download</button>
+            </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade modal-lg" id="modalCreate" tabindex="-1" aria-labelledby="modalCreateLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Isi Logbook</h5>
+                    <h5 class="modal-title" id="modalCreateLabel">Isi Logbook</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -80,7 +93,7 @@
                 <div class="modal-footer">
                     <button id="hide-modal" type="button" class="btn btn-outline-primary"
                         data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" form="form-logbook">Simpan</button>
+                    <button id="btn-simpan" type="submit" class="btn btn-primary" form="form-logbook">Simpan</button>
                 </div>
             </div>
         </div>
@@ -95,15 +108,66 @@
                 "paging": false,
                 "lengthChange": false
             });
+            $('#modalCreate').on('hidden.bs.modal', function() {
+                // Mengosongkan nilai input dan menghapus atribut readonly
+                $('#modalCreateLabel').text('Isi Logbook');
+                $('#btn-simpan').show()
+                $('#hide-modal')
+                    .text('Batal')
+                    .removeClass('btn-primary') // Hapus kelas btn-outline-primary
+                    .addClass('btn-outline-primary');
+                $('#kegiatan')
+                    .val('')
+                    .prop('readonly', false)
+                    .css({
+                        'pointer-events': '', // Mengembalikan ke nilai default (bisa diubah)
+                        'background-color': '', // Mengembalikan ke nilai default
+                        'color': '' // Mengembalikan ke nilai default
+                    });
+
+                $('#detail_kegiatan')
+                    .val('')
+                    .prop('readonly', false)
+                    .css({
+                        'pointer-events': '', // Mengembalikan ke nilai default (bisa diubah)
+                        'background-color': '', // Mengembalikan ke nilai default
+                        'color': '' // Mengembalikan ke nilai default
+                    });
+            });
 
             // Menangani saat modal ditampilkan
-            $('#exampleModal').on('show.bs.modal', function(event) {
-                let button = $(event.relatedTarget);
-                let id = button.data('id');
-                let type = button.data('type');
+            $('#modalCreate').on('show.bs.modal', function(event) {
                 let modal = $(this);
-                modal.find('#id').val(id);
-                modal.find('#type').val(type);
+                let button = $(event.relatedTarget);
+                let type = button.data('type');
+                if (type === 'lihat') {
+                    $('#modalCreateLabel').text('Lihat Logbook');
+                    $('#btn-simpan').hide();
+                    $('#hide-modal')
+                        .text('Tutup')
+                        .removeClass('btn-outline-primary') // Hapus kelas btn-outline-primary
+                        .addClass('btn-primary');
+                    $('#kegiatan')
+                        .val(button.data('keterangan'))
+                        .prop('readonly', true)
+                        .css({
+                            'pointer-events': 'none', // Menonaktifkan event mouse dan keyboard
+                            'background-color': '#f0f0f0', // Memberikan latar belakang abu-abu
+                            'color': '#888888' // Mengubah warna teks menjadi abu-abu
+                        });
+                    $('#detail_kegiatan')
+                        .val(button.data('detail'))
+                        .prop('readonly', true)
+                        .css({
+                            'pointer-events': 'none', // Menonaktifkan event mouse dan keyboard
+                            'background-color': '#f0f0f0', // Memberikan latar belakang abu-abu
+                            'color': '#888888' // Mengubah warna teks menjadi abu-abu
+                        });
+                } else {
+                    let id = button.data('id');
+                    modal.find('#id').val(id);
+                    modal.find('#type').val(type);
+                }
             });
         });
 

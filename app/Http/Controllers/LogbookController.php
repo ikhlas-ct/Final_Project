@@ -26,7 +26,7 @@ class LogbookController extends Controller
             'judulFinal.pembimbing2.bimbinganp2' => function ($query) {
                 $query->where('status', 'selesai')->with('logbookB2');
             }
-        ])->where('id', $mahasiswaId)->get(); // Menggunakan get() untuk mendapatkan koleksi pengajuan
+        ])->where('id', $mahasiswaId)->get();
 
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
@@ -50,6 +50,7 @@ class LogbookController extends Controller
                         "type" => 1,
                         "nama_dosen" => $namaDosen,
                         "tanggal_bimbingan" => $tanggalBimbingan,
+                        "status" => $bimbinganP1->status,
                         'logbook' => $logbook,
                     ];
                 }
@@ -77,6 +78,7 @@ class LogbookController extends Controller
                         "type" => 2,
                         "nama_dosen" => $namaDosen,
                         "tanggal_bimbingan" => $tanggalBimbingan,
+                        "status" => $bimbinganP2->status,
                         'logbook' => $logbook,
                     ];
                 }
@@ -88,12 +90,24 @@ class LogbookController extends Controller
         usort($mergeData, function ($a, $b) {
             return strtotime($a['tanggal_bimbingan']) <=> strtotime($b['tanggal_bimbingan']);
         });
+
+        $status_p1 = "";
+        $status_p2 = "";
+        foreach ($mergeData as $item) {
+            if ($item['type'] == 1) {
+                $status_p1 = $item['status'];
+            }
+            if ($item['type'] == 2) {
+                $status_p2 = $item['status'];
+            }
+        }
+
         // Print atau kembalikan array $dataBimbinganp1
         // echo '<pre>';
         // print_r($mergeData);
         // echo '</pre>';
         // die;
-        return view('pages.mahasiswa.logbook.index', compact('mergeData'));
+        return view('pages.mahasiswa.logbook.index', compact('mergeData', 'status_p1', 'status_p2'));
     }
 
     /**

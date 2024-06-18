@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('judul_final_id');
             $table->unsignedBigInteger('dosen_id');
+            $table->string('status')->nullable();
             $table->foreign('judul_final_id')->references('id')->on('tb_judul_final')->onDelete('cascade');
             $table->foreign('dosen_id')->references('id')->on('tb_dosen')->onDelete('cascade');
             $table->timestamps();

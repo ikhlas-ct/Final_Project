@@ -170,7 +170,7 @@
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Tugas Akhir</span>
+                        <span class="hide-menu">TA</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -250,7 +250,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('membimbing') ? 'active' : '' }}"
+                    <a class="sidebar-link {{ Request::is('membimbing') || Request::is('dosen/membimbing/*') ? 'active' : '' }}"
                         href="{{ url('membimbing') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>

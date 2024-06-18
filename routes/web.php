@@ -8,7 +8,13 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Mahasiswa;
+use App\Http\Controllers\TugasAkhirController;
+use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\BimbinganController;
+use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\MembimbingController;
+use App\Http\Controllers\TemaController;
+// use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -65,32 +71,58 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard');
     Route::get('persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan');
     Route::post('persetujuan/simpan', [PersetujuanController::class, 'store'])->name('simpan.persetujuan');
-    Route::get('persetujuan/getData', [PersetujuanController::class, 'getData'])->name('get.dataPersetujuan');;
+    Route::get('persetujuan/getData', [PersetujuanController::class, 'getData'])->name('get.dataPersetujuan');
+    Route::get('/tema-pengajuan', [TemaController::class, 'index'])->name('temaIndex');
+    Route::get('/addTema', [TemaController::class, 'addTema'])->name('halamanTambahTema');
+    Route::post('/addTema', [TemaController::class, 'storeTema'])->name('SimpanTema');
+    Route::get('/editTema/{id}', [TemaController::class, 'editTema'])->name('halamanEditTema');
+    Route::put('/updateTema/{id}', [TemaController::class, 'updateTema'])->name('updateTema');
+    Route::get('/detailTema/{id}', [TemaController::class, 'showTema'])->name('DetailTema');
+    Route::delete('/deleteTema/{id}', [TemaController::class, 'hapusTema'])->name('DeleteTema');
+
     Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
     Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
     // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
 });
-
 // // Dosen routes
 Route::middleware(['auth', 'role:dosen'])->group(function () {
+    Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
+    Route::get('pengajuan/getData', [PengajuanController::class, 'getData'])->name('get.dataPengajuan');
+    Route::put('/pengajuan/update-status/{id}', [PengajuanController::class, 'updateStatus'])->name('pengajuan.update-status');
+    // 
+    Route::get('/membimbing', [MembimbingController::class, 'index'])->name('membimbing');
+    Route::put('/bimbingan/update/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
+    Route::post('/bimbingan/reschedule/{id}', [BimbinganController::class, 'reschedule'])->name('bimbingan.reschedule');
+    // 
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
     Route::put('/dosen/profile/update', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
+    Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
 });
-
 // // Mahasiswa routes
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-    Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
-    Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
-    Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');
-    Route::get('/tugas-akhir-create', [MahasiswaController::class, 'tugasAkhirCreate'])->name('tugasAkhirCreate');
-    Route::post('/tugas-akhir', [MahasiswaController::class, 'StoreTugasAkhir'])->name('StoreTugasAkhir');
-    Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
-    Route::put('/passwordProdi/update', [MahasiswaController::class, 'updatePassword'])->name('passwordUpdateMahasiswa');
-    Route::get('/konsultasi', [MahasiswaController::class, 'konsul'])->name('halamanKonsultasi');
-    Route::get('/tgl_penting', [MahasiswaController::class, 'tgl_penting'])->name('halamanTanggal');
+    Route::get('/tugas-akhir', [TugasAkhirController::class, 'index'])->name('tugasAkhir');
+    Route::get('/tugas-akhir/getData', [TugasAkhirController::class, 'getData'])->name('tugasAkhirGetData');
+    Route::get('/create-tugas-akhir', [TugasAkhirController::class, 'create'])->name('create.tugasAkhirCreate');
+    Route::post('/store-tugas-akhir', [TugasAkhirController::class, 'store'])->name('store.TugasAkhir');
+    Route::get('/pilih-pembimbing-tugas-akhir/{id}', [TugasAkhirController::class, 'pilihPembimbing'])->name('pilih.pembimbingTugasAkhir');
+    Route::post('/store-pilih-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storePilihPembimbing'])->name('store.pilihPembimbingTugasAkhir');
+    Route::post('/store-ambil-pembimbing-tugas-akhir', [TugasAkhirController::class, 'storeAmbilPembimbing'])->name('store.ambilPembimbingTugasAkhir');
+    Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
+    Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
+    Route::get('/logbook', [LogbookController::class, 'index'])->name('logbook');
+    Route::post('/logbook/simpan', [LogbookController::class, 'store'])->name('simpan.logbook');
+    // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
+    // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
+    // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');
+    // Route::get('/tugas-akhir-create', [MahasiswaController::class, 'tugasAkhirCreate'])->name('tugasAkhirCreate');
+    // Route::post('/tugas-akhir', [MahasiswaController::class, 'StoreTugasAkhir'])->name('StoreTugasAkhir');
+    // Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
+    // Route::put('/passwordProdi/update', [MahasiswaController::class, 'updatePassword'])->name('passwordUpdateMahasiswa');
+    // Route::get('/konsultasi', [MahasiswaController::class, 'konsul'])->name('halamanKonsultasi');
+    // Route::get('/tgl_penting', [MahasiswaController::class, 'tgl_penting'])->name('halamanTanggal');
 });
 
 // // Fallback route

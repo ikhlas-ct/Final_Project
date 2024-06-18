@@ -41,6 +41,15 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('tema-pengajuan') ? 'active' : '' }}"
+                        href="{{ url('tema-pengajuan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Tema Pengajuan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -177,21 +186,30 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-                        <span class="hide-menu">Pembimbing</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tugas-akhir') || Request::is('tugas-akhir-create') ? 'active' : '' }}"
+                    <a class="sidebar-link {{ Request::is('tugas-akhir') || Request::is('create-tugas-akhir') || Request::is('pilih-pembimbing-tugas-akhir/*') ? 'active' : '' }}"
                         href="{{ url('tugas-akhir') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Tugas Akhir</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
+                        href="{{ url('bimbingan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Bimbingan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ Request::is('logbook') ? 'active' : '' }}" href="{{ url('logbook') }}"
+                        aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Logbook</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -244,21 +262,21 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('pilih-pembimbing') ? 'active' : '' }}"
-                        href="{{ url('pilih-pembimbing') }}" aria-expanded="false">
+                    <a class="sidebar-link {{ Request::is('tgl_penting') ? 'active' : '' }}"
+                        href="{{ url('pengajuan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Pembimbing</span>
+                        <span class="hide-menu">Pengajuan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tugas-akhir') ? 'active' : '' }}"
-                        href="{{ url('tugas-akhir') }}" aria-expanded="false">
+                    <a class="sidebar-link {{ Request::is('membimbing') ? 'active' : '' }}"
+                        href="{{ url('membimbing') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Tugas Akhir</span>
+                        <span class="hide-menu">Membimbing</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -268,24 +286,6 @@
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Profile</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('konsultasi') ? 'active' : '' }}"
-                        href="{{ url('konsultasi') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-                        <span class="hide-menu">Konsultasi</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tgl_penting') ? 'active' : '' }}"
-                        href="{{ url('tgl_penting') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
-                        <span class="hide-menu">Tanggal Penting</span>
                     </a>
                 </li>
                 {{-- <li class="sidebar-item">

@@ -83,41 +83,45 @@ class DosenController extends Controller
         return view('Mahasiswa.Konsultasi.konsultasi');
     }
 
-public function updatePassword(Request $request)
-{
-    $request->validate([
-        'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore(Auth::user()->id)],
-        'password_lama' => ['required'],
-        'password' => 'required|confirmed', // Password confirmation
-    ], [
-        'username.required' => 'Username harus diisi.',
-        'username.max' => 'Username maksimal 255 karakter.',
-        'username.unique' => 'Username sudah digunakan oleh pengguna lain.',
-        'password_lama.required' => 'Password lama harus diisi.',
-        'password.required' => 'Password baru harus diisi.',
-        'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
-    ]);
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore(Auth::user()->id)],
+            'password_lama' => ['required'],
+            'password' => 'required|confirmed', // Password confirmation
+        ], [
+            'username.required' => 'Username harus diisi.',
+            'username.max' => 'Username maksimal 255 karakter.',
+            'username.unique' => 'Username sudah digunakan oleh pengguna lain.',
+            'password_lama.required' => 'Password lama harus diisi.',
+            'password.required' => 'Password baru harus diisi.',
+            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    // Validasi password lama
-    if (!Hash::check($request->password_lama, $user->password)) {
-        return back()->withErrors(['password_lama' => 'Password lama tidak cocok']);
+        // Validasi password lama
+        if (!Hash::check($request->password_lama, $user->password)) {
+            return back()->withErrors(['password_lama' => 'Password lama tidak cocok']);
+        }
+
+        // Update username
+        $user->username = $request->username;
+        $user->save();
+
+        // Update password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        AlertHelper::alertSuccess('Anda telah berhasil mengupdate username dan passowrd', 'Selamat!', 2000);
+        return redirect()->route('profile');
     }
-
-    // Update username
-    $user->username = $request->username;
-    $user->save();
-
-    // Update password
-    $user->password = Hash::make($request->password);
-    $user->save();
-
-    AlertHelper::alertSuccess('Anda telah berhasil mengupdate username dan passowrd', 'Selamat!', 2000);
-    return redirect()->route('profile');
-}
         
-    
-    
+    public function mhsBimbingan()
+    {
+        $dosen = Auth::user()->dosen;
+        $mahasiswaList = $dosen->mahasiswaBimbingan;
 
+        return view('pages.dosen.mhsBimbingan', compact('mahasiswaList'));
     }
+}

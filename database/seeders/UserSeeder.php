@@ -23,18 +23,6 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ],
             [
-                'username' => 'dosen',
-                'password' => Hash::make('password'),
-                'role' => 'dosen',
-                'remember_token' => Str::random(10),
-            ],
-            [
-                'username' => 'mahasiswa',
-                'password' => Hash::make('password'),
-                'role' => 'mahasiswa',
-                'remember_token' => Str::random(10),
-            ],
-            [
                 'username' => 'dosen1',
                 'password' => Hash::make('password'),
                 'role' => 'dosen',
@@ -59,11 +47,42 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ],
             [
-                'username' => 'dosen5',
+                'username' => 'mahasiswa1',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'username' => 'mahasiswa2',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'username' => 'mahasiswa3',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'username' => 'mahasiswa4',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'username' => 'mahasiswa5',
+                'password' => Hash::make('password'),
+                'role' => 'mahasiswa',
+                'remember_token' => Str::random(10),
+            ],
+            // 
+            [
+                'username' => 'dosensh',
                 'password' => Hash::make('password'),
                 'role' => 'dosen',
                 'remember_token' => Str::random(10),
-            ]
+            ],
         ]);
     }
 }

@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             KaprodiSeeder::class,
             DosenSeeder::class,
             MahasiswaSeeder::class,
-            TemaSeeder::class
+            TemaSeeder::class,
+            AdminSeeder::class
         ]);
     }
 }

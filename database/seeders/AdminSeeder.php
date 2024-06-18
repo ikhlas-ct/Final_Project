@@ -14,7 +14,17 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory()->count(10)->create();
+        // Admin::factory()->count(10)->create();
+        $admin = [
+            [
+                'user_id' => 11,
+                'nama' => "TEST",
+                'gambar' => "TEST",
+                'no_hp' => '081234567892',
+                'alamat' => "alamat"
+            ]
+        ];
 
+        Admin::insert($admin);
     }
 }

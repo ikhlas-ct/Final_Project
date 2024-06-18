@@ -99,6 +99,22 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.users') }}" aria-expanded="false">
+                        <span>
+                            <i class="fas fa-users"></i>
+                        </span>
+                        <span class="hide-menu">Pengguna</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('fakultas.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fas fa-building"></i>
+                        </span>
+                        <span class="hide-menu">Fakultas</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -107,43 +123,6 @@
                         <span class="hide-menu">Profile</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link"
-                        href="{{route('admin.users')}}" aria-expanded="false">
-                        <span>
-                            <i class="fas fa-users"></i>
-                        </span>
-                        <span class="hide-menu">Pengguna</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link"
-                        href="{{route('fakultas.index')}}" aria-expanded="false">
-                        <span>
-                            <i class="fas fa-building"></i>
-                        </span>
-                        <span class="hide-menu">Fakultas</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('konsultasi') ? 'active' : '' }}"
-                        href="{{ url('konsultasi') }}" aria-expanded="false">
-                        <span>
-                            <i class="fas fa-chalkboard-teacher"></i>
-                        </span>
-                        <span class="hide-menu">Dosen</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tgl_penting') ? 'active' : '' }}"
-                        href="{{ url('tgl_penting') }}" aria-expanded="false">
-                        <span>
-                            <i class="fas fa-calendar-alt"></i>
-                        </span>
-                        <span class="hide-menu">Mahasiswa</span>
-                    </a>
-                </li>
-
                 <hr>
                 <li class="sidebar-item bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"

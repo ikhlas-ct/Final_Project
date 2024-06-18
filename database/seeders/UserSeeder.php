@@ -78,9 +78,9 @@ class UserSeeder extends Seeder
             ],
             // 
             [
-                'username' => 'dosensh',
+                'username' => 'admin',
                 'password' => Hash::make('password'),
-                'role' => 'dosen',
+                'role' => 'admin',
                 'remember_token' => Str::random(10),
             ],
         ]);

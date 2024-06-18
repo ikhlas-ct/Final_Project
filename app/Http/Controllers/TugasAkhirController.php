@@ -52,9 +52,21 @@ class TugasAkhirController extends Controller
         $mahasiswa = $user->mahasiswa->id;
 
         $request->validate([
-            'tema' => 'required',
+            'tema' => 'required|exists:tb_tema,id|not_in:0', // Memastikan tema dipilih dan ada di tabel temas
             'judul' => 'required|string|max:255',
-            'proposal' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'proposal' => 'required|file|mimes:pdf|max:2048', // File harus PDF dan maksimal 2MB
+        ], [
+            // Pesan error khusus
+            'tema.required' => 'Tema harus dipilih.',
+            'tema.exists' => 'Tema yang dipilih tidak valid.',
+            'tema.not_in' => 'Silakan pilih tema yang valid.',
+            'judul.required' => 'Judul harus diisi.',
+            'judul.string' => 'Judul harus berupa teks.',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+            'proposal.required' => 'Proposal harus diunggah.',
+            'proposal.file' => 'Proposal harus berupa file.',
+            'proposal.mimes' => 'Proposal harus berformat PDF.',
+            'proposal.max' => 'Proposal tidak boleh lebih dari 2MB.',
         ]);
 
         if ($request->hasFile('proposal')) {
@@ -119,85 +131,78 @@ class TugasAkhirController extends Controller
             'judulFinal.pembimbing2.dosen'
         ])->where('mahasiswa_id', $mahasiswaId)->get();
 
-        echo '<table id="example" class="table" style="width:100%">
-    <thead>
-        <tr>
-            <th class="text-center" style="width: 3%">No</th>
-            <th class="text-center" style="width: 17%">Tema</th>
-            <th class="text-center" style="width: 40%">Judul</th>
-            <th class="text-center" style="width: 40%">Keterangan</th>
-        </tr>
-    </thead>
-    <tbody>';
+        echo '<table id="example" class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 3%">No</th>
+                        <th class="text-center" style="width: 17%">Tema</th>
+                        <th class="text-center" style="width: 40%">Judul</th>
+                        <th class="text-center" style="width: 40%">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
         foreach ($pengajuan as $key => $value) {
-            $backgroundStyle = (
+            $isComplete = (
                 !empty($value->listPembimbing) &&
                 !empty($value->statusPengajuan) &&
                 !empty($value->judulFinal) &&
                 !empty($value->judulFinal->pembimbing1->dosen) &&
                 !empty($value->judulFinal->pembimbing2->dosen)
-            ) ? 'background-color: #13deb9;' : '';
-            $collorStyle = (
-                !empty($value->listPembimbing) &&
-                !empty($value->statusPengajuan) &&
-                !empty($value->judulFinal) &&
-                !empty($value->judulFinal->pembimbing1->dosen) &&
-                !empty($value->judulFinal->pembimbing2->dosen)
-            ) ? 'color: white;' : '';
-            echo '<tr style="' .   $backgroundStyle . '">
-        <td style="' .   $collorStyle . 'vertical-align: middle;">' . ($key + 1) . '</td>
-        <td style="' .   $collorStyle . 'vertical-align: middle;">' . $value->tema->nama . '</td>
-        <td  style="' .   $collorStyle . 'vertical-align: middle;" class="text-justify">' . $value->judul . '</td>
-        <td style="text-align: justify; ' .   $collorStyle . '" class="text-justify">';
+            );
+
+            $backgroundStyle = $isComplete ? 'background-color: #13deb9;' : '';
+            $colorStyle = $isComplete ? 'color: white;' : '';
+
+            echo '<tr style="' . $backgroundStyle . '">
+                    <td style="' . $colorStyle . ' vertical-align: middle;">' . ($key + 1) . '</td>
+                    <td style="' . $colorStyle . ' vertical-align: middle;">' . $value->tema->nama . '</td>
+                    <td style="' . $colorStyle . ' vertical-align: middle;" class="text-justify">' . $value->judul . '</td>
+                    <td style="text-align: justify; ' . $colorStyle . '" class="text-justify">';
+
             if ($value->listPembimbing->isEmpty()) {
                 echo '<div class="d-flex justify-content-center">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>';
-            }
-            if (!$value->listPembimbing->isEmpty() && $value->statusPengajuan->isEmpty()) {
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>';
+            } elseif (!$value->listPembimbing->isEmpty() && $value->statusPengajuan->isEmpty()) {
                 echo 'Judul yang Anda ajukan telah disetujui oleh Kaprodi. Silakan pilih
-        <a class="text-decoration-underline" href="' . route('pilih.pembimbingTugasAkhir', ['id' => $value->id]) . '">pembimbing</a>
-        untuk melanjutkan proses tugas akhir Anda.';
-            }
-            if (!empty($value->listPembimbing) && !empty($value->statusPengajuan) && empty($value->judulFinal)) {
+                    <a class="text-decoration-underline" href="' . route('pilih.pembimbingTugasAkhir', ['id' => $value->id]) . '">pembimbing</a>
+                    untuk melanjutkan proses tugas akhir Anda.';
+            } elseif (!empty($value->listPembimbing) && !empty($value->statusPengajuan) && empty($value->judulFinal)) {
                 foreach ($value->statusPengajuan as $status) {
                     if ($status->status == 'diproses') {
                         echo '<div class="my-2">
-                    <div class="d-inline">
-                        <span class="badge bg-secondary text-capitalize" style="width: 100px">' . $status->status . '</span>
-                    </div>
-                    <div class="d-inline"> Oleh <b>' . $status->dosen->nama . '</b> untuk menjadi pembimbing utama.
-                    </div>
-                </div>';
-                    }
-                    if ($status->status == 'ditolak') {
+                                <div class="d-inline">
+                                    <span class="badge bg-secondary text-capitalize" style="width: 100px">' . $status->status . '</span>
+                                </div>
+                                <div class="d-inline"> Oleh <b>' . $status->dosen->nama . '</b> untuk menjadi pembimbing utama.</div>
+                            </div>';
+                    } elseif ($status->status == 'ditolak') {
                         echo '<div class="my-2">
-                    <span class="badge bg-danger text-capitalize" style="width: 100px">' . $status->status . '</span>
-                    Oleh ' . $status->dosen->nama . ' <a class="text-decoration-underline" href="">Detail</a>
-                </div>';
-                    }
-                    if ($status->status == 'diterima') {
+                                <span class="badge bg-danger text-capitalize" style="width: 100px">' . $status->status . '</span>
+                                Oleh ' . $status->dosen->nama . ' <a class="text-decoration-underline" href="">Detail</a>
+                            </div>';
+                    } elseif ($status->status == 'diterima') {
                         echo '<div class="my-2">
-                    <div class="d-inline">
-                        <span class="badge bg-success text-capitalize" style="width: 100px">' . $status->status . '</span>
-                    </div>
-                    <div class="d-inline">
-                        Oleh ' . $status->dosen->nama . ' sebagai pembimbing utama.
-                        <form class="ambil-pembimbing-form d-inline">
-                            <input type="hidden" name="type" value="1">
-                            <input type="hidden" name="pengajuan_id" value="' . $value->id . '">
-                            <input type="hidden" name="dosen_id" value="' . $status->dosen->id . '">
-                            <button type="submit" class="btn btn-link p-0">Ambil</button>
-                        </form>
-                    </div>
-                </div>';
+                                <div class="d-inline">
+                                    <span class="badge bg-success text-capitalize" style="width: 100px">' . $status->status . '</span>
+                                </div>
+                                <div class="d-inline"> Oleh ' . $status->dosen->nama . ' sebagai pembimbing utama.
+                                    <form class="ambil-pembimbing-form d-inline" method="POST" action="URL_ACTION">
+                                        @csrf
+                                        <input type="hidden" name="type" value="1">
+                                        <input type="hidden" name="pengajuan_id" value="' . $value->id . '">
+                                        <input type="hidden" name="dosen_id" value="' . $status->dosen->id . '">
+                                        <button type="submit" class="btn btn-link p-0">Ambil</button>
+                                    </form>
+                                </div>
+                            </div>';
                     }
                     echo '<hr class="my-0">';
                 }
-            }
-            if (
+            } elseif (
                 !empty($value->listPembimbing) &&
                 !empty($value->statusPengajuan) &&
                 !empty($value->judulFinal) &&
@@ -205,22 +210,22 @@ class TugasAkhirController extends Controller
                 empty($value->judulFinal->pembimbing2->dosen)
             ) {
                 echo '<div class="my-2">
-                    Anda telah memilih <b>' . $value->judulFinal->pembimbing1->dosen->nama . '</b> sebagai pembimbing utama
-                    selanjutnya silahkan pilih dosen yang ingin Anda jadikan sebagai pembimbing kedua:
-                </div>';
+                        Anda telah memilih <b>' . $value->judulFinal->pembimbing1->dosen->nama . '</b> sebagai pembimbing utama.
+                        Selanjutnya silakan pilih dosen yang ingin Anda jadikan sebagai pembimbing kedua:
+                    </div>';
                 foreach ($value->statusPengajuan as $status) {
                     if ($value->judulFinal->pembimbing1->dosen->nama == $status->dosen->nama) {
                         continue;
                     }
-                    echo '<form class="ambil-pembimbing-form">
-                    <input type="hidden" name="type" value="2">
-                    <input type="hidden" name="judul_final_id" value="' . $value->judulFinal->id . '">
-                    <input type="hidden" name="dosen_id" value="' . $status->dosen->id . '">
-                    <button class="btn btn-link p-0">' . $status->dosen->nama . '</button>
-                </form>';
+                    echo '<form class="ambil-pembimbing-form" method="POST" action="URL_ACTION">
+                            @csrf
+                            <input type="hidden" name="type" value="2">
+                            <input type="hidden" name="judul_final_id" value="' . $value->judulFinal->id . '">
+                            <input type="hidden" name="dosen_id" value="' . $status->dosen->id . '">
+                            <button class="btn btn-link p-0">' . $status->dosen->nama . '</button>
+                        </form>';
                 }
-            }
-            if (
+            } elseif (
                 !empty($value->listPembimbing) &&
                 !empty($value->statusPengajuan) &&
                 !empty($value->judulFinal) &&
@@ -228,16 +233,16 @@ class TugasAkhirController extends Controller
                 !empty($value->judulFinal->pembimbing2->dosen)
             ) {
                 echo '<div class="my-2">
-            Anda telah memilih <b>' . $value->judulFinal->pembimbing1->dosen->nama . '</b> sebagai pembimbing utama
-            dan <b>' . $value->judulFinal->pembimbing2->dosen->nama . '</b> dijadikan sebagai pembimbing kedua.
-            Selanjutnya silahkan berpindah ke halaman bimbingan untuk melanjutkan proses tugas akhir Anda.
-        </div>';
+                        Anda telah memilih <b>' . $value->judulFinal->pembimbing1->dosen->nama . '</b> sebagai pembimbing utama
+                        dan <b>' . $value->judulFinal->pembimbing2->dosen->nama . '</b> sebagai pembimbing kedua.
+                        Selanjutnya silakan berpindah ke halaman bimbingan untuk melanjutkan proses tugas akhir Anda.
+                    </div>';
             }
             echo '</td>
-    </tr>';
+                </tr>';
         }
         echo '</tbody>
-</table>';
+            </table>';
     }
 
     public function pilihPembimbing(Request $request)

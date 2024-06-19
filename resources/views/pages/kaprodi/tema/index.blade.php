@@ -27,13 +27,9 @@
                         <td>{{ $tema->fakultas->nama }}</td>
                         <td>{{ $tema->nama }}</td>
                         <td>
-                            <button type="button" class="btn btn-info" data-toggle="modal"
-                                data-target="#detailModal{{ $tema->id }}">
-                                Detail
-                            </button>
+
                             <a href="{{ route('halamanEditTema', $tema->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('DeleteTema', $tema->id) }}" method="POST"
-                                style="display:inline-block;">
+                            <form action="{{ route('DeleteTema', $tema->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger"
@@ -43,26 +39,6 @@
                     </tr>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="detailModal{{ $tema->id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="detailModalLabel{{ $tema->id }}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="detailModalLabel{{ $tema->id }}">Detail Tema</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><strong>Fakultas:</strong> {{ $tema->fakultas->nama }}</p>
-                                    <p><strong>Nama Tema:</strong> {{ $tema->nama }}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @endforeach
             </tbody>
         </table>

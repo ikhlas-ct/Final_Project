@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ Request::is('tema-pengajuan') ? 'active' : '' }}"
+                    <a class="sidebar-link {{ Request::is('tema-pengajuan') || Request::is('editTema/*') ? 'active' : '' }}"
                         href="{{ url('tema-pengajuan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
@@ -49,7 +49,7 @@
                         <span class="hide-menu">Tema</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -57,7 +57,7 @@
                         </span>
                         <span class="hide-menu">Profile</span>
                     </a>
-                </li>
+                </li> --}}
                 <hr>
                 <li class="sidebar-item  bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"
@@ -114,7 +114,7 @@
                         <span class="hide-menu">Fakultas</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -122,7 +122,7 @@
                         </span>
                         <span class="hide-menu">Profile</span>
                     </a>
-                </li>
+                </li> --}}
                 <hr>
                 <li class="sidebar-item bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"
@@ -191,7 +191,7 @@
                         <span class="hide-menu">Logbook</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -199,7 +199,7 @@
                         </span>
                         <span class="hide-menu">Profile</span>
                     </a>
-                </li>
+                </li> --}}
                 <hr>
                 <li class="sidebar-item  bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"

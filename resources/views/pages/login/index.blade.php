@@ -8,10 +8,14 @@
                 <div class="col-md-8 col-lg-4 col-xxl-3">
                     <div class="card mb-0" style="width: 400px">
                         <div class="card-body">
-                            <img src="{{asset('assets/images/logos/login_logo.png')}}" alt="Logo" class="img-fluid" style="width: 300px; margin-top: -50px; margin-bottom: -50px">
-                            <p class="text-center mb-3">Welcome back! 👋</p>
-                            <h4 class="text-center mb-4">Login to your account</h4>
-
+                            <div class="row mb-4">
+                                <div class="col-2"></div>
+                                <div class="col-8">
+                                    <img src="{{ asset('assets/images/logos/logo1.png') }}" alt="Logo"
+                                        class="img-fluid">
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
                             <!-- Display error message if exists -->
                             @if (session('error'))
                                 <div class="alert alert-danger">

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Dosen;
 use App\Models\JudulFinal;
-use App\Models\bimbinganP1;
+use App\Models\BimbinganP1;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,7 +20,7 @@ class Pembimbing1 extends Model
 
     public function bimbinganp1()
     {
-        return $this->hasMany(bimbinganP1::class);
+        return $this->hasMany(BimbinganP1::class);
     }
 
     public function judulFInal()

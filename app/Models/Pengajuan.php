@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\JudulFinal;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pengajuan extends Model
 {
@@ -20,7 +21,7 @@ class Pengajuan extends Model
 
     public function judulFinal()
     {
-        return $this->hasOne(judulFinal::class);
+        return $this->hasOne(JudulFinal::class);
     }
 
     public function listPembimbing()

@@ -60,7 +60,8 @@
                 @php
                     $isDisabled = empty($status_p1) || empty($status_p2);
                 @endphp
-                <button {{ $isDisabled ? 'disabled' : '' }} class="btn btn-primary">Download</button>
+                <a href="{{ route('generate-pdf', ['id' => $mahasiswaId]) }}" {{ $isDisabled ? 'disabled' : '' }}
+                    class="btn btn-primary">Download</a>
             </div>
         </div>
     </div>
@@ -83,10 +84,12 @@
                             <label for="kegiatan" class="form-label">Kegiatan</label>
                             <input require type="text" class="form-control" id="kegiatan" name="kegiatan"
                                 placeholder="Masukan kegiatan">
+                            <div class="invalid-feedback">Kegiatan tidak boleh kosong.</div>
                         </div>
                         <div class="mb-3">
                             <label for="detail_kegiatan" class="form-label">Detail Kegiatan</label>
                             <textarea require class="form-control" id="detail_kegiatan" name="detail_kegiatan" rows="5"></textarea>
+                            <div class="invalid-feedback">Detail kegiatan tidak boleh kosong dan minimal 20 kata.</div>
                         </div>
                     </form>
                 </div>
@@ -172,11 +175,25 @@
         });
 
         function submitLogbook(event) {
-            event.preventDefault(); // Mencegah pengiriman form secara default
+            event.preventDefault();
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
 
+            let kegiatan = $('#kegiatan').val();
+            if (!kegiatan) {
+                $('#kegiatan').addClass('is-invalid');
+                $('#kegiatan').siblings('.invalid-feedback').show();
+                return; // Menghentikan pengiriman formulir jika kegiatan kosong
+            }
+
+            let detailKegiatan = $('#detail_kegiatan').val();
+            if (!detailKegiatan) {
+                $('#detail_kegiatan').addClass('is-invalid');
+                $('#detail_kegiatan').siblings('.invalid-feedback').show();
+                return;
+            }
             let form = $('#form-logbook');
             let csrfToken = $('input[name="_token"]').val();
-
             $.ajax({
                 type: 'POST',
                 url: '{{ route('simpan.logbook') }}', // Ganti dengan URL yang sesuai
@@ -185,9 +202,8 @@
                     'X-CSRF-TOKEN': csrfToken
                 },
                 success: function(response) {
-                    // alert(response);
-                    $('#hide-modal').trigger('click');
-                    window.location.reload();
+                    $('#hide-modal').trigger('click'); // Tutup modal
+                    window.location.reload(); // Muat ulang halaman
                 },
                 error: function(error) {
                     console.error('Error:', error);

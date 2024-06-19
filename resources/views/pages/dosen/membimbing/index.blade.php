@@ -102,10 +102,12 @@
                     <div class="mb-3">
                         <label for="tanggal" class="form-label">Tanggal</label>
                         <input type="datetime-local" class="form-control" id="tanggal">
+                        <div class="invalid-feedback" id="tanggal-err"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="hide-modal" type="button" class="btn btn-warning" data-bs-dismiss="modal">Batal</button>
+                    <button id="hide-modal" type="button" class="btn btn-outline-primary"
+                        data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-primary" id="submitDate">Kirim</button>
                 </div>
             </div>
@@ -116,6 +118,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            let today = new Date().toISOString().split("T")[
+                0];
+            $('#tanggal').attr('min', today);
             $('#example').DataTable({
                 "ordering": false,
             });
@@ -148,21 +153,56 @@
                 let url = '/bimbingan/update/' + bimbinganId;
                 let method = 'PUT';
                 data._token = '{{ csrf_token() }}';
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: data,
-                    success: function(response) {
-                        // alert(response);
-                        if (action === 'reschedule') {
-                            $('#hide-modal').trigger('click');
+                if (action == 'updateStatus') {
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: data,
+                        success: function(response) {
+                            // alert(response);
+                            if (action === 'reschedule') {
+                                $('#hide-modal').trigger('click');
+                            }
+                            window.location.reload();
+                        },
+                        error: function(xhr) {
+                            alert('Gagal memproses permintaan');
                         }
-                        window.location.reload();
-                    },
-                    error: function(xhr) {
-                        alert('Gagal memproses permintaan');
+                    });
+                } else {
+                    let selectedDate = new Date($('#tanggal').val());
+                    let today = new Date();
+                    var errInput = $('#tanggal');
+                    var errText = $('#tanggal-err');
+                    errInput.removeClass('is-invalid');
+                    errText.text('');
+                    if ($(errInput).val() == "") {
+                        errInput.addClass('is-invalid');
+                        errText.text('Isi Tanggal dan waktu');
+                        return;
+                    } else if (selectedDate < today) {
+                        errInput.addClass('is-invalid');
+                        errText.text('Waktu yang Anda pilih harus setidaknya hari ini atau hari mendatang.');
+                        return;
+                    } else {
+                        $.ajax({
+                            url: url,
+                            type: method,
+                            data: data,
+                            success: function(response) {
+                                // alert(response);
+                                if (action === 'reschedule') {
+                                    $('#hide-modal').trigger('click');
+                                }
+                                window.location.reload();
+                            },
+                            error: function(xhr) {
+                                alert('Gagal memproses permintaan');
+                            }
+                        });
                     }
-                });
+                }
+
             }
         });
     </script>

@@ -13,7 +13,6 @@
             {{-- P1 --}}
             <div class="col-6">
                 @foreach ($pengajuan as $item)
-                    {{ $pengajuan }}
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">
@@ -229,16 +228,16 @@
                                 <input readonly type="text" class="form-control" id="nama-pembimbing" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Tanggal</label>
-                                <input name="tanggal" type="datetime-local" class="form-control"
-                                    id="exampleFormControlInput1">
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input name="tanggal" type="datetime-local" class="form-control" id="tanggal-input">
+                                <div class="invalid-feedback" id="tanggal-err"></div>
                             </div>
                             <input name="type" type="hidden" class="form-control" id="type">
                             <input name="id" type="hidden" class="form-control" id="id">
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button id="hide-modal" type="button" class="btn btn-secondary"
+                        <button id="hide-modal" type="button" class="btn btn-outline-primary"
                             data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Kirim</button>
                     </div>
@@ -251,6 +250,9 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            let today = new Date().toISOString().split("T")[
+                0];
+            $('#tanggal-input').attr('min', today);
             $('#exampleModal').on('show.bs.modal', function(event) {
                 let button = $(event.relatedTarget);
                 let type = button.data('type');
@@ -263,43 +265,41 @@
                 modal.find('.modal-body input#nama-pembimbing').val(nama);
 
             });
-
             $('#form-bimbingan').on('submit', function(e) {
                 e.preventDefault();
-                let csrfToken = $('input[name="_token"]').val();
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('store.bimbingan') }}',
-                    data: $('#form-bimbingan').serialize(),
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        $('#hide-modal').trigger('click');
-                        window.location.reload();
-                        //     Swal.fire({
-                        //         title: "Selamat!",
-                        //         text: `
-                    // Permintaan bimbingan Anda sudah kami teruskan ke dosen yang bersangkutan. Mohon tunggu respons dari beliau atau jika Anda ingin mempercepat proses ini, Anda bisa langsung menghubunginya dengan mengklik tombol 'Hubungi' yang sudah disediakan.
-                    // `,
-                        //         icon: "info"
-                        //     });
+                let selectedDate = new Date($('#tanggal-input').val());
+                let today = new Date();
+                var errInput = $('#tanggal-input');
+                var errText = $('#tanggal-err');
+                errInput.removeClass('is-invalid');
+                errText.text('')
+                if ($('#tanggal-input').val() == "") {
+                    errInput.addClass('is-invalid');
+                    errText.text('Isi Tanggal dan waktu');
+                    return;
+                } else if (selectedDate < today) {
+                    errInput.addClass('is-invalid');
+                    errText.text('Waktu yang Anda pilih harus setidaknya hari ini atau hari mendatang.');
+                    return;
+                } else {
+                    let csrfToken = $('input[name="_token"]').val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('store.bimbingan') }}',
+                        data: $('#form-bimbingan').serialize(),
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(response) {
+                            $('#hide-modal').trigger('click');
+                            window.location.reload();
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
 
-                        //     Swal.fire({
-                        //         icon: "success",
-                        //         title: "Selamat!",
-                        //         text: 'Anda telah berhasil memilihkan pembimbing.',
-                        //         showConfirmButton: false,
-                        //         timer: 1500
-                        //     });
-
-                        // $('#hide-modal').trigger('click');
-                        // loadData();
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
             });
 
         });

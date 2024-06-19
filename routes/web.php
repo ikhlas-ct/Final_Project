@@ -4,7 +4,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\KaprodiController;
-use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MembimbingController;
 use App\Http\Controllers\TemaController;
+use App\Http\Controllers\PdfController;
 // use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -61,8 +61,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/admin/fakultas/{id}/edit', [AdminController::class, 'edit_fakultas'])->name('fakultas.edit');
         Route::put('/fakultas/update/{id}', [AdminController::class, 'update_fakultas'])->name('fakultas.update');
         Route::delete('/fakultas/delete/{id}', [AdminController::class, 'destroy_fakultas'])->name('fakultas.destroy');
-                        
-
     });
 });
 
@@ -117,15 +115,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::post('/bimbingan/store', [BimbinganController::class, 'store'])->name('store.bimbingan');
     Route::get('/logbook', [LogbookController::class, 'index'])->name('logbook');
     Route::post('/logbook/simpan', [LogbookController::class, 'store'])->name('simpan.logbook');
-    // Route::get('mahasiswa/dashboard', [MahasiswaController::class, 'index'])->name('halamanDashboard');
-    // Route::get('/pilih-pembimbing', [MahasiswaController::class, 'pilihPembimbing'])->name('pilihPembimbing');
-    // Route::get('/tugas-akhir', [MahasiswaController::class, 'tugasAkhir'])->name('tugasAkhir');
-    // Route::get('/tugas-akhir-create', [MahasiswaController::class, 'tugasAkhirCreate'])->name('tugasAkhirCreate');
-    // Route::post('/tugas-akhir', [MahasiswaController::class, 'StoreTugasAkhir'])->name('StoreTugasAkhir');
-    // Route::put('/profile/update', [MahasiswaController::class, 'update'])->name('profileUpdate');
-    // Route::put('/passwordProdi/update', [MahasiswaController::class, 'updatePassword'])->name('passwordUpdateMahasiswa');
-    // Route::get('/konsultasi', [MahasiswaController::class, 'konsul'])->name('halamanKonsultasi');
-    // Route::get('/tgl_penting', [MahasiswaController::class, 'tgl_penting'])->name('halamanTanggal');
+    Route::get('/generate-pdf/{id}', [PdfController::class, 'generatePDF'])->name('generate-pdf');
 });
 
 // // Fallback route

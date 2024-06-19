@@ -107,7 +107,7 @@ class LogbookController extends Controller
         // print_r($mergeData);
         // echo '</pre>';
         // die;
-        return view('pages.mahasiswa.logbook.index', compact('mergeData', 'status_p1', 'status_p2'));
+        return view('pages.mahasiswa.logbook.index', compact('mergeData', 'status_p1', 'status_p2', 'mahasiswaId'));
     }
 
     /**

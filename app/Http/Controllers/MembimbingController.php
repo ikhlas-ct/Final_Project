@@ -209,24 +209,28 @@ class MembimbingController extends Controller
         $status_p1 = "";
         $status_p2 = "";
         foreach ($mergeData as $item) {
-
             if (isset($item['dosen_p1'])) {
                 $status_p1 = $item['p1_status'];
                 $dosen_p1 = $item['dosen_p1'];
                 $totalBimbinganP1++;
+                // Asumsikan bahwa 'p1_id' dapat ada pada indeks ini
+                if ($pembimbing == 1) {
+                    $pembimbingId = isset($item['p1_id']) ? $item['p1_id'] . '.1' : '';
+                }
             }
             if (isset($item['dosen_p2'])) {
                 $status_p2 = $item['p2_status'];
                 $dosen_p2 = $item['dosen_p2'];
                 $totalBimbinganP2++;
-            }
-            if ($pembimbing == 1) {
-                $pembimbingId = isset($item['p1_id']) ? $item['p1_id'] . '.1' : '';
-            } else {
-                $pembimbingId = isset($item['p2_id']) ? $item['p2_id'] . '.2' : '';
+                // Asumsikan bahwa 'p2_id' dapat ada pada indeks ini
+                if ($pembimbing == 2) {
+                    $pembimbingId = isset($item['p2_id']) ? $item['p2_id'] . '.2' : '';
+                }
             }
         }
-
+        // echo '<pre>';
+        // print_r($mergeData);
+        // echo '<pre>';
         // echo $pembimbingId;
         // die;
         // echo "Dosen Pembimbing 1: " . ($dosen_p1 ?? 'Tidak ditemukan') . "<br>";

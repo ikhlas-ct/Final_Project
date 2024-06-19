@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Dosen;
+use App\Models\JudulFinal;
 use App\Models\bimbinganP2;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

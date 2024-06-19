@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Fakultas;
+use App\Models\JudulFinal;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tema extends Model
 {
@@ -18,7 +20,7 @@ class Tema extends Model
 
     public function pengajuan()
     {
-        return $this->hashMany(Judul::class);
+        return $this->hashMany(JudulFinal::class);
     }
 
     public function fakultas()

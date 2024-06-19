@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pembimbing2;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LogbookB2 extends Model
 {
@@ -19,6 +20,6 @@ class LogbookB2 extends Model
 
     public function pembimbingP2()
     {
-        return $this->belongsTo(PembimbingP2::class);
+        return $this->belongsTo(Pembimbing2::class);
     }
 }

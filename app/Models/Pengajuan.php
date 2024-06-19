@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Tema;
+use App\Models\Mahasiswa;
 use App\Models\JudulFinal;
+use App\Models\ListPembimbing;
+use App\Models\StatusPengajuan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

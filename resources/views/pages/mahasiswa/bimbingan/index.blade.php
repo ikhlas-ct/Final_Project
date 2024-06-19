@@ -4,6 +4,15 @@
     @php
         use Carbon\Carbon;
         Carbon::setLocale('id');
+
+        function formatPhoneNumber($number)
+        {
+            if (strpos($number, '0') === 0) {
+                return '62' . substr($number, 1);
+            }
+            return $number;
+        }
+
     @endphp
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -99,7 +108,10 @@
                                 </div>
                                 <hr>
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-primary">Hubungi</button>
+                                    <a target="_blank"
+                                        href="https://wa.me/{{ formatPhoneNumber($item->judulFinal->pembimbing1->dosen->no_hp) }}"
+                                        class="btn btn-primary">Hubungi</a>
+
                                     {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" data-type="1"
                                     data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
@@ -189,7 +201,7 @@
                                                                         class="btn btn-link m-0 p-0" data-bs-toggle="modal"
                                                                         data-bs-target="#exampleModal" data-type="2"
                                                                         data-id="{{ $item->judulFinal->pembimbing2->id }}"
-                                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Bimbingan</button>
+                                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Ajukan</button>
                                                                 @else
                                                                     dan sudah <br> terpenuhi.
                                                                 @endif
@@ -203,7 +215,9 @@
                                 </div>
                                 <hr>
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-primary">Hubungi</button>
+                                    <a target="_blank"
+                                        href="https://wa.me/{{ formatPhoneNumber($item->judulFinal->pembimbing2->dosen->no_hp) }}"
+                                        class="btn btn-primary">Hubungi</a>
                                     {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" data-type="1"
                                     data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\bimbinganP2;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pembimbing2 extends Model
 {
@@ -18,7 +19,7 @@ class Pembimbing2 extends Model
 
     public function bimbinganp2()
     {
-        return $this->hasMany(BimbinganP2::class);
+        return $this->hasMany(bimbinganP2::class);
     }
 
     public function judulFInal()

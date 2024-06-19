@@ -60,8 +60,11 @@
                 @php
                     $isDisabled = empty($status_p1) || empty($status_p2);
                 @endphp
-                <a href="{{ route('generate-pdf', ['id' => $mahasiswaId]) }}" {{ $isDisabled ? 'disabled' : '' }}
-                    class="btn btn-primary">Download</a>
+                @if ($isDisabled)
+                    <span class="btn btn-primary disabled">Download</span>
+                @else
+                    <a href="{{ route('generate-pdf', ['id' => $mahasiswaId]) }}" class="btn btn-primary">Download</a>
+                @endif
             </div>
         </div>
     </div>

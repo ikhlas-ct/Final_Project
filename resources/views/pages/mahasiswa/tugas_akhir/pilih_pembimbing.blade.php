@@ -34,8 +34,7 @@
                                     <td class="text-start">{{ $value->dosen->nidn }}</td>
                                     <td class="text-start">{{ $value->dosen->no_hp }}</td>
                                     <td class="text-center">
-                                        <img class="img-fluid rounded-2"
-                                            src="{{ asset('assets/images/profile/user-1.jpg') }}" alt="">
+                                        <img class="img-fluid rounded-2" src="{{ $value->dosen->poto }}" alt="">
                                     </td>
                                     <td>
                                         <input class="form-check-input pembimbing-checkbox" type="checkbox"

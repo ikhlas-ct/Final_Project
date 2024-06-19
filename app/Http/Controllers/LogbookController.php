@@ -53,7 +53,7 @@ class LogbookController extends Controller
                         "type" => 1,
                         "nama_dosen" => $namaDosen,
                         "tanggal_bimbingan" => $tanggalBimbingan,
-                        "status" => $bimbinganP1->status,
+                        "status" => $item->judulFinal->pembimbing1->status,
                         'logbook' => $logbook,
                     ];
                 }
@@ -85,7 +85,7 @@ class LogbookController extends Controller
                         "type" => 2,
                         "nama_dosen" => $namaDosen,
                         "tanggal_bimbingan" => $tanggalBimbingan,
-                        "status" => $bimbinganP2->status,
+                        "status" => $item->judulFinal->pembimbing2->status,
                         'logbook' => $logbook,
                     ];
                 }
@@ -108,6 +108,9 @@ class LogbookController extends Controller
                 $status_p2 = $item['status'];
             }
         }
+
+        // echo $status_p1 . $status_p2;
+        // die;
         // Print atau kembalikan array $dataBimbinganp1
         // echo '<pre>';
         // print_r($mergeData);

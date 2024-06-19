@@ -24,5 +24,8 @@ class Admin extends Model
     {
         return $this->belongsTo(User::class);
     }
-   
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class);
+    }
 }

@@ -30,7 +30,7 @@ class LogbookController extends Controller
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
             if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing1)) {
-                AlertHelper::alertError('Selesaikan pengajuan judul dan lakukan bimbingan terlebih dahulu', 'Opsss!!', 3000);
+                AlertHelper::alertError('Selesaikan pengajuan terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }
             $namaDosen = $item->judulFinal->pembimbing1->dosen->nama;
@@ -62,7 +62,7 @@ class LogbookController extends Controller
         $dataBimbingan2 = [];
         foreach ($pengajuan as $item) {
             if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing2)) {
-                AlertHelper::alertError('Selesaikan pengajuan judul dan lakukan bimbingan terlebih dahulu', 'Opsss!!', 3000);
+                AlertHelper::alertError('Selesaikan pengajuan terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }
             $namaDosen = $item->judulFinal->pembimbing2->dosen->nama;

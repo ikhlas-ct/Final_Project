@@ -40,8 +40,9 @@
                                         data-type="{{ $item['type'] }}">Isi Logbook</button>
                                 @else
                                     <button class="btn btn-primary btn-sm m-0" data-bs-toggle="modal"
-                                        data-bs-target="#modalCreate" data-keterangan="TEST" data-detail="TEST"
-                                        data-type="lihat">Lihat
+                                        data-bs-target="#modalCreate"
+                                        data-keterangan="{{ $item['logbook'][0]['kegiatan'] }}"
+                                        data-detail="{{ $item['logbook'][0]['detail_kegiatan'] }}" data-type="lihat">Lihat
                                         Logbook</button>
                                 @endif
                             </td>

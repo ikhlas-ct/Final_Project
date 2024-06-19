@@ -108,7 +108,6 @@ class LogbookController extends Controller
                 $status_p2 = $item['status'];
             }
         }
-
         // Print atau kembalikan array $dataBimbinganp1
         // echo '<pre>';
         // print_r($mergeData);

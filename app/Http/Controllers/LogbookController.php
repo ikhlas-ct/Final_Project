@@ -33,7 +33,7 @@ class LogbookController extends Controller
                 AlertHelper::alertError('Selesaikan pengajuan terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }
-            if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty()) {
+            if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty() && $item->judulFinal->pembimbing2->bimbinganp2->isEmpty()) {
                 AlertHelper::alertError(
                     'Selesaikan bimbingan terlebih dahulu.',
                     'Oops!!',

@@ -33,8 +33,17 @@ class LogbookController extends Controller
                 AlertHelper::alertError('Selesaikan pengajuan terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }
+            if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty()) {
+                AlertHelper::alertError(
+                    'Selesaikan bimbingan terlebih dahulu.',
+                    'Oops!!',
+                    3000
+                );
+                return redirect()->back();
+            }
             $namaDosen = $item->judulFinal->pembimbing1->dosen->nama;
             foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbinganP1) {
+
                 $logbook = [];
                 foreach ($bimbinganP1->logbookB1 as $logbookB1) {
                     $logbook[] = [

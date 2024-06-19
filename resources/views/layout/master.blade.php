@@ -74,6 +74,7 @@
                 title: '{{ session('alert.title') }}',
                 text: '{{ session('alert.message') }}',
                 showConfirmButton: false,
+                // confirmButtonText: 'Oke',
                 timer: {{ session('alert.timer') }}
             });
         </script>

@@ -48,40 +48,36 @@ class FiturHelper
         $user = auth()->user();
 
         if (self::showDosen()) {
-            if ($user->dosen->gambar) {
-                return asset($user->dosen->gambar);
+            if ($user->dosen->poto) {
+                return asset($user->dosen->poto);
             } else {
-                return asset('assets/images/profile/user-1.jpg');
+                return asset('assets/images/profile/profile.png');
             }
         }
 
         if (self::showKaprodi()) {
-            if ($user->kaprodi->gambar) {
-                return asset($user->kaprodi->gambar);
+            if ($user->kaprodi->poto) {
+                return asset($user->kaprodi->poto);
             } else {
-                return asset('assets/images/profile/user-1.jpg');
+                return asset('assets/images/profile/profile.png');
             }
         }
 
         if (self::showMahasiswa()) {
-            if ($user->mahasiswa->gambar) {
-                return asset($user->mahasiswa->gambar);
+            if ($user->mahasiswa->poto) {
+                return asset($user->mahasiswa->poto);
             } else {
-                return asset('assets/images/profile/user-1.jpg');
+                return asset('assets/images/profile/profile.png');
             }
         }
         if (self::ShowAdmin()) {
             if ($user->admin->gambar) {
                 return asset($user->admin->gambar);
             } else {
-                return asset('assets/images/profile/user-1.jpg');
+                return asset('assets/images/profile/profile.png');
             }
         }
         // Default image for other roles or if user doesn't have specific profile images
-        if ($user->gambar) {
-            return asset($user->gambar);
-        } else {
-            return asset('assets/images/profile/user-1.jpg');
-        }
+
     }
 }

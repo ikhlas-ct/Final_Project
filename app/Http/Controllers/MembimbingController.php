@@ -9,6 +9,7 @@ use App\Models\JudulFinal;
 use App\Models\Pengajuan;
 use App\Models\Pembimbing1;
 use App\Models\Pembimbing2;
+use App\Helpers\AlertHelper;
 
 class MembimbingController extends Controller
 {
@@ -116,6 +117,8 @@ class MembimbingController extends Controller
                 $query->where('status', 'selesai')->with('logbookB2');
             }
         ])->where('id', $mahasiswaId)->get();
+
+
 
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
@@ -235,7 +238,10 @@ class MembimbingController extends Controller
         // die;
         // echo "Dosen Pembimbing 1: " . ($dosen_p1 ?? 'Tidak ditemukan') . "<br>";
         // echo "Dosen Pembimbing 2: " . ($dosen_p2 ?? 'Tidak ditemukan') . "<br>";
-
+        if (empty($pembimbingId)) {
+            AlertHelper::alertError('Mahasiswa terkait belum melakukan sesi bimbingan apa pun.', 'Opsss!!', 3000);
+            return redirect()->back();
+        }
         return view('pages.dosen.membimbing.show', compact('mergeData', 'as', 'dosen_p1', 'totalBimbinganP1', 'dosen_p2', 'totalBimbinganP2', 'pembimbingId', 'status_p1', 'status_p2'));
     }
 

@@ -6,6 +6,8 @@ use App\Models\Tema;
 use App\Models\Fakultas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+// 
+use App\Helpers\AlertHelper;
 
 class TemaController extends Controller
 {
@@ -39,7 +41,8 @@ class TemaController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Ditambah');
+        AlertHelper::alertSuccess('Anda telah berhasil membuat tema TA', 'Selamat!', 2000);
+        return redirect()->back();
     }
 
     public function editTema($id)
@@ -67,8 +70,8 @@ class TemaController extends Controller
             'nama' => $request->nama,
             'fakultas_id' => $request->fakultas_id,
         ]);
-
-        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Diupdate');
+        AlertHelper::alertSuccess('Anda telah berhasil mengupdate tema TA', 'Selamat!', 2000);
+        return redirect()->route('temaIndex');
     }
 
     public function showTema($id)
@@ -81,7 +84,7 @@ class TemaController extends Controller
     {
         $tema = Tema::findOrFail($id);
         $tema->delete();
-
-        return redirect()->route('temaIndex')->with('success', 'Tema Berhasil Dihapus');
+        AlertHelper::alertSuccess('Anda telah berhasil menghapus tema TA', 'Selamat!', 2000);
+        return redirect()->back();
     }
 }

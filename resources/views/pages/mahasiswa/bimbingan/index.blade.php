@@ -15,94 +15,100 @@
                 @foreach ($pengajuan as $item)
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img class="img-fluid img-thumbnail rounded-2" src="{{ asset('user-1.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <div class="w-100">
-                                        <div class="h5 fw-bolder">
-                                            {{ $item->judulFinal->pembimbing1->dosen->nama }}
-                                        </div>
-                                        <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kesatu</div>
-                                        <hr>
-                                        @if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty())
-                                            <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
-                                                    id="btn-bimbingan-1" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal" data-type="1"
-                                                    data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Ajukan</button>
-                                            </p>
-                                            <div
-                                                class="d-flex
-                                                    gap-1 mt-1">
-                                                <div class="fs-7 text-muted">Reschedule:</div>
-                                                <div>-</div>
+                            @if (!empty($item->judulFinal->pembimbing1))
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img class="img-fluid img-thumbnail rounded-2"
+                                            src="{{ $item->judulFinal->pembimbing1->dosen->poto }}" alt="Kosong">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="w-100">
+                                            <div class="h5 fw-bolder">
+                                                {{ $item->judulFinal->pembimbing1->dosen->nama }}
                                             </div>
-                                        @else
-                                            @foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbingan)
-                                                @if ($bimbingan->status === 'diproses' || $bimbingan->status === 'diterima')
-                                                    <p class="d-inline fs-7">Bimbingan yang akan datang <br>
-                                                        {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
-                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
-                                                                class="text-capitalize">{{ $bimbingan->status }}</span></span>
-                                                    </p>
-                                                    <div
-                                                        class="d-flex
+                                            <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kesatu</div>
+                                            <hr>
+                                            @if ($item->judulFinal->pembimbing1->bimbinganp1->isEmpty())
+                                                <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
+                                                        id="btn-bimbingan-1" class="btn btn-link m-0 p-0"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal" data-type="1"
+                                                        data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                        data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Ajukan</button>
+                                                </p>
+                                                <div
+                                                    class="d-flex
                                                     gap-1 mt-1">
-                                                        <div class="fs-7 text-muted">Reschedule:
+                                                    <div class="fs-7 text-muted">Reschedule:</div>
+                                                    <div>-</div>
+                                                </div>
+                                            @else
+                                                @foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbingan)
+                                                    @if ($bimbingan->status === 'diproses' || $bimbingan->status === 'diterima')
+                                                        <p class="d-inline fs-7">Bimbingan yang akan datang <br>
+                                                            {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
+                                                                class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
+                                                                    class="text-capitalize">{{ $bimbingan->status }}</span></span>
+                                                        </p>
+                                                        <div
+                                                            class="d-flex
+                                                    gap-1 mt-1">
+                                                            <div class="fs-7 text-muted">Reschedule:
+                                                            </div>
+                                                            <div>
+                                                                @if (!empty($bimbingan->tanggal_reschedule))
+                                                                    {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            @if (!empty($bimbingan->tanggal_reschedule))
-                                                                {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
+                                                    @else
+                                                        <p class="d-inline fs-7">Bimbingan pada tanggal: <br>
+                                                            {!! '<b>' .
+                                                                \Carbon\Carbon::parse(
+                                                                    $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
+                                                                )->translatedFormat('d F Y H:i') .
+                                                                '</b>' !!}
+                                                            <span class="badge bg-success text-white' }}">
+                                                                <span
+                                                                    class="text-capitalize">{{ $bimbingan->status }}</span>
+                                                            </span>
+                                                        </p>
+                                                        <div class="d-inline">
+                                                            @if ($bimbingan->logbookB1->isEmpty())
+                                                                Silahkan isi
+                                                                <a href="/logbook" class="btn btn-link m-0 p-0 ">
+                                                                    Logbook</a>
                                                             @else
-                                                                -
+                                                                @if (empty($item->judulFinal->pembimbing1->status))
+                                                                    silahkan ajukan <button id="btn-bimbingan-1"
+                                                                        class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal" data-type="1"
+                                                                        data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                        data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                                @else
+                                                                    dan sudah <br> terpenuhi.
+                                                                @endif
                                                             @endif
                                                         </div>
-                                                    </div>
-                                                @else
-                                                    <p class="d-inline fs-7">Bimbingan pada tanggal: <br>
-                                                        {!! '<b>' .
-                                                            \Carbon\Carbon::parse(
-                                                                $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
-                                                            )->translatedFormat('d F Y H:i') .
-                                                            '</b>' !!}
-                                                        <span class="badge bg-success text-white' }}">
-                                                            <span class="text-capitalize">{{ $bimbingan->status }}</span>
-                                                        </span>
-                                                    </p>
-                                                    <div class="d-inline">
-                                                        @if ($bimbingan->logbookB1->isEmpty())
-                                                            Silahkan isi
-                                                            <a href="/logbook" class="btn btn-link m-0 p-0 ">
-                                                                Logbook</a>
-                                                        @else
-                                                            @if (empty($item->judulFinal->pembimbing1->status))
-                                                                silahkan ajukan <button id="btn-bimbingan-1"
-                                                                    class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#exampleModal" data-type="1"
-                                                                    data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
-                                                            @else
-                                                                dan sudah <br> terpenuhi.
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-primary">Hubungi</button>
-                                {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-primary">Hubungi</button>
+                                    {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" data-type="1"
                                     data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
                                     data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Bimbingan</button> --}}
-                            </div>
+                                </div>
+                            @else
+                                <p class="text-muted fst-italic">Note: Selesaikan Pengajuan TA telebih dahulu
+                                </p>
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -113,94 +119,100 @@
                 @foreach ($pengajuan as $item)
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-4">
-                                    <img class="img-fluid img-thumbnail rounded-2" src="{{ asset('user-1.jpg') }}"
-                                        alt="">
-                                </div>
-                                <div class="col-8 d-flex align-items-center">
-                                    <div class="w-100">
-                                        <div class="h5 fw-bolder">
-                                            {{ $item->judulFinal->pembimbing2->dosen->nama }}
-                                        </div>
-                                        <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kedua</div>
-                                        <hr>
-                                        @if ($item->judulFinal->pembimbing2->bimbinganp2->isEmpty())
-                                            <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
-                                                    id="btn-bimbingan-2" class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal" data-type="2"
-                                                    data-id="{{ $item->judulFinal->pembimbing2->id }}"
-                                                    data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Ajukan</button>
-                                            </p>
-                                            <div
-                                                class="d-flex
-                                                    gap-1 mt-1">
-                                                <div class="fs-7 text-muted">Reschedule:</div>
-                                                <div>-</div>
+                            @if (!empty($item->judulFinal->pembimbing2))
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img class="img-fluid img-thumbnail rounded-2"
+                                            src="{{ $item->judulFinal->pembimbing2->dosen->poto }}" alt="Kosong">
+                                    </div>
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div class="w-100">
+                                            <div class="h5 fw-bolder">
+                                                {{ $item->judulFinal->pembimbing2->dosen->nama }}
                                             </div>
-                                        @else
-                                            @foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbingan)
-                                                @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
-                                                    <p class="d-inline fs-7">Bimbingan yang akan datang <br>
-                                                        {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
-                                                            class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
-                                                                class="text-capitalize">{{ $bimbingan->status }}</span></span>
-                                                    </p>
-                                                    <div
-                                                        class="d-flex
+                                            <div class="h6 fw-bolder text-muted fst-italic">Pembimbing Kedua</div>
+                                            <hr>
+                                            @if ($item->judulFinal->pembimbing2->bimbinganp2->isEmpty())
+                                                <p class="d-inline fs-7">Bimbingan yang akan datang <br> silahkan <button
+                                                        id="btn-bimbingan-2" class="btn btn-link m-0 p-0"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal" data-type="2"
+                                                        data-id="{{ $item->judulFinal->pembimbing2->id }}"
+                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Ajukan</button>
+                                                </p>
+                                                <div
+                                                    class="d-flex
                                                     gap-1 mt-1">
-                                                        <div class="fs-7 text-muted">Reschedule:
+                                                    <div class="fs-7 text-muted">Reschedule:</div>
+                                                    <div>-</div>
+                                                </div>
+                                            @else
+                                                @foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbingan)
+                                                    @if ($bimbingan->status == 'diproses' || $bimbingan->status == 'diterima')
+                                                        <p class="d-inline fs-7">Bimbingan yang akan datang <br>
+                                                            {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal)->translatedFormat('d F Y H:i') . '</b>' !!} <span
+                                                                class="badge  {{ $bimbingan->status === 'diproses' ? 'bg-danger text-dark' : 'bg-warning text-white' }}"><span
+                                                                    class="text-capitalize">{{ $bimbingan->status }}</span></span>
+                                                        </p>
+                                                        <div
+                                                            class="d-flex
+                                                    gap-1 mt-1">
+                                                            <div class="fs-7 text-muted">Reschedule:
+                                                            </div>
+                                                            <div>
+                                                                @if (!empty($bimbingan->tanggal_reschedule))
+                                                                    {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            @if (!empty($bimbingan->tanggal_reschedule))
-                                                                {!! '<b>' . \Carbon\Carbon::parse($bimbingan->tanggal_reschedule)->translatedFormat('d F Y H:i') . '</b>' !!}
+                                                    @else
+                                                        <p class="d-inline fs-7">Bimbingan pada tanggal <br>
+                                                            {!! '<b>' .
+                                                                \Carbon\Carbon::parse(
+                                                                    $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
+                                                                )->translatedFormat('d F Y H:i') .
+                                                                '</b>' !!}
+                                                            <span class="badge bg-success text-white">
+                                                                <span
+                                                                    class="text-capitalize">{{ $bimbingan->status }}</span>
+                                                            </span>
+                                                        </p>
+                                                        <div class="d-inline">
+                                                            @if ($bimbingan->logbookB2->isEmpty())
+                                                                Silahkan isi
+                                                                <a href="/logbook" class="btn btn-link m-0 p-0 ">
+                                                                    Logbook</a>
                                                             @else
-                                                                -
+                                                                @if (empty($item->judulFinal->pembimbing2->status))
+                                                                    silahkan ajukan <button id="btn-bimbingan-1"
+                                                                        class="btn btn-link m-0 p-0" data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal" data-type="1"
+                                                                        data-id="{{ $item->judulFinal->pembimbing1->id }}"
+                                                                        data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                                @else
+                                                                    dan sudah <br> terpenuhi.
+                                                                @endif
                                                             @endif
                                                         </div>
-                                                    </div>
-                                                @else
-                                                    <p class="d-inline fs-7">Bimbingan pada tanggal <br>
-                                                        {!! '<b>' .
-                                                            \Carbon\Carbon::parse(
-                                                                $bimbingan->tanggal_reschedule ? $bimbingan->tanggal_reschedule : $bimbingan->tanggal,
-                                                            )->translatedFormat('d F Y H:i') .
-                                                            '</b>' !!}
-                                                        <span class="badge bg-success text-white">
-                                                            <span class="text-capitalize">{{ $bimbingan->status }}</span>
-                                                        </span>
-                                                    </p>
-                                                    <div class="d-inline">
-                                                        @if ($bimbingan->logbookB2->isEmpty())
-                                                            Silahkan isi
-                                                            <a href="/logbook" class="btn btn-link m-0 p-0 ">
-                                                                Logbook</a>
-                                                        @else
-                                                            @if (empty($item->judulFinal->pembimbing2->status))
-                                                                silahkan ajukan <button id="btn-bimbingan-1"
-                                                                    class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#exampleModal" data-type="1"
-                                                                    data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                                    data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
-                                                            @else
-                                                                dan sudah <br> terpenuhi.
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-primary">Hubungi</button>
-                                {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-primary">Hubungi</button>
+                                    {{-- <button id="btn-bimbingan-1" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" data-type="1"
                                     data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}"
                                     data-id="{{ $item->judulFinal->pembimbing1->dosen->id }}">Bimbingan</button> --}}
-                            </div>
+                                </div>
+                            @else
+                                <p class="text-muted fst-italic">Note: Selesaikan Pengajuan TA telebih dahulu
+                                </p>
+                            @endif
                         </div>
                     </div>
                 @endforeach

@@ -2,11 +2,6 @@
 @section('title', 'Tugas Akhir')
 @section('content')
     <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="card-title fw-semibold ">Pendaftaran Judul TA</h4>
         </div>

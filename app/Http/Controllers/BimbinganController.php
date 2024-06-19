@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pengajuan;
-use App\Models\BimbinganP1;
-use App\Models\BimbinganP2;
+use App\Helpers\AlertHelper;
 
 class BimbinganController extends Controller
 {
@@ -28,6 +27,17 @@ class BimbinganController extends Controller
                 $query->orderBy('updated_at', 'desc')->with('logbookB2')->first();;
             }
         ])->where('id', $mahasiswaId)->get();
+        if (empty($pengajuan->judulFinal)) {
+            AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+            return redirect()->back();
+        }
+        foreach ($pengajuan as $item) {
+            if (empty($item->judulFinal->pembimbing1) || empty($item->judulFinal->pembimbing2)) {
+                AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+                return redirect()->back();
+            }
+        }
+
         // 
         return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
     }

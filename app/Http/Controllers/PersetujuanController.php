@@ -77,7 +77,7 @@ class PersetujuanController extends Controller
         }])->get();
 
         // Bangun HTML table
-        $html = '<table id="example" class="cell-border" style="width:100%">
+        $html = '<table id="example" class="table-bordered" style="width:100%">
                 <thead>
                     <tr>
                         <th style="width:5%;">No</th>

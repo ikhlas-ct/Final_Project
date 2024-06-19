@@ -14,6 +14,7 @@ class PengajuanController extends Controller
      */
     public function index()
     {
+
         $user = Auth::user();
         $dosenId = $user->dosen->id;
 
@@ -32,14 +33,18 @@ class PengajuanController extends Controller
         $user = Auth::user();
         $dosenId = $user->dosen->id;
 
-        $mahasiswa = Mahasiswa::whereHas('pengajuan.statusPengajuan', function ($query) use ($dosenId) {
-            $query->where('dosen_id', $dosenId)
-                ->where('status', 'diproses');
+        $mahasiswa = Mahasiswa::whereHas('pengajuan', function ($query) use ($dosenId) {
+            $query->whereHas('statusPengajuan', function ($query) use ($dosenId) {
+                $query->where('dosen_id', $dosenId)
+                    ->where('status', 'diproses');
+            })->whereDoesntHave('judulFinal');
         })->with(['pengajuan' => function ($query) {
             $query->with(['statusPengajuan', 'Tema']);
         }])->get();
 
-        echo '<table id="example" class="cell-border" style="width:100%">
+
+
+        echo '<table id="example" class="table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th style="width: 3%">No</th>
@@ -58,7 +63,7 @@ class PengajuanController extends Controller
                 <td>' . $pengajuan->Tema->nama . '</td>
                 <td class="text-justify">' . $pengajuan->judul . '</td>
                 <td class="text-center">
-                    <a href="" class="btn btn-sm btn-info">Lihat</a>
+                  <a href="' . asset('uploads/tugas-akhir/profosal/' . $pengajuan->proposal) . '" class="btn btn-sm btn-info" target="_blank">Lihat</a>
                 </td>
                 <td class="text-center">
                     <form class="terima-form" data-id="' . $pengajuan->id . '">

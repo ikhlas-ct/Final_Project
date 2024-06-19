@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pengajuan;
-use App\Models\Dosen;
-use Carbon\Carbon;
+use App\Helpers\AlertHelper;
 
 class LogbookController extends Controller
 {
@@ -27,9 +26,16 @@ class LogbookController extends Controller
                 $query->where('status', 'selesai')->with('logbookB2');
             }
         ])->where('id', $mahasiswaId)->get();
-
+        if (empty($pengajuan->judulFinal)) {
+            AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+            return redirect()->back();
+        }
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
+            if (empty($item->judulFinal->pembimbing1)) {
+                AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+                return redirect()->back();
+            }
             $namaDosen = $item->judulFinal->pembimbing1->dosen->nama;
             foreach ($item->judulFinal->pembimbing1->bimbinganp1 as $bimbinganP1) {
                 $logbook = [];
@@ -58,6 +64,10 @@ class LogbookController extends Controller
         }
         $dataBimbingan2 = [];
         foreach ($pengajuan as $item) {
+            if (empty($item->judulFinal->pembimbing2)) {
+                AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+                return redirect()->back();
+            }
             $namaDosen = $item->judulFinal->pembimbing2->dosen->nama;
             foreach ($item->judulFinal->pembimbing2->bimbinganp2 as $bimbinganP2) {
                 $logbook = [];

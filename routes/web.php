@@ -78,9 +78,7 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('/detailTema/{id}', [TemaController::class, 'showTema'])->name('DetailTema');
     Route::delete('/deleteTema/{id}', [TemaController::class, 'hapusTema'])->name('DeleteTema');
 
-    Route::put('profileProdi/update', [KaprodiController::class, 'updateProdi'])->name('profileUpdateProdi');
-    Route::put('password/Prodi/update', [KaprodiController::class, 'updatePassword'])->name('passwordUpdateProdi');
-    // Route::get('kaprodi-tugas-akhir', [KaprodiController::class, 'tugasAkhir'])->name('kaprodiTugasAkhir');
+    Route::put('/kaprodi/profile/update', [ProfileController::class, 'updateProfileKprd'])->name('kaprodi.profile.update');;
 });
 // // Dosen routes
 Route::middleware(['auth', 'role:dosen'])->group(function () {
@@ -94,7 +92,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function () {
     // 
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
-    Route::put('/dosen/profile/update', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
+    Route::put('/dosen/profile/update', [ProfileController::class, 'updateProfileDsn'])->name('dosen.profile.update');
     Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
@@ -117,7 +115,6 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::post('/logbook/simpan', [LogbookController::class, 'store'])->name('simpan.logbook');
     Route::get('/generate-pdf/{id}', [PdfController::class, 'generatePDF'])->name('generate-pdf');
     Route::put('/mahasiswa/profile/update', [ProfileController::class, 'updateProfileMhs'])->name('mahasiswa.profile.update');
-    Route::put('/mahasiswa/update/password', [ProfileController::class, 'updatePasswordMhs'])->name('mahasiswa.password.update');
 });
 
 // // Fallback route

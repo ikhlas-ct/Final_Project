@@ -20,6 +20,9 @@ class ProfileController extends Controller
         if (FiturHelper::showKaprodi()) {
             $user = User::with('kaprodi.fakultas')->find($userId);
         }
+        if (FiturHelper::showAdmin()) {
+            $user = User::with('admin.fakultas')->find($userId);
+        }
         if (FiturHelper::showDosen()) {
             $user = User::with('dosen.fakultas')->find($userId);
         }

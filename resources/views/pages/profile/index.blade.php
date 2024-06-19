@@ -40,9 +40,9 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3">
-                                                <label for="nim" class="form-label text-muted">NIDN</label>
-                                                <input type="text" class="form-control" id="nim" name="nim"
-                                                    value="{{ old('nim', $user->kaprodi->nidn) }}">
+                                                <label for="nidn" class="form-label text-muted">NIDN</label>
+                                                <input type="text" class="form-control" id="nidn" name="nidn"
+                                                    value="{{ old('nidn', $user->kaprodi->nidn) }}">
                                             </div>
                                         </div>
                                     </div>
@@ -111,9 +111,9 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3">
-                                                <label for="nim" class="form-label text-muted">NIDN</label>
-                                                <input type="text" class="form-control" id="nim" name="nim"
-                                                    value="{{ old('nim', $user->dosen->nidn) }}">
+                                                <label for="nidn" class="form-label text-muted">NIDN</label>
+                                                <input type="text" class="form-control" id="nidn" name="nidn"
+                                                    value="{{ old('nidn', $user->dosen->nidn) }}">
                                             </div>
                                         </div>
                                     </div>

@@ -26,13 +26,10 @@ class LogbookController extends Controller
                 $query->where('status', 'selesai')->with('logbookB2');
             }
         ])->where('id', $mahasiswaId)->get();
-        if (empty($pengajuan->judulFinal)) {
-            AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
-            return redirect()->back();
-        }
+
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
-            if (empty($item->judulFinal->pembimbing1)) {
+            if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing1)) {
                 AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }
@@ -64,7 +61,7 @@ class LogbookController extends Controller
         }
         $dataBimbingan2 = [];
         foreach ($pengajuan as $item) {
-            if (empty($item->judulFinal->pembimbing2)) {
+            if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing2)) {
                 AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }

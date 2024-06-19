@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\FiturHelper;
+use App\Models\Mahasiswa;
+use App\Helpers\AlertHelper;
 
 class profileController extends Controller
 {
@@ -98,6 +101,43 @@ class profileController extends Controller
         $user->save();
 
         AlertHelper::alertSuccess('Anda telah berhasil mengupdate password', 'Selamat!', 2000);
+        return redirect()->back();
+    }
+
+    public function updateProfileMhs(Request $request)
+    {
+        $user = Auth::user();
+
+
+
+        // Find the Mahasiswa record by the authenticated user's ID
+        $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+
+        if ($request->hasFile('poto')) {
+            $file = $request->file('poto');
+            // Generate a custom file name
+            $imageName = 'mahasiswa-' . time() . '.' . $file->extension();
+
+            // Move the file to the desired location
+            $file->move(public_path('uploads/profile/mahasiswa'), $imageName);
+            // Optionally, delete the old image if it exists
+            if (file_exists($mahasiswa->gambar)) {
+                unlink($mahasiswa->gambar);
+            }
+            $mahasiswa->poto = 'uploads/profile/mahasiswa/' . $imageName;
+        }
+
+        // Update the Mahasiswa record with new data
+        $mahasiswa->nama = $request->nama;
+
+
+        $mahasiswa->nim = $request->nim;
+        $mahasiswa->no_hp = $request->no_hp;
+
+        $mahasiswa->save();
+
+        // Display success message
+        AlertHelper::alertSuccess('Anda telah berhasil mengupdate profile', 'Selamat!', 2000);
         return redirect()->back();
     }
 }

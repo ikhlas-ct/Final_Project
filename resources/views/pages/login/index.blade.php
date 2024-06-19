@@ -8,7 +8,7 @@
                 <div class="col-md-8 col-lg-4 col-xxl-3">
                     <div class="card mb-0" style="width: 400px">
                         <div class="card-body">
-                            <div class="row mb-4">
+                            <div class="row my-4">
                                 <div class="col-2"></div>
                                 <div class="col-8">
                                     <img src="{{ asset('assets/images/logos/logo1.png') }}" alt="Logo"
@@ -25,7 +25,7 @@
 
                             <form method="POST" action="{{ route('login.post') }}">
                                 @csrf
-                                <div class="mb-3">
+                                <div class="my-3">
                                     <label for="username" class="form-label">Username</label>
                                     <input type="text" class="form-control @error('username') is-invalid @enderror"
                                         id="username" name="username" aria-describedby="usernameHelp"

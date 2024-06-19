@@ -116,6 +116,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/logbook', [LogbookController::class, 'index'])->name('logbook');
     Route::post('/logbook/simpan', [LogbookController::class, 'store'])->name('simpan.logbook');
     Route::get('/generate-pdf/{id}', [PdfController::class, 'generatePDF'])->name('generate-pdf');
+    Route::put('/mahasiswa/profile/update', [ProfileController::class, 'updateProfileMhs'])->name('mahasiswa.profile.update');
+    Route::put('/mahasiswa/update/password', [ProfileController::class, 'updatePasswordMhs'])->name('mahasiswa.password.update');
 });
 
 // // Fallback route

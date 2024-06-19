@@ -10,7 +10,6 @@
                 <img src="{{ asset('assets/images/logos/logo1.png') }}" width="180" alt=""
                     style="margin-top: -10px; margin-bottom: -50px" />
             </a>
-
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
             </div>
@@ -191,7 +190,7 @@
                         <span class="hide-menu">Logbook</span>
                     </a>
                 </li>
-                {{-- <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ Request::is('profile') ? 'active' : '' }}" href="{{ url('profile') }}"
                         aria-expanded="false">
                         <span>
@@ -199,7 +198,7 @@
                         </span>
                         <span class="hide-menu">Profile</span>
                     </a>
-                </li> --}}
+                </li>
                 <hr>
                 <li class="sidebar-item  bg-danger rounded-1">
                     <a class="sidebar-link text-white d-flex justify-content-center w-100" href="{{ url('logout') }}"

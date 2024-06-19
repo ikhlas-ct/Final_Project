@@ -185,11 +185,11 @@
                                                                     Logbook</a>
                                                             @else
                                                                 @if (empty($item->judulFinal->pembimbing2->status))
-                                                                    silahkan ajukan <button id="btn-bimbingan-1"
+                                                                    silahkan ajukan <button id="btn-bimbingan-2"
                                                                         class="btn btn-link m-0 p-0" data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModal" data-type="1"
-                                                                        data-id="{{ $item->judulFinal->pembimbing1->id }}"
-                                                                        data-nama="{{ $item->judulFinal->pembimbing1->dosen->nama }}">Bimbingan</button>
+                                                                        data-bs-target="#exampleModal" data-type="2"
+                                                                        data-id="{{ $item->judulFinal->pembimbing2->id }}"
+                                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Bimbingan</button>
                                                                 @else
                                                                     dan sudah <br> terpenuhi.
                                                                 @endif

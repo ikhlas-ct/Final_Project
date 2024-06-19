@@ -27,12 +27,9 @@ class BimbinganController extends Controller
                 $query->orderBy('updated_at', 'desc')->with('logbookB2')->first();;
             }
         ])->where('id', $mahasiswaId)->get();
-        if (empty($pengajuan->judulFinal)) {
-            AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
-            return redirect()->back();
-        }
+
         foreach ($pengajuan as $item) {
-            if (empty($item->judulFinal->pembimbing1) || empty($item->judulFinal->pembimbing2)) {
+            if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing1) || empty($item->judulFinal->pembimbing2)) {
                 AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
                 return redirect()->back();
             }

@@ -10,7 +10,7 @@ use App\Helpers\FiturHelper;
 use App\Models\Mahasiswa;
 use App\Helpers\AlertHelper;
 
-class profileController extends Controller
+class ProfileController extends Controller
 {
     public function index()
     {

@@ -174,7 +174,7 @@
                                         </div>
                                     </span>
                                 </div>
-                                <input type="file" class="d-none" name="gambar" id="gambar">
+                                <input type="file" class="d-none" name="gambar" id="poto">
                             </div>
                             <div class="col-8">
                                 <div class="row">
@@ -209,70 +209,6 @@
                             </div>
                         </div>
                     </form>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            <h2>Ganti Password dan Username</h2>
-                            @if (session('password'))
-                                <div class="alert alert-success">
-                                    {{ session('password') }}
-                                </div>
-                            @endif
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            <form action="{{ route('admin.update.password') }}" method="POST">
-                                @csrf
-                                @method('PUT')
-
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control @error('username') is-invalid @enderror"
-                                        id="username" name="username"
-                                        value="{{ old('username', Auth::user()->username) }}">
-                                    @error('username')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password_lama" class="form-label">Password Lama</label>
-                                    <input type="password"
-                                        class="form-control @error('password_lama') is-invalid @enderror"
-                                        id="password_lama" name="password_lama">
-                                    @error('password_lama')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input id="password" type="password" class="form-control" name="password" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password-confirm" class="form-label">Confirm Password</label>
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required>
-                                    <div id="password-error" class="text-danger mt-2" style="display:none;">Passwords do
-                                        not match!</div>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary mt-3">Simpan Perubahan</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
                 </div>
             @endif
             @if (FiturHelper::showMahasiswa())

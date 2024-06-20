@@ -19,7 +19,6 @@ class KaprodiController extends Controller
 
     public function updateProdi(Request $request)
     {
-
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
@@ -66,6 +65,7 @@ class KaprodiController extends Controller
         AlertHelper::alertSuccess('Anda telah berhasil mengupdate profile', 'Selamat!', 2000);
         return redirect()->back();
     }
+    
     public function updatePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [

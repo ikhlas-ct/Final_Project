@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
 
-// // Admin routes
+// Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::middleware(['auth', 'role:admin'])->group(function () {
         // admin
@@ -64,7 +64,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
 });
 
-// // Kaprodi routes
+// Kaprodi routes
 Route::middleware(['auth', 'role:kaprodi'])->group(function () {
     Route::get('kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard');
     Route::get('persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan');
@@ -80,27 +80,29 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function () {
 
     Route::put('/kaprodi/profile/update', [ProfileController::class, 'updateProfileKprd'])->name('kaprodi.profile.update');;
 });
-// // Dosen routes
+
+// Dosen routes
 Route::middleware(['auth', 'role:dosen'])->group(function () {
     Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan');
     Route::get('pengajuan/getData', [PengajuanController::class, 'getData'])->name('get.dataPengajuan');
     Route::put('/pengajuan/update-status/{id}', [PengajuanController::class, 'updateStatus'])->name('pengajuan.update-status');
-    // 
+    
     Route::get('/membimbing', [MembimbingController::class, 'index'])->name('membimbing');
     Route::put('/bimbingan/update/{id}', [BimbinganController::class, 'update'])->name('bimbingan.update');
     Route::post('/bimbingan/reschedule/{id}', [BimbinganController::class, 'reschedule'])->name('bimbingan.reschedule');
-    // 
+    
     Route::get('dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
     Route::get('dosen/profile', [DosenController::class, 'profile'])->name('dosen.profile');
     Route::put('/dosen/profile/update', [ProfileController::class, 'updateProfileDsn'])->name('dosen.profile.update');
     Route::get('/mhs-bimbingan', [DosenController::class, 'mhsBimbingan'])->name('mhsBimbingan');
     Route::get('/konsultasi', [DosenController::class, 'konsultasi_show'])->name('Halaman_Konsultasi');
     Route::put('/dosen/update/password', [DosenController::class, 'updatepassword'])->name('dosen.update.password');
-    // 
+    
     Route::get('/dosen/membimbing/{id}', [MembimbingController::class, 'show'])->name('membimbing.show');
     Route::put('/dosen/selesai/membimbing/{id}', [MembimbingController::class, 'update'])->name('selesai.membimbing');
 });
-// // Mahasiswa routes
+
+// Mahasiswa routes
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/tugas-akhir', [TugasAkhirController::class, 'index'])->name('tugasAkhir');
     Route::get('/tugas-akhir/getData', [TugasAkhirController::class, 'getData'])->name('tugasAkhirGetData');
@@ -116,23 +118,3 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/generate-pdf/{id}', [PdfController::class, 'generatePDF'])->name('generate-pdf');
     Route::put('/mahasiswa/profile/update', [ProfileController::class, 'updateProfileMhs'])->name('mahasiswa.profile.update');
 });
-
-// // Fallback route
-// Route::fallback(function () {
-//     $user = Auth::user();
-//     if ($user) {
-//         switch ($user->role) {
-//             case 'admin':
-//                 return redirect()->route('admin.dashboard');
-//             case 'kaprodi':
-//                 return redirect()->route('kaprodi.dashboard');
-//             case 'dosen':
-//                 return redirect()->route('dosen.dashboard');
-//             case 'mahasiswa':
-//                 return redirect()->route('halamanDashboard');
-//             default:
-//                 return redirect('/'); // default page
-//         }
-//     }
-//     return redirect()->route('login');
-// });

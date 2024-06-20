@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\Pengajuan;
 use App\Helpers\AlertHelper;
 
 class BimbinganController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = Auth::user();
@@ -35,21 +31,9 @@ class BimbinganController extends Controller
             }
         }
 
-        // 
         return view('pages.mahasiswa.bimbingan.index', compact('pengajuan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $modelClass = "App\\Models\\BimbinganP" . $request->type;
@@ -62,26 +46,6 @@ class BimbinganController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-        echo $id;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $modelClass = "App\\Models\\BimbinganP" . $request->type;
@@ -103,13 +67,5 @@ class BimbinganController extends Controller
             'bimbingan_id' => $id,
             'tanggal' => $request->date,
         ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

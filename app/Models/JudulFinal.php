@@ -13,6 +13,7 @@ class JudulFinal extends Model
     use HasFactory;
 
     protected $table = 'tb_judul_final';
+    
     protected $fillable = [
         'pengajuan_id',
     ];

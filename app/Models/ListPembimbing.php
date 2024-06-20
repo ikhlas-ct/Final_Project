@@ -12,6 +12,7 @@ class ListPembimbing extends Model
     use HasFactory;
 
     protected $table = 'tb_list_pembimbing';
+    
     protected $fillable = [
         'dosen_id',
         'pengajuan_id',

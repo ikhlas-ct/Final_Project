@@ -14,6 +14,7 @@ class Fakultas extends Model
     use HasFactory;
 
     protected $table = 'tb_fakultas';
+    
     protected $fillable = [
         'nama',
     ];

@@ -14,6 +14,7 @@ class Mahasiswa extends Model
     use HasFactory;
 
     protected $table = 'tb_mahasiswa';
+    
     protected $fillable = [
         'user_id',
         'fakultas_id', // Sesuaikan dengan nama kolom yang digunakan dalam migrasi

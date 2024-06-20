@@ -15,6 +15,7 @@ class Pengajuan extends Model
     use HasFactory;
 
     protected $table = 'tb_pengajuan';
+    
     protected $fillable = [
         'mahasiswa_id',
         'tema_id',

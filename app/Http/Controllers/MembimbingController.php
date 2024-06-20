@@ -13,22 +13,11 @@ use App\Helpers\AlertHelper;
 
 class MembimbingController extends Controller
 {
-    //
     public function index()
     {
         $user = Auth::user();
         $dosenId = $user->dosen->id; // Pastikan variabel $dosenId sudah didefinisikan dengan benar
 
-        // $dosenMembimbing = Dosen::with([
-        //     'pembimbing1.bimbinganp1' => function ($query) {
-        //         $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
-        //     },
-        //     'pembimbing2.bimbinganp2' => function ($query) {
-        //         $query->orderByRaw('COALESCE(tanggal_reschedule, tanggal) DESC')->first();
-        //     },
-        // ])
-        //     ->where('id', $dosenId) // Filter by Dosen ID
-        //     ->first();
         $dosenMembimbing = Dosen::with([
             'pembimbing1.bimbinganp1' => function ($query) {
                 $query->orderBy('updated_at', 'desc')->first();
@@ -76,9 +65,7 @@ class MembimbingController extends Controller
                 ];
             }
         }
-        // usort($array, function ($a, $b) {
-        //     return strtotime($a['tanggal']) <=> strtotime($b['tanggal']);
-        // });
+
         // Gabungkan kedua array menjadi satu
         $mergeData = array_merge($dataPembimbing1, $dataPembimbing2);
 
@@ -96,7 +83,7 @@ class MembimbingController extends Controller
         });
         return view('pages.dosen.membimbing.index', compact('mergeData'));
     }
-    // 
+    
     public function show($id)
     {
         $parts = explode('.', $id);
@@ -117,8 +104,6 @@ class MembimbingController extends Controller
                 $query->where('status', 'selesai')->with('logbookB2');
             }
         ])->where('id', $mahasiswaId)->get();
-
-
 
         $dataBimbingan1 = [];
         foreach ($pengajuan as $item) {
@@ -231,13 +216,7 @@ class MembimbingController extends Controller
                 }
             }
         }
-        // echo '<pre>';
-        // print_r($mergeData);
-        // echo '<pre>';
-        // echo $pembimbingId;
-        // die;
-        // echo "Dosen Pembimbing 1: " . ($dosen_p1 ?? 'Tidak ditemukan') . "<br>";
-        // echo "Dosen Pembimbing 2: " . ($dosen_p2 ?? 'Tidak ditemukan') . "<br>";
+        
         if (empty($pembimbingId)) {
             AlertHelper::alertError('Mahasiswa terkait belum melakukan sesi bimbingan apa pun.', 'Opsss!!', 3000);
             return redirect()->back();

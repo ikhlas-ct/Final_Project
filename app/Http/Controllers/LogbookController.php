@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\Pengajuan;
 use App\Helpers\AlertHelper;
 
 class LogbookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = Auth::user();
@@ -118,27 +113,9 @@ class LogbookController extends Controller
             }
         }
 
-        // echo $status_p1 . $status_p2;
-        // die;
-        // Print atau kembalikan array $dataBimbinganp1
-        // echo '<pre>';
-        // print_r($mergeData);
-        // echo '</pre>';
-        // die;
         return view('pages.mahasiswa.logbook.index', compact('mergeData', 'status_p1', 'status_p2', 'mahasiswaId'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -149,38 +126,5 @@ class LogbookController extends Controller
             'kegiatan' => $request->kegiatan,
             'detail_kegiatan' => $request->detail_kegiatan,
         ]);
-        // print_r($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

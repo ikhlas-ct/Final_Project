@@ -10,16 +10,13 @@ use App\Models\Dosen;
 use App\Models\ListPembimbing;
 use App\Helpers\AlertHelper;
 
-
 class PersetujuanController extends Controller
 {
-    //
     public function index()
     {
         $mahasiswa = Mahasiswa::whereHas('pengajuan', function ($query) {
             $query->whereDoesntHave('listPembimbing');
         })->with(['pengajuan'])->get();
-
 
         $user = Auth::user();
 
@@ -30,7 +27,6 @@ class PersetujuanController extends Controller
 
         return view('pages.kaprodi.persetujuan.index', compact('dosen'));
     }
-
 
     public function store(Request $request)
     {
@@ -66,7 +62,6 @@ class PersetujuanController extends Controller
             return response()->json(['error' => 'Terjadi kesalahan saat menyimpan data'], 500);
         }
     }
-
 
     public function getData()
     {

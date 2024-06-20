@@ -5,16 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
-
 use App\Helpers\AlertHelper;
 
 class LoginController extends Controller
 {
     public function index()
     {
-        // $alert = AlertHelper::alertSuccess('Pesan sukses kustom', 'Selamat!', 2000);
-
         return view('pages.login.index');
     }
 

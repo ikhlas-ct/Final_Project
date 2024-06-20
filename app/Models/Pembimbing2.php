@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Pembimbing2 extends Model
 {
     use HasFactory;
+
     protected $table = 'tb_pembimbing2';
+
     protected $fillable = [
         'judul_final_id',
         'dosen_id',
         'status',
     ];
-
 
     public function bimbinganp2()
     {
@@ -28,6 +29,7 @@ class Pembimbing2 extends Model
     {
         return $this->belongsTo(JudulFinal::class);
     }
+    
     public function dosen()
     {
         return $this->belongsTo(Dosen::class);

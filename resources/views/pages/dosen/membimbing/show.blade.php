@@ -34,7 +34,6 @@
             </table>
             <hr>
             <div class="h5 text-muted">Logbook:</div>
-
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -64,10 +63,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-
             </table>
-
-
             <hr>
             <div class="h5 text-muted">Keterangan:</div>
             <div class="container mt-3">
@@ -86,15 +82,24 @@
                         hubungi <b> {{ $as == 'P1' ? $dosen_p2 : $dosen_p1 }}</b> selaku
                         {{ $as == 'P1' ? 'Pembimbing Kedua' : 'Pembimbing Utama' }}.
                     </li>
-                    <li style="margin-bottom: 10px;">
-                        Jika Anda merasa bimbingan tersebut sudah cukup, silakan klik tombol
-                        <b>Terpenuhi</b>
-                        yang ada dibawah.
-                    </li>
+                    @if (empty($status_p1) && $as === 'P1')
+                        <li style="margin-bottom: 10px;">
+                            Jika Anda merasa bimbingan tersebut sudah cukup, silakan klik tombol
+                            <b>Terpenuhi</b>
+                            yang ada dibawah.
+                        </li>
+                    @endif
                     @if (!empty($status_p1) && $as == 'P1')
                         <li style="margin-bottom: 10px;">
                             Bimbingan sudah
                             <b>Terpenuhi</b>
+                        </li>
+                    @endif
+                    @if (empty($status_p2) && $as === 'P2')
+                        <li style="margin-bottom: 10px;">
+                            Jika Anda merasa bimbingan tersebut sudah cukup, silakan klik tombol
+                            <b>Terpenuhi</b>
+                            yang ada dibawah.
                         </li>
                     @endif
                     @if (!empty($status_p2) && $as == 'P2')
@@ -132,8 +137,6 @@
         </div>
     </div>
 </div>
-
-
 @endsection
 
 @section('scripts')

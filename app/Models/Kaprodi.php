@@ -12,6 +12,7 @@ class Kaprodi extends Model
     use HasFactory;
 
     protected $table = 'tb_kaprodi';
+    
     protected $fillable = [
         'user_id',
         'fakultas_id',

@@ -18,8 +18,6 @@ class LogbookB1 extends Model
         'detail_kegiatan',
     ];
 
-
-
     public function pembimbingP1()
     {
         return $this->belongsTo(Pembimbing1::class);

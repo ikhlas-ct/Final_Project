@@ -16,20 +16,23 @@ class ProfileController extends Controller
     public function index()
     {
         $userId = Auth::user()->id;
-        // 
+        
         if (FiturHelper::showKaprodi()) {
             $user = User::with('kaprodi.fakultas')->find($userId);
         }
+
         if (FiturHelper::showAdmin()) {
             $user = User::with('admin.fakultas')->find($userId);
         }
+
         if (FiturHelper::showDosen()) {
             $user = User::with('dosen.fakultas')->find($userId);
         }
+
         if (FiturHelper::showMahasiswa()) {
             $user =  User::with('mahasiswa.fakultas')->find($userId);
         }
-        // 
+        
         return view('pages.profile.index', compact('user'));
     }
 
@@ -95,7 +98,6 @@ class ProfileController extends Controller
         return redirect()->back();
     }
 
-
     public function updateProfileMhs(Request $request)
     {
         $user = Auth::user();
@@ -118,8 +120,6 @@ class ProfileController extends Controller
 
         // Update the Mahasiswa record with new data
         $mahasiswa->nama = $request->nama;
-
-
         $mahasiswa->nim = $request->nim;
         $mahasiswa->no_hp = $request->no_hp;
 

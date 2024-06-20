@@ -12,11 +12,11 @@ class Tema extends Model
     use HasFactory;
 
     protected $table = 'tb_tema';
+    
     protected $fillable = [
         'fakultas_id',
         'nama',
     ];
-
 
     public function pengajuan()
     {

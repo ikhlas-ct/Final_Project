@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Pembimbing1 extends Model
 {
     use HasFactory;
+
     protected $table = 'tb_pembimbing1';
+
     protected $fillable = [
         'judul_final_id',
         'dosen_id',

@@ -20,13 +20,11 @@ class StatusPengajuan extends Model
         'keterangan',
     ];
 
-    // Relasi dengan model Dosen
     public function dosen()
     {
         return $this->belongsTo(Dosen::class);
     }
 
-    // Relasi dengan model Pengajuan
     public function pengajuan()
     {
         return $this->belongsTo(Pengajuan::class);

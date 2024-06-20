@@ -9,12 +9,8 @@ use App\Models\StatusPengajuan;
 
 class PengajuanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-
         $user = Auth::user();
         $dosenId = $user->dosen->id;
 
@@ -41,8 +37,6 @@ class PengajuanController extends Controller
         })->with(['pengajuan' => function ($query) {
             $query->with(['statusPengajuan', 'Tema']);
         }])->get();
-
-
 
         echo '<table id="example" class="table-bordered" style="width:100%">
         <thead>
@@ -78,7 +72,6 @@ class PengajuanController extends Controller
     </table>';
     }
 
-
     public function updateStatus(Request $request, $id)
     {
         $user = Auth::user();
@@ -91,58 +84,5 @@ class PengajuanController extends Controller
         $statusPengajuan->update([
             'status' => $request->status,
         ]);
-        // Update status pengajuan
-        // $statusPengajuan->update([
-        //     'status' => $request->status,
-        // ]);
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

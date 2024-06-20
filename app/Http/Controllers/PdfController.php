@@ -85,9 +85,6 @@ class PdfController extends Controller
             return strtotime($a['tanggal_bimbingan']) <=> strtotime($b['tanggal_bimbingan']);
         });
 
-
-
-
         // Render view ke HTML
         $html = view('pages.pdf.document', ['mergeData' => $mergeData, 'nama' => $nama, 'nim' => $nim])->render();
 

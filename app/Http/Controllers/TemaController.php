@@ -6,7 +6,6 @@ use App\Models\Tema;
 use App\Models\Fakultas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-// 
 use App\Helpers\AlertHelper;
 
 class TemaController extends Controller

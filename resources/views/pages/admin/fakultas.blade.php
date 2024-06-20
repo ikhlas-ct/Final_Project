@@ -29,7 +29,7 @@
             </button>
         </div>
         <!-- Table to display fakultas -->
-        <table id="fakultasTable" class="table table-bordered table-hover">
+        <table id="fakultasTable" class="table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -141,7 +141,8 @@
                         "previous": "Sebelumnya"
                     }
                 },
-                "dom": '<"top"lf>rt<"bottom"ip><"clear">'
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+                "lengthChange": false
             });
 
             // Show create modal

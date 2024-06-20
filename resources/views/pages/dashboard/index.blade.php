@@ -28,6 +28,12 @@
                 </div>
             </div>
         @endif
-
+        @if (FiturHelper::showAdmin())
+            <div class="card overflow-hidden w-auto">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-9 fw-semibold">Selemat datang dan selamat bertugas!</h5>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection

@@ -18,13 +18,12 @@ class AdminSeeder extends Seeder
         $admin = [
             [
                 'user_id' => 11,
-                'nama' => "TEST",
+                'nama' => "Budi Santoso", // Indonesian name
                 'gambar' => "TEST",
                 'no_hp' => '081234567892',
-                'alamat' => "alamat"
+                'alamat' => "Jl. Merdeka No. 10, Jakarta" // Indonesian address
             ]
         ];
-
         Admin::insert($admin);
     }
 }

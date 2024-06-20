@@ -58,7 +58,7 @@
 
 
         <!-- Tabs for filtering users by role -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" href="{{ route('admin.users') }}">
                     <span class="btn btn-primary d-inline-flex align-items-center justify-content-center">
@@ -102,7 +102,7 @@
 
 
         <div class="datatable-container mb-3">
-            <table id="usersTable" class="table table-bordered mt-3">
+            <table id="usersTable" class="table mt-3">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -244,7 +244,8 @@
                         "previous": "Sebelumnya"
                     }
                 },
-                "dom": '<"top"lf>rt<"bottom"ip><"clear">'
+                "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+                "lengthChange": false
             });
 
             $('#editUserModal').on('show.bs.modal', function(event) {

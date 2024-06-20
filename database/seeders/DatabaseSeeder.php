@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             FakultasSeeder::class,
             KaprodiSeeder::class,
             DosenSeeder::class,
-            MahasiswaSeeder::class,
+            // MahasiswaSeeder::class,
             TemaSeeder::class,
             AdminSeeder::class
         ]);

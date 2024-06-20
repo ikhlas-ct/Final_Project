@@ -201,7 +201,7 @@
                                                                         class="btn btn-link m-0 p-0" data-bs-toggle="modal"
                                                                         data-bs-target="#exampleModal" data-type="2"
                                                                         data-id="{{ $item->judulFinal->pembimbing2->id }}"
-                                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Ajukan</button>
+                                                                        data-nama="{{ $item->judulFinal->pembimbing2->dosen->nama }}">Bimbingan</button>
                                                                 @else
                                                                     dan sudah <br> terpenuhi.
                                                                 @endif

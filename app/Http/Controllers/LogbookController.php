@@ -23,6 +23,12 @@ class LogbookController extends Controller
         ])->where('id', $mahasiswaId)->get();
 
         $dataBimbingan1 = [];
+        
+        if ($pengajuan->IsEmpty()) {
+            AlertHelper::alertError('Selesaikan pengajuan judul terlebih dahulu', 'Opsss!!', 3000);
+            return redirect()->back();
+        }
+
         foreach ($pengajuan as $item) {
             if (empty($item->judulFinal) || empty($item->judulFinal->pembimbing1)) {
                 AlertHelper::alertError('Selesaikan pengajuan terlebih dahulu', 'Opsss!!', 3000);

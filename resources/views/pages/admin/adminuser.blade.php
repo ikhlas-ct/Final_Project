@@ -180,6 +180,7 @@
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div class="mb-3">
+                            <label for="fakultas" class="form-label">Fakultas</label>
                             <select class="form-select" id="fakultas" name="fakultas" required>
                                 <option value="" selected>Pilih Fakultas</option>
                                 @foreach ($fakultas as $fk)
@@ -224,6 +225,7 @@
                             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
                         </div>
                         <div class="mb-3">
+                            <label for="fakultas-edit" class="form-label">Fakultas</label>
                             <select class="form-select" id="fakultas-edit" name="fakultas" required>
                                 <option value="" selected>Pilih Fakultas</option>
                                 @foreach ($fakultas as $fk)

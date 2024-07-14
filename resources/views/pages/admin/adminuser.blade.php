@@ -67,14 +67,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/users/admin') ? 'active' : '' }}"
-                    href="{{ route('admin.users.filter', 'admin') }}">
-                    <span class="btn btn-success d-inline-flex align-items-center justify-content-center">
-                        Admin <span class="badge bg-light text-dark ms-1">{{ $countAdmin }}</span>
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/users/mahasiswa') ? 'active' : '' }}"
                     href="{{ route('admin.users.filter', 'mahasiswa') }}">
                     <span class="btn btn-warning d-inline-flex align-items-center justify-content-center">
@@ -119,21 +111,16 @@
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->role }}</td>
                             <td>
-                                @if ($user->role == 'admin' && $user->admin)
-                                    Nama: {{ $user->admin->nama }}<br>
-                                    No HP: {{ $user->admin->no_hp }}<br>
-                                    Alamat: <span class="truncate"
-                                        data-full-text="{{ $user->admin->alamat }}">{{ Str::limit($user->admin->alamat, 100) }}</span>
-                                @elseif($user->role == 'mahasiswa' && $user->mahasiswa)
+                                @if($user->role == 'mahasiswa' && $user->mahasiswa)
                                     Nama: {{ $user->mahasiswa->nama }}<br>
                                     No HP: {{ $user->mahasiswa->no_hp }}<br>
-                                    Alamat: <span class="truncate"
-                                        data-full-text="{{ $user->mahasiswa->alamat }}">{{ Str::limit($user->mahasiswa->alamat, 100) }}</span>
+                                    Fakultas: <span class="truncate"
+                                        data-full-text="{{ $user->mahasiswa->fakultas->nama }}">{{ Str::limit($user->mahasiswa->fakultas->nama, 100) }}</span>
                                 @elseif($user->role == 'dosen' && $user->dosen)
                                     Nama: {{ $user->dosen->nama }}<br>
                                     No HP: {{ $user->dosen->no_hp }}<br>
-                                    Alamat: <span class="truncate"
-                                        data-full-text="{{ $user->dosen->alamat }}">{{ Str::limit($user->dosen->alamat, 100) }}</span>
+                                    Fakultas: <span class="truncate"
+                                        data-full-text="{{ $user->dosen->fakultas->nama }}">{{ Str::limit($user->dosen->fakultas->nama, 100) }}</span>
                                 @elseif($user->role == 'kaprodi' && $user->kaprodi)
                                     Nama: {{ $user->kaprodi->nidn }}<br>
                                     No HP: {{ $user->kaprodi->no_hp }}<br>
@@ -143,9 +130,21 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editUserModal" data-id="{{ $user->id }}"
-                                    data-username="{{ $user->username }}"><i class="fas fa-edit"></i> Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#editUserModal" data-id="{{ $user->id }}"
+                                        data-username="{{ $user->username }}"
+                                        @if ($user->role == 'mahasiswa')
+                                            data-fakultas-id="{{ $user->mahasiswa->fakultas_id }}"
+                                        @elseif ($user->role == 'dosen')
+                                            data-fakultas-id="{{ $user->dosen->fakultas_id }}"
+                                        @elseif ($user->role == 'kaprodi')
+                                            data-fakultas-id="{{ $user->kaprodi->fakultas_id }}"
+                                        @else
+                                            data-fakultas-id=""
+                                        @endif>
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>                        
                                 <form action="{{ route('admin.users.delete', $user->id) }}" method="POST"
                                     style="display: inline-block;">
                                     @csrf
@@ -181,9 +180,16 @@
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div class="mb-3">
+                            <select class="form-select" id="fakultas" name="fakultas" required>
+                                <option value="" selected>Pilih Fakultas</option>
+                                @foreach ($fakultas as $fk)
+                                    <option value="{{ $fk->id }}">{{ $fk->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
                             <select class="form-select" id="role" name="role" required>
-                                <option value="admin">Admin</option>
                                 <option value="mahasiswa">Mahasiswa</option>
                                 <option value="dosen">Dosen</option>
                                 <option value="kaprodi">Prodi</option>
@@ -217,12 +223,20 @@
                             <input type="password" class="form-control" id="editPassword" name="password">
                             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
                         </div>
+                        <div class="mb-3">
+                            <select class="form-select" id="fakultas-edit" name="fakultas" required>
+                                <option value="" selected>Pilih Fakultas</option>
+                                @foreach ($fakultas as $fk)
+                                    <option value="{{ $fk->id }}">{{ $fk->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 
 
 @endsection
@@ -252,10 +266,16 @@
                 var button = $(event.relatedTarget);
                 var userId = button.data('id');
                 var username = button.data('username');
+                var fakultasId = button.data('fakultas-id');
+                // alert(fakultasId); // For debugging purposes
 
                 var modal = $(this);
                 modal.find('#editUsername').val(username);
 
+                // Set the value of the fakultas select dropdown
+                modal.find('#fakultas-edit').val(fakultasId).trigger('change');
+
+                // Set the action for the form submission
                 $('#editUserForm').attr('action', '/admin/users/' + userId);
             });
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('fakultas_id'); // Menambah kolom fakultas_id
-            $table->string('nama');
+            $table->string('nama')->nullable();
             $table->string('nim')->unique()->nullable();
             $table->string('no_hp', 20)->nullable();
             $table->string('poto')->nullable();

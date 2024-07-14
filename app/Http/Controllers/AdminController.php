@@ -49,72 +49,33 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully');
     }
-
-    public function updatePassword(Request $request)
-    {
-        $request->validate([
-            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore(Auth::user()->id)],
-            'password_lama' => ['required'],
-            'password' => 'required|confirmed', // Password confirmation
-        ], [
-            'username.required' => 'Username harus diisi.',
-            'username.max' => 'Username maksimal 255 karakter.',
-            'username.unique' => 'Username sudah digunakan oleh pengguna lain.',
-            'password_lama.required' => 'Password lama harus diisi.',
-            'password.required' => 'Password baru harus diisi.',
-            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
-        ]);
-    
-        $user = Auth::user();
-    
-        // Validasi password lama
-        if (!Hash::check($request->password_lama, $user->password)) {
-            return back()->withErrors(['password_lama' => 'Password lama tidak cocok']);
-        }
-    
-        // Update username
-        $user->username = $request->username;
-        $user->save();
-    
-        // Update password
-        $user->password = Hash::make($request->password);
-        $user->save();
-    
-        AlertHelper::alertSuccess('Anda telah berhasil mengupdate username dan passowrd', 'Selamat!', 2000);
-        return redirect()->route('profile');
-    }
      
     public function pengguna()
     {
-        $users = User::with('admin', 'mahasiswa', 'dosen', 'kaprodi')->get();
-        $countAdmin = User::where('role', 'admin')->count();
+        $users = User::with('mahasiswa', 'dosen', 'kaprodi')
+             ->where('role', '!=', 'admin')
+             ->get();
         $countMahasiswa = User::where('role', 'mahasiswa')->count();
         $countDosen = User::where('role', 'dosen')->count();
         $countKaprodi = User::where('role', 'kaprodi')->count();
-        $totalUsers = User::count();
-
+        $totalUsers = User::where('role', '!=', 'admin')->count();
+        $fakultas = Fakultas::all();
         
-        return view('pages.admin.adminuser', compact('users', 'countAdmin', 'countMahasiswa', 'countDosen', 'countKaprodi','totalUsers'));
+        return view('pages.admin.adminuser', compact('users', 'countMahasiswa', 'countDosen', 'countKaprodi','totalUsers', 'fakultas'));
     }
     
     public function filterByRole($role)
     {
-        $users = User::with('admin', 'mahasiswa', 'dosen', 'kaprodi')->where('role', $role)->get();
+        $users = User::with('mahasiswa', 'dosen', 'kaprodi')->where('role', $role)->get();
 
         // Menghitung jumlah pengguna berdasarkan peran
-        $countAdmin = User::where('role', 'admin')->count();
         $countMahasiswa = User::where('role', 'mahasiswa')->count();
         $countDosen = User::where('role', 'dosen')->count();
         $countKaprodi = User::where('role', 'kaprodi')->count();
         $totalUsers = User::count();
+        $fakultas = Fakultas::all();
 
-        return view('pages.admin.adminuser', compact('users', 'countAdmin', 'countMahasiswa', 'countDosen', 'countKaprodi', 'role', 'totalUsers'));
-    }
-    
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return view('pages.admin.adminedituser', compact('user'));
+        return view('pages.admin.adminuser', compact('users', 'countMahasiswa', 'countDosen', 'countKaprodi', 'role', 'totalUsers', 'fakultas'));
     }
 
     public function destroy($id)
@@ -131,22 +92,35 @@ class AdminController extends Controller
         $request->validate([
             'username' => 'required|string|max:255',
             'password' => 'nullable|string',
+            'fakultas' => 'required|exists:tb_fakultas,id', // Ensure fakultas exists
         ]);
-    
+
         // Temukan pengguna berdasarkan ID
         $user = User::findOrFail($id);
-    
+
         // Update username
         $user->username = $request->input('username');
-    
+
         // Jika password diisi, update password
         if ($request->filled('password')) {
             $user->password = bcrypt($request->input('password'));
         }
-    
+
+        // Update Fakultas
+        if ($user->role == 'mahasiswa') {
+            $user->mahasiswa->fakultas_id = $request->input('fakultas');
+            $user->mahasiswa->save();
+        } elseif ($user->role == 'dosen') {
+            $user->dosen->fakultas_id = $request->input('fakultas');
+            $user->dosen->save();
+        } elseif ($user->role == 'kaprodi') {
+            $user->kaprodi->fakultas_id = $request->input('fakultas');
+            $user->kaprodi->save();
+        }
+
         // Simpan perubahan ke database
         $user->save();
-    
+
         // Redirect ke halaman daftar pengguna dengan pesan sukses
         return redirect()->route('admin.users')->with('success', 'User updated successfully.');
     }
@@ -157,6 +131,7 @@ class AdminController extends Controller
         $request->validate([
             'username' => 'required|string|max:255|unique:users,username',
             'password' => 'required|string',
+            'fakultas' => 'required|exists:tb_fakultas,id',
             'role' => 'required|string|in:admin,mahasiswa,dosen,kaprodi',
         ]);
     
@@ -166,6 +141,7 @@ class AdminController extends Controller
         $user->password = bcrypt($request->input('password'));
         $user->role = $request->input('role');
         $user->save();
+        $fakultas = $request->input('fakultas');
     
         // Simpan data tambahan berdasarkan role
         switch ($user->role) {
@@ -174,15 +150,24 @@ class AdminController extends Controller
                 break;
     
             case 'mahasiswa':
-                Mahasiswa::create(['user_id' => $user->id]);
+                Mahasiswa::create([
+                    'user_id' => $user->id,
+                    'fakultas_id' => $fakultas,
+                ]);
                 break;
     
             case 'dosen':
-                Dosen::create(['user_id' => $user->id]);
+                Dosen::create([
+                    'user_id' => $user->id,
+                    'fakultas_id' => $fakultas,
+                ]);
                 break;
     
             case 'kaprodi':
-                Kaprodi::create(['user_id' => $user->id]);
+                Kaprodi::create([
+                    'user_id' => $user->id,
+                    'fakultas_id' => $fakultas,
+                ]);
                 break;
         }
     

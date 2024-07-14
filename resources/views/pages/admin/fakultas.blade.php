@@ -22,12 +22,14 @@
                 </ul>
             </div>
         @endif
+
         <div class="mb-3">
             <!-- Button trigger modal for create -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
                 <i class="fa fa-plus"></i> Tambah Fakultas
             </button>
         </div>
+        
         <!-- Table to display fakultas -->
         <table id="fakultasTable" class="table">
             <thead>

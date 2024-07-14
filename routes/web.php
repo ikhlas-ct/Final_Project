@@ -14,7 +14,6 @@ use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MembimbingController;
 use App\Http\Controllers\TemaController;
 use App\Http\Controllers\PdfController;
-// use App\Models\Bimbingan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -47,7 +46,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         // admin
         Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::put('/admin/profile/update', [AdminController::class, 'update'])->name('admin.profile.update');
-        Route::put('/admin/update/password', [AdminController::class, 'updatepassword'])->name('admin.update.password');
         // pengguna
         Route::get('/admin/users', [AdminController::class, 'pengguna'])->name('admin.users');
         Route::get('/admin/users/{role}', [AdminController::class, 'filterByRole'])->name('admin.users.filter');
@@ -57,7 +55,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         //fakultas
         Route::get('/admin/fakultas', [AdminController::class, 'index_fakultas'])->name('fakultas.index');
         Route::post('/fakultas/store', [AdminController::class, 'store_fakultas'])->name('fakultas.store');
-        Route::get('/admin/fakultas', [AdminController::class, 'index_fakultas'])->name('fakultas.index');
+        // Route::get('/admin/fakultas', [AdminController::class, 'index_fakultas'])->name('fakultas.index');
         Route::get('/admin/fakultas/{id}/edit', [AdminController::class, 'edit_fakultas'])->name('fakultas.edit');
         Route::put('/fakultas/update/{id}', [AdminController::class, 'update_fakultas'])->name('fakultas.update');
         Route::delete('/fakultas/delete/{id}', [AdminController::class, 'destroy_fakultas'])->name('fakultas.destroy');
